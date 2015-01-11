@@ -24,23 +24,7 @@
   <property file="${user.home}/wpilib/wpilib.properties"/>
   <property file="build.properties"/>
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
-  
+
   <import file="${wpilib.ant.dir}/build.xml"/>
-
-  <target name="compile" description="Compile the source code.">
-    <mkdir dir="${build.dir}"/>
-    <echo>[athena-compile] Compiling ${src.dir} with classpath=${classpath} to ${build.dir}</echo>
-
-    <javac srcdir="${src.dir}"
-     destdir="${build.dir}"
-     includeAntRuntime="no"
-     includeJavaRuntime="no"
-     classpath="${classpath}:${custom_classpath}"
-     target="${ant.java.version}"
-     source="${ant.java.version}"
-     compiler="javac${ant.java.version}"
-     debug="true">
-    </javac>
-  </target>
 
 </project> 
