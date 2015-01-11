@@ -16,7 +16,16 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-
+      new Thread(new Runnable() {
+        public void run() {
+          try {
+            System.out.println("Starting server");
+            SimplestServer.startServer();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }).start();
     }
 
     /**
