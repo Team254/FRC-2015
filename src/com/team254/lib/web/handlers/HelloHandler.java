@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class HelloHandler extends AbstractHandler
 {
-    public void handle(String target,Request baseRequest,HttpServletRequest request,HttpServletResponse response) 
+    public void handle(String target,
+                       Request baseRequest,
+                       HttpServletRequest request,
+                       HttpServletResponse response) 
         throws IOException, ServletException
     {
         response.setContentType("text/html;charset=utf-8");
