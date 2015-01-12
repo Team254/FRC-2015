@@ -10,8 +10,17 @@ import java.util.HashMap;
  * Manages a set of serializable objects
  */
 public class SystemManager {
+  private static SystemManager inst = null;
+
   private Hashtable<String, Serializable> sysmap;
   
+  public static SystemManager getInstance() {
+    if (inst == null) {
+      inst = new SystemManager();
+    }
+    return inst;
+  }
+
   public SystemManager() {
     this.sysmap = new Hashtable<String, Serializable>();
   }
