@@ -11,9 +11,13 @@ import java.util.HashMap;
  */
 public class SystemManager {
   private Hashtable<String, Serializable> sysmap;
+  
+  public SystemManager() {
+    this.sysmap = new Hashtable<String, Serializable>();
+  }
 
-  public void add(String id, Serializable v) {
-    sysmap.put(id, v);
+  public void add(Serializable v) {
+    sysmap.put(v.getName(), v);
   }
 
   // Returns a map of all states

@@ -4,5 +4,7 @@ package com.team254.lib.util;
  * 
  **/
 public interface Serializable {
+  
   public String serialize();
+  public String getName();
 }
