@@ -4,7 +4,9 @@ package com.team254.frc2015;
 import com.team254.lib.ChezyTalon;
 import com.team254.lib.web.SimplestServer;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,6 +22,8 @@ public class Robot extends IterativeRobot {
      */
     ChezyTalon testTalonB = new ChezyTalon(0, "Drive Left A");
     ChezyTalon testTalonA = new ChezyTalon(1, "Drive Left B");
+    Encoder encoder = new Encoder(0, 1);
+
     int i = 0;
 
     public void robotInit() {
@@ -27,7 +31,7 @@ public class Robot extends IterativeRobot {
         public void run() {
           try {
             System.out.println("Starting server");
-            SimplestServer.startServer();
+            //SimplestServer.startServer();
           } catch (Exception e) {
             e.printStackTrace();
           }
@@ -57,9 +61,10 @@ public class Robot extends IterativeRobot {
     }
     
     public void disabledPeriodic() {
-      i = i > 1000 ? -1000 : i + 1;
-      testTalonA.set(i / 1000.0);
-      testTalonB.set(-i / 1000.0);
+      i++;
+      testTalonA.set(Math.sin(i/50.0));
+      testTalonB.set(Math.cos(i/50.0));
+      System.out.println("e: " + encoder.get());
     }
 
 }
