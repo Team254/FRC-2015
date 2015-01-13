@@ -1,12 +1,11 @@
 
 package com.team254.frc2015;
 
+import com.team254.lib.ChezyEncoder;
 import com.team254.lib.ChezyTalon;
 import com.team254.lib.web.SimplestServer;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,9 +19,9 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-    ChezyTalon testTalonB = new ChezyTalon(0, "Drive Left A");
-    ChezyTalon testTalonA = new ChezyTalon(1, "Drive Left B");
-    Encoder encoder = new Encoder(0, 1);
+    ChezyTalon testTalonB = new ChezyTalon("Drive Left A", 0);
+    ChezyTalon testTalonA = new ChezyTalon("Drive Left B", 1);
+    ChezyEncoder encoder = new ChezyEncoder("Left Drive Encoder", 0, 1);
 
     int i = 0;
 
@@ -31,7 +30,7 @@ public class Robot extends IterativeRobot {
         public void run() {
           try {
             System.out.println("Starting server");
-            //SimplestServer.startServer();
+            SimplestServer.startServer();
           } catch (Exception e) {
             e.printStackTrace();
           }

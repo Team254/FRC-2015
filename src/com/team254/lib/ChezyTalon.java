@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class ChezyTalon extends Talon implements Serializable {
   public String name;
   
-  public ChezyTalon(int channel, String name) {
+  public ChezyTalon(String name, int channel) {
     super(channel);
     this.name = name;
     SystemManager.getInstance().add(this);
