@@ -15,9 +15,8 @@ public class ChezyTalon extends Talon implements Serializable {
   }
 
   @Override
-  public String serialize() {
-    double val = this.get();
-    return Double.toString(val);
+  public Object getState() {
+    return new Double(this.get());
   }
   
   public String getName() {

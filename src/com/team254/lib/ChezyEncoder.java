@@ -15,8 +15,8 @@ public class ChezyEncoder extends Encoder implements Serializable {
   }
 
   @Override
-  public String serialize() {
-    return Integer.toString(get());
+  public Object getState() {
+    return new Integer(get());
   }
 
   @Override

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.HashMap;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author bg
@@ -30,29 +32,28 @@ public class SystemManager {
   }
 
   // Returns a map of all states
-  public HashMap<String, String> get() {
-    HashMap<String, String> states = new HashMap<String, String>();
-
+  public JSONObject get() {
+    JSONObject states = new JSONObject();
     Collection<String> keys = this.sysmap.keySet();
 
     for (String k : keys) {
-      String v = this.sysmap.get(k).serialize();
+      Object v = this.sysmap.get(k).getState();
       states.put(k, v);
     }
     return states;
   }
 
-  public HashMap<String, String> get(String k) {
-    HashMap<String, String> state = new HashMap<String, String>();
-    state.put(k, sysmap.get(k).serialize());
+  public JSONObject get(String k) {
+    JSONObject state = new JSONObject();
+    state.put(k, sysmap.get(k).getState());
     return state;
   }
   
   // Returns a map of states for the devices specified in args
-  public HashMap<String, String> get(String []args) {
-    HashMap<String, String> states = new HashMap<String, String>();
+  public JSONObject get(String []args) {
+    JSONObject states = new JSONObject();
     for (String k : args) {
-      String v = this.sysmap.get(k).serialize();
+      Object v = this.sysmap.get(k).getState();
       states.put(k, v);
     }
     return states;

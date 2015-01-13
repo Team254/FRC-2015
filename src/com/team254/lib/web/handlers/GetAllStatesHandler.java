@@ -23,8 +23,7 @@ public class GetAllStatesHandler extends AbstractHandler {
     response.setStatus(HttpServletResponse.SC_OK);
     baseRequest.setHandled(true);
 
-    HashMap<String, String> s = SystemManager.getInstance().get();
-    JSONObject json = new JSONObject(s);
+    JSONObject json = SystemManager.getInstance().get();
     response.getWriter().println(json.toJSONString());
   }
 
