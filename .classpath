@@ -12,5 +12,10 @@
 	<classpathentry kind="lib" path="lib/jetty-io-9.2.6.v20141205.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/websocket-api-9.2.6.v20141205.jar"/>
+	<classpathentry kind="lib" path="lib/websocket-common-9.2.6.v20141205.jar"/>
+	<classpathentry kind="lib" path="lib/websocket-server-9.2.6.v20141205.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-servlet-9.2.6.v20141205.jar"/>
+	<classpathentry kind="lib" path="lib/websocket-servlet-9.2.6.v20141205.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
