@@ -6,6 +6,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.team254.frc2015.web.handlers.BaseServlet;
 import com.team254.frc2015.web.handlers.GetAllStatesServlet;
+import com.team254.frc2015.web.handlers.GetKeysServlet;
 
 public class SimplestServer
 {
@@ -24,6 +25,9 @@ public class SimplestServer
         
         ServletHolder statesHolder = new ServletHolder("states", new GetAllStatesServlet());
         context.addServlet(statesHolder, "/states");
+        
+        ServletHolder keysHolder = new ServletHolder("keys", new GetKeysServlet());
+        context.addServlet(keysHolder, "/keys");
         
         ServletHolder baseHolder = new ServletHolder("base", new BaseServlet());
         context.addServlet(baseHolder, "/");
