@@ -63,7 +63,6 @@ public class Robot extends IterativeRobot {
       i++;
       testTalonA.set(Math.sin(i/50.0));
       testTalonB.set(Math.cos(i/50.0));
-      System.out.println("e: " + encoder.get());
     }
 
 }
