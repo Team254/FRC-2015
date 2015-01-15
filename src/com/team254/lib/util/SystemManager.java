@@ -19,8 +19,6 @@ public class SystemManager {
 
   private Hashtable<String, Serializable> sysmap;
   
-  private ArrayList<StateStreamSocket> updateStreams = new ArrayList<StateStreamSocket>();
-  
   public static SystemManager getInstance() {
     if (inst == null) {
       inst = new SystemManager();
@@ -66,22 +64,4 @@ public class SystemManager {
     }
     return states;
   }
-  
-  public void registerStateStreamSocket(StateStreamSocket s) {
-    updateStreams.add(s);
-  }
-  
-  public void unregisterStateStreamSocket(StateStreamSocket s) {
-    updateStreams.remove(s);
-  }
-  
-  public void updateAllStateStreams() {
-    for (StateStreamSocket s : updateStreams) {
-      if (s == null || !s.update()) {
-        updateStreams.remove(s);
-      }
-    }
-  }
-
-
 }

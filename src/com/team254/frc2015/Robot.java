@@ -1,10 +1,9 @@
 
 package com.team254.frc2015;
 
-import com.team254.frc2015.web.SimplestServer;
+import com.team254.frc2015.web.WebServer;
 import com.team254.lib.ChezyEncoder;
 import com.team254.lib.ChezyTalon;
-import com.team254.lib.util.SystemManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -27,16 +26,7 @@ public class Robot extends IterativeRobot {
     int i = 0;
 
     public void robotInit() {
-      new Thread(new Runnable() {
-        public void run() {
-          try {
-            System.out.println("Starting server");
-            SimplestServer.startServer();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      }).start();
+      WebServer.startServer();
     }
 
     /**
@@ -64,8 +54,7 @@ public class Robot extends IterativeRobot {
       i++;
       testTalonA.set(Math.sin(i/50.0));
       testTalonB.set(Math.cos(i/50.0));
-      
-      SystemManager.getInstance().updateAllStateStreams();
+      WebServer.updateAllStateStreams();
     }
 
 }

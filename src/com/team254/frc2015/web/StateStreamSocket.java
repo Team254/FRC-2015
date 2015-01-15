@@ -1,6 +1,5 @@
 package com.team254.frc2015.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.jetty.websocket.api.Session;
@@ -16,27 +15,31 @@ public class StateStreamSocket extends WebSocketAdapter
 {
     HashMap<String, Boolean> subscribedKeys = new HashMap<String, Boolean>();
     private boolean running = true;
+    
+    public boolean canBeUpdated() {
+      return running && !subscribedKeys.isEmpty();
+    }
+ 
     public void onWebSocketClose(int statusCode, String reason)
     {
         super.onWebSocketClose(statusCode,reason);
-        SystemManager.getInstance().unregisterStateStreamSocket(this);
+        WebServer.unregisterStateStreamSocket(this);
     }
 
     public void onWebSocketConnect(Session session)
     {
         super.onWebSocketConnect(session);
-        SystemManager.getInstance().registerStateStreamSocket(this);
+        WebServer.registerStateStreamSocket(this);
     }
 
     public void onWebSocketError(Throwable cause)
     {
         System.err.println("WebSocket Error" + cause);
-        SystemManager.getInstance().unregisterStateStreamSocket(this);
+        WebServer.unregisterStateStreamSocket(this);
     }
 
     public void onWebSocketText(String message)
     {
-      System.out.println(message);
         JSONParser parser=new JSONParser();
         Object obj;
         try {
@@ -56,7 +59,6 @@ public class StateStreamSocket extends WebSocketAdapter
           } if ("subscribe".equals(action)) {
             JSONArray keys = (JSONArray) cmd.get("keys");
             for (Object key : keys) {
-              System.out.println("key: " + key);
               subscribe((String)key);
             }
           } else if ("unsubscribe".equals(action)) {
