@@ -27,4 +27,31 @@
 
   <import file="${wpilib.ant.dir}/build.xml"/>
 
+  <target name="jar" depends="compile">
+    <echo>[athena-jar] Making jar ${dist.jar}.</echo>
+    <mkdir dir="${dist.dir}" />
+    <mkdir dir="${build.jars}" />
+
+    <echo>[athena-jar] Copying jars from ${classpath} to ${build.jars}.</echo>
+    <copy todir="${build.jars}" flatten="true">
+      <path>
+      <pathelement path="${classpath}"/>
+      </path>
+    </copy>
+
+    <jar destfile="${dist.jar}" update="false">
+      <manifest>
+      <attribute name="Main-Class" value="edu.wpi.first.wpilibj.RobotBase"/>
+      <attribute name="Robot-Class" value="${robot.class}"/>
+      <attribute name="Class-Path" value="."/>
+      </manifest>
+
+      <fileset dir="${build.dir}" includes="**/*.class"/>
+      <fileset dir="${resources.dir}"/>
+    <zipgroupfileset dir="${build.jars}">
+      <include name="**/*.jar" />
+    </zipgroupfileset>
+    </jar>
+  </target>
+
 </project> 

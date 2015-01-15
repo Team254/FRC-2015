@@ -1,10 +1,14 @@
 package com.team254.frc2015.web;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 
 import com.team254.frc2015.web.handlers.BaseServlet;
 import com.team254.frc2015.web.handlers.GetAllStatesServlet;
@@ -39,9 +43,12 @@ public class WebServer
         ServletHolder keysHolder = new ServletHolder("keys", new GetKeysServlet());
         context.addServlet(keysHolder, "/keys");
         
-        ServletHolder baseHolder = new ServletHolder("base", new BaseServlet());
-        context.addServlet(baseHolder, "/");
-  
+        String appDir = WebServer.class.getClassLoader().getResource("app/").toExternalForm();
+        ServletHolder holderPwd = new ServletHolder("default", new DefaultServlet());
+        holderPwd.setInitParameter("resourceBase", appDir);
+        holderPwd.setInitParameter("dirAllowed", "true");
+        context.addServlet(holderPwd, "/");
+        
         serverThread = new Thread(new Runnable() {
           @Override
           public void run() {
