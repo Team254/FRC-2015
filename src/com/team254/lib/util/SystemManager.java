@@ -33,6 +33,12 @@ public class SystemManager {
   public void add(Serializable v) {
     sysmap.put(v.getName(), v);
   }
+  
+  public void add(Collection<Serializable> values) {
+    for (Serializable v : values) {
+	  sysmap.put(v.getName(), v);
+    }
+  }
 
   // Returns a map of all states
   public JSONObject get() {

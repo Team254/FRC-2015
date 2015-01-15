@@ -22,4 +22,10 @@ public class ChezyTalon extends Talon implements Serializable {
   public String getName() {
     return this.name;
   }
+
+@Override
+public String getType() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

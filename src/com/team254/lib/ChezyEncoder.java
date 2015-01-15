@@ -24,4 +24,10 @@ public class ChezyEncoder extends Encoder implements Serializable {
     return name;
   }
 
+@Override
+public String getType() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }

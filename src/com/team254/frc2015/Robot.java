@@ -1,6 +1,7 @@
 
 package com.team254.frc2015;
 
+import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.web.WebServer;
 import com.team254.lib.ChezyEncoder;
 import com.team254.lib.ChezyTalon;
@@ -19,11 +20,9 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-    ChezyTalon testTalonB = new ChezyTalon("leftDriveVictorA", 0);
-    ChezyTalon testTalonA = new ChezyTalon("leftDriveVictorB", 1);
-    ChezyEncoder encoder = new ChezyEncoder("leftDriveEncoder", 0, 1);
-
+	
     int i = 0;
+    Drive drive = HardwareAdaptor.drive;
 
     public void robotInit() {
       WebServer.startServer();
@@ -52,8 +51,7 @@ public class Robot extends IterativeRobot {
     
     public void disabledPeriodic() {
       i++;
-      testTalonA.set(Math.sin(i/50.0));
-      testTalonB.set(Math.cos(i/50.0));
+      drive.setLeftRight(Math.sin(i/50.0), Math.cos(i/50.0));
       WebServer.updateAllStateStreams();
     }
 
