@@ -3,8 +3,6 @@ package com.team254.frc2015;
 
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.web.WebServer;
-import com.team254.lib.ChezyEncoder;
-import com.team254.lib.ChezyTalon;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
