@@ -27,7 +27,7 @@ public class WebServer
         if (server != null) {
           return;
         }
-        server = new Server(8080);
+        server = new Server(1254);
   
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
