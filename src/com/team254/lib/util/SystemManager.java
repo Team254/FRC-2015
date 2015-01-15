@@ -1,10 +1,13 @@
 package com.team254.lib.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.HashMap;
 
 import org.json.simple.JSONObject;
+
+import com.team254.frc2015.web.StateStreamSocket;
 
 /**
  *
@@ -15,6 +18,8 @@ public class SystemManager {
   private static SystemManager inst = null;
 
   private Hashtable<String, Serializable> sysmap;
+  
+  private ArrayList<StateStreamSocket> updateStreams = new ArrayList<StateStreamSocket>();
   
   public static SystemManager getInstance() {
     if (inst == null) {
@@ -53,10 +58,29 @@ public class SystemManager {
   public JSONObject get(String []args) {
     JSONObject states = new JSONObject();
     for (String k : args) {
-      Object v = this.sysmap.get(k).getState();
-      states.put(k, v);
+      Serializable v =  this.sysmap.get(k);
+      if(v != null) {
+        states.put(k, v.getState());
+      }
+      
     }
     return states;
+  }
+  
+  public void registerStateStreamSocket(StateStreamSocket s) {
+    updateStreams.add(s);
+  }
+  
+  public void unregisterStateStreamSocket(StateStreamSocket s) {
+    updateStreams.remove(s);
+  }
+  
+  public void updateAllStateStreams() {
+    for (StateStreamSocket s : updateStreams) {
+      if (s == null || !s.update()) {
+        updateStreams.remove(s);
+      }
+    }
   }
 
 

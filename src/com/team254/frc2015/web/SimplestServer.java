@@ -20,11 +20,11 @@ public class SimplestServer
         server.setHandler(context);
   
         // Add websocket servlet
-        ServletHolder wsHolder = new ServletHolder("echo",new EchoSocketServlet());
-        context.addServlet(wsHolder,"/echo");
+        ServletHolder wsHolder = new ServletHolder("echo",new StateStreamServlet());
+        context.addServlet(wsHolder,"/state");
         
         ServletHolder statesHolder = new ServletHolder("states", new GetAllStatesServlet());
-        context.addServlet(statesHolder, "/states");
+        context.addServlet(statesHolder, "/all_states");
         
         ServletHolder keysHolder = new ServletHolder("keys", new GetKeysServlet());
         context.addServlet(keysHolder, "/keys");

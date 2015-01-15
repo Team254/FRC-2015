@@ -4,6 +4,7 @@ package com.team254.frc2015;
 import com.team254.frc2015.web.SimplestServer;
 import com.team254.lib.ChezyEncoder;
 import com.team254.lib.ChezyTalon;
+import com.team254.lib.util.SystemManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -19,9 +20,9 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-    ChezyTalon testTalonB = new ChezyTalon("Drive Left A", 0);
-    ChezyTalon testTalonA = new ChezyTalon("Drive Left B", 1);
-    ChezyEncoder encoder = new ChezyEncoder("Left Drive Encoder", 0, 1);
+    ChezyTalon testTalonB = new ChezyTalon("leftDriveVictorA", 0);
+    ChezyTalon testTalonA = new ChezyTalon("leftDriveVictorB", 1);
+    ChezyEncoder encoder = new ChezyEncoder("leftDriveEncoder", 0, 1);
 
     int i = 0;
 
@@ -63,6 +64,8 @@ public class Robot extends IterativeRobot {
       i++;
       testTalonA.set(Math.sin(i/50.0));
       testTalonB.set(Math.cos(i/50.0));
+      
+      SystemManager.getInstance().updateAllStateStreams();
     }
 
 }

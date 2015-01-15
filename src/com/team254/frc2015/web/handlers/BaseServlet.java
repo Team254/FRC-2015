@@ -13,6 +13,6 @@ public class BaseServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       response.setContentType("text/html");
       response.setStatus(HttpServletResponse.SC_OK);
-      response.getWriter().println("<h1>Hello BaseServlet</h1><br><a href='/states'>States?</a>");
+      response.getWriter().println("<h1>Hello BaseServlet</h1><br><a href='/all_states'>States?</a>");
   }
 }
