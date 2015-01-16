@@ -3,15 +3,15 @@ package com.team254.frc2015;
 import com.team254.frc2015.subsystems.Drive;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Talon;
 
 public class HardwareAdaptor {
 	
 	public static Drive drive = new Drive("drive",
-										  new Victor(0),
-										  new Victor(1),
-										  new Victor(2),
-										  new Victor(3),
+										  new Talon(2),
+										  new Talon(3),
+										  new Talon(0),
+										  new Talon(5),
 										  new Encoder(0,1));
 	
 

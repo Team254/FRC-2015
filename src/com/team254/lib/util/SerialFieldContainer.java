@@ -3,6 +3,7 @@ package com.team254.lib.util;
 import java.lang.reflect.Field;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 
 public class SerialFieldContainer implements Serializable {
@@ -34,6 +35,8 @@ public class SerialFieldContainer implements Serializable {
 			return ((Victor) obj).get();
 		} else if (obj instanceof Encoder) {
 			return ((Encoder) obj).get();
+		} else if (obj instanceof Talon) {
+			return ((Talon) obj).get();
 		}
 		return obj;
 	}

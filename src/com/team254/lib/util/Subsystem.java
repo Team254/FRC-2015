@@ -18,7 +18,7 @@ public class Subsystem implements Tappable {
 
 		for (Field f : allFields) {
 			Serializable cur = null; 
-			if (Serializable.class.isAssignableFrom(f.getClass())) {
+			if (Serializable.class.isAssignableFrom(f.getType())) {
 				Object obj = null;
 				try {
 					obj = f.get(this);

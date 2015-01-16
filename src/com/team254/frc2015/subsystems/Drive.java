@@ -3,17 +3,17 @@ package com.team254.frc2015.subsystems;
 import com.team254.lib.util.Subsystem;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Talon;
 
 public class Drive extends Subsystem {
 
-	public Victor leftMotorA;
-	public Victor leftMotorB;
-	public Victor rightMotorA;
-	public Victor rightMotorB;
+	public Talon leftMotorA;
+	public Talon leftMotorB;
+	public Talon rightMotorA;
+	public Talon rightMotorB;
 	public Encoder leftEncoder;
 	
-	public Drive(String name, Victor leftDriveA, Victor leftDriveB, Victor rightDriveA, Victor rightDriveB, Encoder leftDriveEncoder) {
+	public Drive(String name, Talon leftDriveA, Talon leftDriveB, Talon rightDriveA, Talon rightDriveB, Encoder leftDriveEncoder) {
 		super(name);
 		this.leftMotorA = leftDriveA;
 		this.leftMotorB = leftDriveB;

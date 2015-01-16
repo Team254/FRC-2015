@@ -5,6 +5,7 @@ import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.web.WebServer;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,6 +22,9 @@ public class Robot extends IterativeRobot {
 	
     int i = 0;
     Drive drive = HardwareAdaptor.drive;
+    CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
+    Joystick leftStick = new Joystick(0);
+    Joystick rightStick = new Joystick(1);
 
     public void robotInit() {
       WebServer.startServer();
@@ -30,7 +34,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-
+    	cdh.cheesyDrive(leftStick.getY(), rightStick.getX(), rightStick.getRawButton(0), true);
     }
 
     /**
@@ -48,9 +52,9 @@ public class Robot extends IterativeRobot {
     }
     
     public void disabledPeriodic() {
-      i++;
-      drive.setLeftRight(Math.sin(i/50.0), Math.cos(i/50.0));
-      WebServer.updateAllStateStreams();
+    	i++;
+    	drive.setLeftRight(Math.sin(i / 1000.0), Math.cos(i / 1000.0));
+    	WebServer.updateAllStateStreams();
     }
 
 }
