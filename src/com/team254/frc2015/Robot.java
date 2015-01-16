@@ -34,14 +34,14 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	cdh.cheesyDrive(leftStick.getY(), rightStick.getX(), rightStick.getRawButton(0), true);
+    	
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+    	cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);  
     }
     
     /**
@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
     
     public void disabledPeriodic() {
     	i++;
-    	drive.setLeftRight(Math.sin(i / 1000.0), Math.cos(i / 1000.0));
+    //	drive.setLeftRight(Math.sin(i / 1000.0), Math.cos(i / 1000.0));
     	WebServer.updateAllStateStreams();
     }
 

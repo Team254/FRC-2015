@@ -25,8 +25,8 @@ public class Drive extends Subsystem {
 	public void setLeftRight(double left, double right) {
 		leftMotorA.set(left);
 		leftMotorB.set(left);
-		rightMotorA.set(right);
-		rightMotorB.set(right);
+		rightMotorA.set(-right);
+		rightMotorB.set(-right);
 	}
 
 }

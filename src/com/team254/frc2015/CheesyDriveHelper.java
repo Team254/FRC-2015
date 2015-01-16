@@ -60,7 +60,7 @@ public class CheesyDriveHelper {
     double negInertiaScalar;
     if (isHighGear) {
       negInertiaScalar = 5.0;
-      sensitivity = .75;//Constants.sensitivityHigh.getDouble();
+      sensitivity = .85;//Constants.sensitivityHigh.getDouble();
     } else {
       if (wheel * negInertia > 0) {
         negInertiaScalar = 2.5;
@@ -71,7 +71,7 @@ public class CheesyDriveHelper {
           negInertiaScalar = 3.0;
         }
       }
-      sensitivity = .75; //Constants.sensitivityLow.getDouble();
+      sensitivity = .85; //Constants.sensitivityLow.getDouble();
     }
     double negInertiaPower = negInertia * negInertiaScalar;
     negInertiaAccumulator += negInertiaPower;
