@@ -12,14 +12,16 @@ public class Drive extends Subsystem {
 	public Talon rightMotorA;
 	public Talon rightMotorB;
 	public Encoder leftEncoder;
+	public Encoder rightEncoder;
 	
-	public Drive(String name, Talon leftDriveA, Talon leftDriveB, Talon rightDriveA, Talon rightDriveB, Encoder leftDriveEncoder) {
+	public Drive(String name, Talon leftDriveA, Talon leftDriveB, Talon rightDriveA, Talon rightDriveB, Encoder leftEncoder, Encoder rightEncoder) {
 		super(name);
 		this.leftMotorA = leftDriveA;
 		this.leftMotorB = leftDriveB;
 		this.rightMotorA = rightDriveA;
 		this.rightMotorB = rightDriveB;
-		this.leftEncoder = leftDriveEncoder;
+		this.leftEncoder = leftEncoder;
+		this.rightEncoder = rightEncoder;
 	}
 	
 	public void setLeftRight(double left, double right) {

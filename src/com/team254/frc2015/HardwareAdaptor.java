@@ -12,7 +12,6 @@ public class HardwareAdaptor {
 										  new Talon(3),
 										  new Talon(0),
 										  new Talon(5),
-										  new Encoder(0,1));
-	
-
+										  new Encoder(0,1),
+										  new Encoder(2,3));
 }
