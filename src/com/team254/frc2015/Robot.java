@@ -1,11 +1,18 @@
 
 package com.team254.frc2015;
 
+import java.io.File;
+import java.util.Collection;
+
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.web.WebServer;
+import com.team254.lib.util.Logger;
+import com.team254.lib.util.Serializable;
+import com.team254.lib.util.SystemManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,15 +26,19 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-	
     int i = 0;
     Drive drive = HardwareAdaptor.drive;
     CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
     Joystick leftStick = new Joystick(0);
     Joystick rightStick = new Joystick(1);
 
+	static {
+		SystemManager.getInstance().add(RobotData.robotTime);
+	}
+
     public void robotInit() {
       WebServer.startServer();
+      
     }
 
     /**
@@ -53,8 +64,8 @@ public class Robot extends IterativeRobot {
     
     public void disabledPeriodic() {
     	i++;
-    //	drive.setLeftRight(Math.sin(i / 1000.0), Math.cos(i / 1000.0));
     	WebServer.updateAllStateStreams();
+    	Logger.println(SystemManager.getInstance().get().toJSONString());
     }
 
 }
