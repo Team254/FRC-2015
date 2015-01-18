@@ -13,6 +13,7 @@ import com.team254.lib.util.SystemManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -34,6 +35,7 @@ public class Robot extends IterativeRobot {
     Joystick leftStick = new Joystick(0);
     Joystick rightStick = new Joystick(1);
     Joystick buttonBoard = new Joystick(2);
+    PowerDistributionPanel pdp = new PowerDistributionPanel();
 
 	static {
 		SystemManager.getInstance().add(RobotData.robotTime);
@@ -42,6 +44,19 @@ public class Robot extends IterativeRobot {
 
     public void robotInit() {
       WebServer.startServer();
+      SystemManager.getInstance().add(new Serializable() {
+		public Object getState() {
+			return pdp.getVoltage();
+		}
+
+		public String getName() {
+			return "voltage";
+		}
+
+		public String getType() {
+			return Double.class.getName();
+		}
+      });
       
     }
 
@@ -57,7 +72,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
-    	elevator.setElevator(buttonBoard.getRawAxis(4) < 0.1);
+    	elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
     }
     
     /**

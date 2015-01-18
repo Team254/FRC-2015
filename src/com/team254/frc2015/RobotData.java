@@ -2,6 +2,7 @@ package com.team254.frc2015;
 
 import com.team254.lib.util.Serializable;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 
 public class RobotData {
