@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Collection;
 
 import com.team254.frc2015.subsystems.Drive;
+import com.team254.frc2015.subsystems.Elevator;
 import com.team254.frc2015.web.WebServer;
 import com.team254.lib.util.Logger;
 import com.team254.lib.util.Serializable;
@@ -28,9 +29,11 @@ public class Robot extends IterativeRobot {
      */
     int i = 0;
     Drive drive = HardwareAdaptor.drive;
+    Elevator elevator = HardwareAdaptor.elevator;
     CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
     Joystick leftStick = new Joystick(0);
     Joystick rightStick = new Joystick(1);
+    Joystick buttonBoard = new Joystick(2);
 
 	static {
 		SystemManager.getInstance().add(RobotData.robotTime);
@@ -53,7 +56,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);  
+    	cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
+    	elevator.setElevator(buttonBoard.getRawAxis(4) < 0.1);
     }
     
     /**

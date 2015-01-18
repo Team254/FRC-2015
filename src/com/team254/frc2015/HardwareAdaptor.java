@@ -1,6 +1,7 @@
 package com.team254.frc2015;
 
 import com.team254.frc2015.subsystems.Drive;
+import com.team254.frc2015.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
@@ -14,4 +15,5 @@ public class HardwareAdaptor {
 										  new Talon(5),
 										  new Encoder(0,1),
 										  new Encoder(2,3));
+	public static Elevator elevator = new Elevator("elevator", 0);
 }
