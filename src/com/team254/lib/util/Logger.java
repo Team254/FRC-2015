@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class Logger {
+public class Logger implements Serializable {
 
 	public static final double WRITE_TIME = 0.5; // Write every .5 seconds
 	
@@ -25,7 +26,7 @@ public class Logger {
 	private ArrayBlockingQueue<String> logMessages = new ArrayBlockingQueue<String>(300);
 	Thread consumer;
 	
-	private static Logger getInstance() {
+	public static Logger getInstance() {
 		if (inst == null) {
 			inst = new Logger();
 		}
@@ -113,7 +114,11 @@ public class Logger {
 		};
 		File logDir = getLogDirectory();
 		File[] files= logDir.listFiles(logFilter);
-		return Arrays.asList(files);
+		if (files == null) {
+			return new ArrayList<File>();
+		} else {
+			return Arrays.asList(files);
+		}
 	}
 
 	protected File getCurrentLogFile() {
@@ -138,6 +143,21 @@ public class Logger {
 	
 	public static boolean println(String s) {
 		return getInstance().printlnLocal(s);
+	}
+
+	@Override
+	public Object getState() {
+		return logFile != null && writer != null;
+	}
+
+	@Override
+	public String getName() {
+		return "logger";
+	}
+
+	@Override
+	public String getType() {
+		return Boolean.class.getName();
 	}
 
 }

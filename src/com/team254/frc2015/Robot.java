@@ -34,6 +34,7 @@ public class Robot extends IterativeRobot {
 
 	static {
 		SystemManager.getInstance().add(RobotData.robotTime);
+		SystemManager.getInstance().add(Logger.getInstance());
 	}
 
     public void robotInit() {
