@@ -37,11 +37,12 @@ public class Robot extends IterativeRobot {
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
     static {
-    	SystemManager.getInstance().add(RobotData.robotTime);
-    	SystemManager.getInstance().add(RobotData.batteryVoltage);
-    	SystemManager.getInstance().add(Logger.getInstance());
+        SystemManager.getInstance().add(RobotData.robotTime);
+        SystemManager.getInstance().add(RobotData.batteryVoltage);
+        SystemManager.getInstance().add(Logger.getInstance());
     }
 
+    @Override
     public void robotInit() {
         mLidarLiteSensor.start();
         WebServer.startServer();
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
+    @Override
     public void autonomousPeriodic() {
 
     }
@@ -57,21 +59,24 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
+    @Override
     public void teleopPeriodic() {
-      cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
-      elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
+        cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
+        elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
     }
 
     /**
      * This function is called periodically during test mode
      */
+    @Override
     public void testPeriodic() {
 
     }
 
+    @Override
     public void disabledPeriodic() {
-      i++;
-      WebServer.updateAllStateStreams();
-      Logger.println(SystemManager.getInstance().get().toJSONString());
+        i++;
+        WebServer.updateAllStateStreams();
+        Logger.println(SystemManager.getInstance().get().toJSONString());
     }
 }

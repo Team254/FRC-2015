@@ -12,6 +12,7 @@ public class Subsystem implements Tappable {
 		SystemManager.getInstance().add(this.getComponents());
 	}
 
+    @Override
 	public final Collection<Serializable> getComponents() {
 		Field[] allFields = this.getClass().getDeclaredFields();
 		Collection<Serializable> components = new ArrayList<Serializable>();
