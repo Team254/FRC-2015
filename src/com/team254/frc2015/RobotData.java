@@ -17,4 +17,18 @@ public class RobotData {
 			return Double.class.toString();
 		}
     };
+    
+    public static final Serializable batteryVoltage = new Serializable() {
+        public Object getState() {
+        return HardwareAdaptor.pdp.getVoltage();
+      }
+
+        public String getName() {
+        return "voltage";
+      }
+
+        public String getType() {
+            return Double.class.getName();
+        }
+    };
 }

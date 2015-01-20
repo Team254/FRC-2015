@@ -33,31 +33,18 @@ public class Robot extends IterativeRobot {
     Joystick leftStick = new Joystick(0);
     Joystick rightStick = new Joystick(1);
     Joystick buttonBoard = new Joystick(2);
-    PowerDistributionPanel pdp = new PowerDistributionPanel();
+    PowerDistributionPanel pdp = HardwareAdaptor.pdp;
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
     static {
     	SystemManager.getInstance().add(RobotData.robotTime);
+    	SystemManager.getInstance().add(RobotData.batteryVoltage);
     	SystemManager.getInstance().add(Logger.getInstance());
     }
 
     public void robotInit() {
         mLidarLiteSensor.start();
         WebServer.startServer();
-
-        SystemManager.getInstance().add(new Serializable() {
-            public Object getState() {
-            return pdp.getVoltage();
-          }
-
-            public String getName() {
-            return "voltage";
-          }
-
-            public String getType() {
-                return Double.class.getName();
-            }
-        });
     }
 
     /**
