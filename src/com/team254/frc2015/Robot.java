@@ -1,9 +1,6 @@
 
 package com.team254.frc2015;
 
-import java.io.File;
-import java.util.Collection;
-
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.Elevator;
 import com.team254.frc2015.web.WebServer;
@@ -11,10 +8,11 @@ import com.team254.lib.util.Logger;
 import com.team254.lib.util.Serializable;
 import com.team254.lib.util.SystemManager;
 
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Timer;
+import com.team254.lib.util.LidarLiteSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,56 +34,57 @@ public class Robot extends IterativeRobot {
     Joystick rightStick = new Joystick(1);
     Joystick buttonBoard = new Joystick(2);
     PowerDistributionPanel pdp = new PowerDistributionPanel();
+    LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
-	static {
-		SystemManager.getInstance().add(RobotData.robotTime);
-		SystemManager.getInstance().add(Logger.getInstance());
-	}
+    static {
+    	SystemManager.getInstance().add(RobotData.robotTime);
+    	SystemManager.getInstance().add(Logger.getInstance());
+    }
 
     public void robotInit() {
-      WebServer.startServer();
-      SystemManager.getInstance().add(new Serializable() {
-		public Object getState() {
-			return pdp.getVoltage();
-		}
+        mLidarLiteSensor.start();
+        WebServer.startServer();
 
-		public String getName() {
-			return "voltage";
-		}
+        SystemManager.getInstance().add(new Serializable() {
+            public Object getState() {
+            return pdp.getVoltage();
+          }
 
-		public String getType() {
-			return Double.class.getName();
-		}
-      });
-      
+            public String getName() {
+            return "voltage";
+          }
+
+            public String getType() {
+                return Double.class.getName();
+            }
+        });
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	
+
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
-    	elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
+      cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
+      elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
     }
-    
+
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    
-    }
-    
-    public void disabledPeriodic() {
-    	i++;
-    	WebServer.updateAllStateStreams();
-    	Logger.println(SystemManager.getInstance().get().toJSONString());
+
     }
 
+    public void disabledPeriodic() {
+      i++;
+      WebServer.updateAllStateStreams();
+      Logger.println(SystemManager.getInstance().get().toJSONString());
+    }
 }
