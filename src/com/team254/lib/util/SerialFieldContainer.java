@@ -32,7 +32,9 @@ public class SerialFieldContainer implements Serializable {
 		if (obj == null) {
 			return null;
 		}
-		if (obj instanceof Victor) {
+	    if (obj instanceof CheesySpeedController) {
+	    	return ((CheesySpeedController) obj).get();
+	    } else if (obj instanceof Victor) {
 			return ((Victor) obj).get();
 		} else if (obj instanceof Encoder) {
 			return ((Encoder) obj).get();
