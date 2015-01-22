@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Talon;
+
 import com.team254.lib.util.LidarLiteSensor;
 
 /**
@@ -35,6 +38,12 @@ public class Robot extends IterativeRobot {
     Joystick buttonBoard = new Joystick(2);
     PowerDistributionPanel pdp = HardwareAdaptor.pdp;
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
+    
+    // TODO: Refactor this into its own subsystem
+    Solenoid intakeSolenoid = new Solenoid(1);
+    Talon intakeMotorRight = new Talon(4);
+    Talon intakeMotorLeft = new Talon(1);
+    boolean intakeSolenoidOn = false;
 
     static {
         SystemManager.getInstance().add(RobotData.robotTime);
@@ -63,6 +72,25 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
         elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
+        
+        // TODO: Refactor this stuff
+        if (buttonBoard.getRawButton(2)) {
+        	intakeMotorRight.set(1.0);
+        	intakeMotorLeft.set(1.0);
+        } else if (buttonBoard.getRawButton(3)) {
+        	intakeMotorRight.set(-1.0);
+        	intakeMotorLeft.set(-1.0);
+        } else {
+        	intakeMotorRight.set(0.0);
+        	intakeMotorLeft.set(0.0);
+        }
+        
+        if (buttonBoard.getRawButton(5)){
+        	intakeSolenoidOn = true;
+        } else if (buttonBoard.getRawButton(6)) {
+        	intakeSolenoidOn = false;
+        }
+        this.intakeSolenoid.set(intakeSolenoidOn);
     }
 
     /**
