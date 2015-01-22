@@ -2,7 +2,7 @@
 package com.team254.frc2015;
 
 import com.team254.frc2015.subsystems.Drive;
-import com.team254.frc2015.subsystems.Elevator;
+import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
 import com.team254.lib.util.Logger;
 import com.team254.lib.util.Serializable;
@@ -30,20 +30,14 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     int i = 0;
-    Drive drive = HardwareAdaptor.drive;
-    Elevator elevator = HardwareAdaptor.elevator;
+    Drive drive = HardwareAdaptor.kDrive;
+    ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
     Joystick leftStick = new Joystick(0);
     Joystick rightStick = new Joystick(1);
     Joystick buttonBoard = new Joystick(2);
-    PowerDistributionPanel pdp = HardwareAdaptor.pdp;
+    PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
-    
-    // TODO: Refactor this into its own subsystem
-    Solenoid intakeSolenoid = new Solenoid(1);
-    Talon intakeMotorRight = new Talon(4);
-    Talon intakeMotorLeft = new Talon(1);
-    boolean intakeSolenoidOn = false;
 
     static {
         SystemManager.getInstance().add(RobotData.robotTime);
@@ -71,26 +65,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
-        elevator.setElevator(buttonBoard.getRawAxis(3) < 0.5);
-        
-        // TODO: Refactor this stuff
-        if (buttonBoard.getRawButton(2)) {
-        	intakeMotorRight.set(1.0);
-        	intakeMotorLeft.set(1.0);
-        } else if (buttonBoard.getRawButton(3)) {
-        	intakeMotorRight.set(-1.0);
-        	intakeMotorLeft.set(-1.0);
-        } else {
-        	intakeMotorRight.set(0.0);
-        	intakeMotorLeft.set(0.0);
-        }
-        
-        if (buttonBoard.getRawButton(5)){
-        	intakeSolenoidOn = true;
-        } else if (buttonBoard.getRawButton(6)) {
-        	intakeSolenoidOn = false;
-        }
-        this.intakeSolenoid.set(intakeSolenoidOn);
     }
 
     /**

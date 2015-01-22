@@ -24,7 +24,7 @@ public class RobotData {
     public static final Serializable batteryVoltage = new Serializable() {
         @Override
         public Object getState() {
-        return HardwareAdaptor.pdp.getVoltage();
+        return HardwareAdaptor.kPDP.getVoltage();
       }
 
         @Override
