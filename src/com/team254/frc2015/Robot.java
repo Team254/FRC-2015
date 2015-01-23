@@ -14,6 +14,7 @@ import com.team254.lib.util.SystemManager;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
     Joystick rightStick = new Joystick(1);
     Joystick buttonBoard = new Joystick(2);
     PowerDistributionPanel pdp = new PowerDistributionPanel();
+    Solenoid intakeOpen = new Solenoid(1);
 
     Talon leftIntake = new Talon(1);
     Talon rightIntake = new Talon(4);
@@ -80,16 +82,23 @@ public class Robot extends IterativeRobot {
 
     	double left = 0;
     	double right = 0;
-    	if (buttonBoard.getRawButton(9)) {
+    	if (buttonBoard.getRawButton(7)) {
     		left = 1;
     		right = -1;
-    	} else if ( buttonBoard.getRawButton(10)) {
+    	} else if ( buttonBoard.getRawButton(8)) {
     		left = -1;
     		right = 1;
     	}
-    	
     	leftIntake.set(left);
     	rightIntake.set(right);
+    	
+    	if (buttonBoard.getRawButton(11)) {
+    	intakeOpen.set(false);
+    	} else if (buttonBoard.getRawButton(12)) {
+    		intakeOpen.set(true);
+    	}
+    	
+    	
     }
     
     /**
