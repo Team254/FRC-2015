@@ -17,6 +17,7 @@ public class GetKeysServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       response.setContentType("application/json;charset=utf-8");
       response.setStatus(HttpServletResponse.SC_OK);
+      response.setHeader("Access-Control-Allow-Origin", "*");
       JSONObject json = SystemManager.getInstance().get();
       JSONObject out = new JSONObject();
       System.out.println(json + " | " + out);
