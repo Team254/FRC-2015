@@ -15,7 +15,7 @@ public class ElevatorCarriage extends Subsystem {
 	public DigitalInput m_home;
 	
 	protected Position m_position;
-	protected Limits m_limits;
+	protected Limits m_limits = new Limits();
 	protected final double m_inches_per_tick = 0.564 * 2.0 * Math.PI / 360.0;  // Pulley radius = .564", 360 CPR
 	
 	public enum Position {
