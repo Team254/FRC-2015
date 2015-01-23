@@ -87,12 +87,17 @@ public class WebServer
       if (runUpdate) {
         streamUpdate.addTask(new Runnable() {
           public void run() {
-            for (StateStreamSocket s : updateStreams) {
+        	ArrayList<Integer> toRemove = new ArrayList<Integer>(updateStreams.size());
+            for (int i = 0; i < updateStreams.size(); ++i) {
+              StateStreamSocket s = updateStreams.get(i);
               if (s != null && s.isConnected() && !s.canBeUpdated()) {
                 ;
               } else if (s == null || !s.isConnected() || !s.update()) {
-                updateStreams.remove(s);
+                toRemove.add(i);
               }
+            }
+            for (int i : toRemove) {
+            	updateStreams.remove(i);
             }
           }
         });
