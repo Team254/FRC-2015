@@ -19,8 +19,12 @@ public class GetKeysServlet extends HttpServlet {
       response.setStatus(HttpServletResponse.SC_OK);
       JSONObject json = SystemManager.getInstance().get();
       JSONObject out = new JSONObject();
+      System.out.println(json + " | " + out);
       for (Object key : json.keySet()) {
-        out.put(key, json.get(key).getClass().getName());
+    	Object o = json.get(key);
+    	if (o != null) {
+    	  out.put(key, o.getClass().getName());
+    	}
       }
       response.getWriter().println(out.toJSONString());
   }
