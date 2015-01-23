@@ -4,8 +4,10 @@ import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.lib.util.CheesySpeedController;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 
@@ -25,9 +27,14 @@ public class HardwareAdaptor {
 	// DIO
 	static Encoder kLeftDriveEncoder = new Encoder(0, 1);
 	static Encoder kRightDriveEncoder = new Encoder(2, 3);
+	static Encoder kBottomCarriageEncoder = new Encoder(4, 5);
+	static Encoder kTopCarriageEncoder = new Encoder(6, 7);
+	static DigitalInput kBottomCarriageHome = new DigitalInput(8);
+	static DigitalInput kTopCarriageHome = new DigitalInput(9);
 	
 	// Solenoids
-	// TODO
+	static Solenoid kBottomCarriageBrakeSolenoid = new Solenoid(0);
+	static Solenoid kTopCarriageBrakeSolenoid = new Solenoid(1);
 	
 	// Subsystems
 	public static Drive kDrive = new Drive("drive",
@@ -35,7 +42,17 @@ public class HardwareAdaptor {
 			kRightDriveMotor,
 			kLeftDriveEncoder,
 			kRightDriveEncoder);
-	public static ElevatorCarriage kTopCarriage = new ElevatorCarriage("top_carriage", 0);
-	public static ElevatorCarriage kBottomCarriage = new ElevatorCarriage("bottom_carriage", 0);
+	public static ElevatorCarriage kTopCarriage = new ElevatorCarriage("top_carriage",
+			ElevatorCarriage.Position.TOP,
+			kTopCarriageMotor,
+			kTopCarriageBrakeSolenoid,
+			kTopCarriageEncoder,
+			kTopCarriageHome);
+	public static ElevatorCarriage kBottomCarriage = new ElevatorCarriage("bottom_carriage",
+			ElevatorCarriage.Position.BOTTOM,
+			kBottomCarriageMotor,
+			kBottomCarriageBrakeSolenoid,
+			kBottomCarriageEncoder,
+			kBottomCarriageHome);
 	public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 }

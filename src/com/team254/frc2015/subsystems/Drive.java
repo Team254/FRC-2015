@@ -6,22 +6,26 @@ import com.team254.lib.util.Subsystem;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Drive extends Subsystem {
-	public CheesySpeedController leftMotor;
-	public CheesySpeedController rightMotor;
-	public Encoder leftEncoder;
-	public Encoder rightEncoder;
+	public CheesySpeedController m_left_motor;
+	public CheesySpeedController m_right_motor;
+	public Encoder m_left_encoder;
+	public Encoder m_right_encoder;
 	
-	public Drive(String name, CheesySpeedController leftDrive, CheesySpeedController rightDrive, Encoder leftEncoder, Encoder rightEncoder) {
+	protected final double m_inches_per_tick = 4.0 * Math.PI / 360.0;  // 4 inch diameter wheel, 360 CPR encoder
+	protected final double m_wheelbase_width = 26.0;  // Get from CAD
+	protected final double m_turn_slip_factor = 1.2;  // Measure empirically
+	
+	public Drive(String name, CheesySpeedController left_drive, CheesySpeedController right_drive, Encoder left_encoder, Encoder right_encoder) {
 		super(name);
-		this.leftMotor = leftDrive;
-		this.rightMotor = rightDrive;
-		this.leftEncoder = leftEncoder;
-		this.rightEncoder = rightEncoder;
+		this.m_left_motor = left_drive;
+		this.m_right_motor = right_drive;
+		this.m_left_encoder = left_encoder;
+		this.m_right_encoder = right_encoder;
 	}
 	
 	public void setLeftRight(double left, double right) {
-		leftMotor.set(left);
-		rightMotor.set(-right);
+		m_left_motor.set(left);
+		m_right_motor.set(-right);
 	}
 
 }

@@ -23,6 +23,9 @@ public class SerialFieldContainer implements Serializable {
 		
 		Object obj = null;
 		try {
+			if (!f.isAccessible()) {
+				return null;
+			}
 			obj = f.get(baseObject);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
