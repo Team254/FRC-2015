@@ -5,6 +5,7 @@ import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
 import com.team254.lib.util.Logger;
+import com.team254.lib.util.MultiLooper;
 import com.team254.lib.util.Serializable;
 import com.team254.lib.util.SystemManager;
 
@@ -17,26 +18,20 @@ import edu.wpi.first.wpilibj.Talon;
 
 import com.team254.lib.util.LidarLiteSensor;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class Robot extends IterativeRobot {
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    int i = 0;
+    // The build in 5.05ms PWM period means a maximum of ~198 updates per second.
+    MultiLooper looper = new MultiLooper(1 / 198.0);
+    
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
+    PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
+    
     CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
+    
     Joystick leftStick = new Joystick(0);
     Joystick rightStick = new Joystick(1);
     Joystick buttonBoard = new Joystick(2);
-    PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
+    
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
     static {
@@ -50,34 +45,34 @@ public class Robot extends IterativeRobot {
         mLidarLiteSensor.start();
         WebServer.startServer();
     }
+    
+    @Override
+    public void autonomousInit() {
+    	looper.start();
+    }
 
-    /**
-     * This function is called periodically during autonomous
-     */
     @Override
     public void autonomousPeriodic() {
 
     }
+    
+    @Override
+    public void teleopInit() {
+    	looper.start();
+    }
 
-    /**
-     * This function is called periodically during operator control
-     */
     @Override
     public void teleopPeriodic() {
         cdh.cheesyDrive(leftStick.getY(), -rightStick.getX(), rightStick.getRawButton(1), true);
     }
 
-    /**
-     * This function is called periodically during test mode
-     */
     @Override
-    public void testPeriodic() {
-
+    public void disabledInit() {
+    	looper.stop();
     }
 
     @Override
     public void disabledPeriodic() {
-        i++;
         WebServer.updateAllStateStreams();
         Logger.println(SystemManager.getInstance().get().toJSONString());
     }

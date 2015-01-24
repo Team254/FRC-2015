@@ -29,7 +29,7 @@ public class MultiLooper implements Loopable {
   }
 
   public void start() {
-    looper.start();    
+    looper.start();
   }
   
   public void stop() {
