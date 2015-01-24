@@ -92,9 +92,9 @@ public class Robot extends IterativeRobot {
     	leftIntake.set(left);
     	rightIntake.set(right);
     	
-    	if (buttonBoard.getRawButton(11)) {
+    	if (buttonBoard.getRawButton(9)) {
     	intakeOpen.set(false);
-    	} else if (buttonBoard.getRawButton(12)) {
+    	} else if (buttonBoard.getRawButton(10)) {
     		intakeOpen.set(true);
     	}
     	
