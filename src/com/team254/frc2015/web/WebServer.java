@@ -11,6 +11,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 
 import com.team254.frc2015.web.handlers.BaseServlet;
+import com.team254.frc2015.web.handlers.ConstantsServlet;
 import com.team254.frc2015.web.handlers.GetAllStatesServlet;
 import com.team254.frc2015.web.handlers.GetKeysServlet;
 import com.team254.lib.util.TaskQueue;
@@ -42,6 +43,9 @@ public class WebServer
         
         ServletHolder keysHolder = new ServletHolder("keys", new GetKeysServlet());
         context.addServlet(keysHolder, "/keys");
+
+        ServletHolder constantsHolder = new ServletHolder("constants", new ConstantsServlet());
+        context.addServlet(constantsHolder, "/constants");
         
         String appDir = WebServer.class.getClassLoader().getResource("app/").toExternalForm();
         ServletHolder holderPwd = new ServletHolder("default", new DefaultServlet());
