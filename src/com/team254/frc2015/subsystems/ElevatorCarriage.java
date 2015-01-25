@@ -123,7 +123,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	@Override
 	public synchronized void update() {
 		if (m_current_controller instanceof ElevatorCarriageCurrentController) {
-			((ElevatorCarriageCurrentController) m_current_controller).update(m_motor.getCurrent());
+			setSpeedSafe(((ElevatorCarriageCurrentController) m_current_controller).update(m_motor.getCurrent()));
 		} else {
 			// do nothing.
 		}

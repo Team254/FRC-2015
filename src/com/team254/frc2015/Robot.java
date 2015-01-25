@@ -19,8 +19,7 @@ import edu.wpi.first.wpilibj.Talon;
 import com.team254.lib.util.LidarLiteSensor;
 
 public class Robot extends IterativeRobot {
-    // The build in 5.05ms PWM period means a maximum of ~198 updates per second.
-    MultiLooper looper = new MultiLooper(1 / 198.0);
+    MultiLooper looper = new MultiLooper(1 / 200.0);
     
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
@@ -42,12 +41,14 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
+    	System.out.println("Start robotInit()");
         mLidarLiteSensor.start();
         WebServer.startServer();
     }
     
     @Override
     public void autonomousInit() {
+    	System.out.println("Start autonomousInit()");
     	looper.start();
     }
 
@@ -58,6 +59,7 @@ public class Robot extends IterativeRobot {
     
     @Override
     public void teleopInit() {
+    	System.out.println("Start teleopInit()");
     	looper.start();
     }
 
@@ -68,6 +70,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledInit() {
+    	System.out.println("Start disabledInit()");
     	looper.stop();
     }
 
