@@ -75,9 +75,12 @@ public abstract class ConstantsBase {
 			if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
 					&& field.getName().equals(name)) {
 				try {
+					Object current = field.get(this);
 					field.set(this, value);
 					success = true;
-					modifiedKeys.put(name, true);
+					if (!value.equals(current)) {
+						modifiedKeys.put(name, true);
+					}
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					System.out.println("Could not set field: " + name);
 				}
@@ -189,6 +192,7 @@ public abstract class ConstantsBase {
 					Object value = getValueForConstant(key);
 					json.put(key, value);
 				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 			writer.write(json.toJSONString());
