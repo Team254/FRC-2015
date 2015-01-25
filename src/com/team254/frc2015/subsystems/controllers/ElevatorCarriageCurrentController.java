@@ -6,12 +6,13 @@ import com.team254.lib.util.SynchronousPID;
 public class ElevatorCarriageCurrentController extends Controller {
 	SynchronousPID m_pid;
 	boolean m_go_up;
-	
-	public ElevatorCarriageCurrentController(double kp, double ki, double kd, double max_output) {
+
+	public ElevatorCarriageCurrentController(double kp, double ki, double kd,
+			double max_output) {
 		m_pid = new SynchronousPID(kp, ki, kd);
 		m_pid.setOutputRange(-Math.abs(max_output), Math.abs(max_output));
 	}
-	
+
 	public void setGoal(boolean push_upwards, double goal) {
 		m_pid.setSetpoint(goal);
 		if (m_go_up != push_upwards) {

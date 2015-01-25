@@ -15,10 +15,8 @@ public class TrajectoryFollower {
 	private double last_error_;
 	private int current_segment;
 	private Trajectory profile_;
-	public String name;
 
-	public TrajectoryFollower(String name) {
-		this.name = name;
+	public TrajectoryFollower() {
 	}
 
 	public void configure(double kp, double ki, double kd, double kv, double ka) {
