@@ -50,6 +50,7 @@ public class Robot extends IterativeRobot {
 
     public void robotInit() {
       WebServer.startServer();
+      HardwareAdaptor.lidar.start(20);
       SystemManager.getInstance().add(new Serializable() {
 		public Object getState() {
 			return pdp.getVoltage();
@@ -88,15 +89,25 @@ public class Robot extends IterativeRobot {
     	} else if ( buttonBoard.getRawButton(8)) {
     		left = -1;
     		right = 1;
+    		if (HardwareAdaptor.lidar.getDistance() < 1.2) {
+    			intakeOpen.set(false);
+    		} else {
+    			intakeOpen.set(true);
+    		}
+    	} else {
+    		intakeOpen.set(true);
     	}
     	leftIntake.set(left);
     	rightIntake.set(right);
-    	
+/*
     	if (buttonBoard.getRawButton(9)) {
-    	intakeOpen.set(false);
+    		intakeOpen.set(false);
     	} else if (buttonBoard.getRawButton(10)) {
     		intakeOpen.set(true);
     	}
+*/
+    	System.out.println(HardwareAdaptor.lidar.getDistance());
+    	
     	
     	
     }
@@ -111,7 +122,9 @@ public class Robot extends IterativeRobot {
     public void disabledPeriodic() {
     	i++;
     	WebServer.updateAllStateStreams();
-    	Logger.println(SystemManager.getInstance().get().toJSONString());
+    	HardwareAdaptor.sonar.getDistanceInInches();
+    	//Logger.println(SystemManager.getInstance().get().toJSONString());
+    	System.out.println(HardwareAdaptor.lidar.getDistance());
     }
 
 }
