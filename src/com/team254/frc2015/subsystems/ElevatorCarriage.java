@@ -3,8 +3,8 @@ package com.team254.frc2015.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.VictorSP;
 
+import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriageCurrentController;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriagePositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
@@ -15,19 +15,6 @@ import com.team254.lib.util.Loopable;
 import com.team254.lib.util.Subsystem;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
-	// /// TUNING CONSTANTS ///
-	public static final double kCurrentKp = 0.05;
-	public static final double kCurrentKi = 0.0;
-	public static final double kCurrentKd = 0.0;
-	public static final double kCurrentMaxOutput = 1.0;
-
-	public static final double kPositionKp = 0.05;
-	public static final double kPositionKi = 0.0;
-	public static final double kPositionKd = 0.0;
-	public static final double kPositionKv = 0.0;
-	public static final double kPositionKa = 0.0;
-	// /// END TUNING CONSTANTS ///
-
 	public CheesySpeedController m_motor;
 	public Solenoid m_brake;
 	public Encoder m_encoder;
@@ -37,12 +24,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
 	protected Position m_position;
 	protected Limits m_limits = new Limits();
-	protected final double m_inches_per_tick = 0.564 * 2.0 * Math.PI / 360.0; // Pulley
-																				// radius
-																				// =
-																				// .564",
-																				// 360
-																				// CPR
 
 	public enum Position {
 		TOP, BOTTOM
@@ -65,24 +46,35 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		m_brake = brake;
 		m_encoder = encoder;
 		m_home = home;
+		reloadConstants();
+	}
 
+	@Override
+	public void reloadConstants() {
 		if (m_position == Position.TOP) {
-			m_limits.m_min_position = 10.0;
-			m_limits.m_max_position = 70.0;
-			m_limits.m_max_speed = 60.0;
-			m_limits.m_max_acceleration = 180.0;
-			m_limits.m_home_position = 20.0;
+			m_limits.m_min_position = Constants.kTopCarriageMinPositionInches;
+			m_limits.m_max_position = Constants.kTopCarriageMaxPositionInches;
+			m_limits.m_max_speed = Constants.kTopCarriageMaxSpeedInchesPerSec;
+			m_limits.m_max_acceleration = Constants.kTopCarriageMaxAccelInchesPerSec2;
+			m_limits.m_home_position = Constants.kTopCarriageHomePositionInches;
 		} else {
-			m_limits.m_min_position = 0.0;
-			m_limits.m_max_position = 60.0;
-			m_limits.m_max_speed = 60.0;
-			m_limits.m_max_acceleration = 180.0;
-			m_limits.m_home_position = 0.0;
+			m_limits.m_min_position = Constants.kBottomCarriageMinPositionInches;
+			m_limits.m_max_position = Constants.kBottomCarriageMaxPositionInches;
+			m_limits.m_max_speed = Constants.kBottomCarriageMaxSpeedInchesPerSec;
+			m_limits.m_max_acceleration = Constants.kBottomCarriageMaxAccelInchesPerSec2;
+			m_limits.m_home_position = Constants.kBottomCarriageHomePositionInches;
 		}
 	}
 
 	public double getHeight() {
-		return m_encoder.get() * m_inches_per_tick;
+		return m_encoder.get() * 2.0 * Constants.kElevatorPulleyRadiusInches
+				* Math.PI / Constants.kElevatorEncoderCountsPerRev;
+	}
+
+	public double getVelocity() {
+		return m_encoder.getRate() * 2.0
+				* Constants.kElevatorPulleyRadiusInches * Math.PI
+				/ Constants.kElevatorEncoderCountsPerRev;
 	}
 
 	protected synchronized void setSpeedUnsafe(double speed) {
@@ -114,10 +106,14 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 			boolean brake_on_target) {
 		if (!(m_current_controller instanceof ElevatorCarriagePositionController)) {
 			m_current_controller = new ElevatorCarriagePositionController(
-					kPositionKp, kPositionKi, kPositionKd, kPositionKv,
-					kPositionKa);
+					Constants.kElevatorCarriagePositionKp,
+					Constants.kElevatorCarriagePositionKi,
+					Constants.kElevatorCarriagePositionKd,
+					Constants.kElevatorCarriagePositionKv,
+					Constants.kElevatorCarriagePositionKa);
 		}
 
+		// TODO(jared): Generate trajectories
 		// TrajectoryGenerator.generate(config, start_vel, goal_pos, goal_vel)
 		// ((ElevatorCarriagePositionController)
 		// m_current_controller).setGoal();
@@ -126,7 +122,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	public synchronized void setCurrentUpSetpoint(double setpoint) {
 		if (!(m_current_controller instanceof ElevatorCarriageCurrentController)) {
 			m_current_controller = new ElevatorCarriageCurrentController(
-					kCurrentKp, kCurrentKi, kCurrentKd, kCurrentMaxOutput);
+					Constants.kElevatorCarriageCurrentKp,
+					Constants.kElevatorCarriageCurrentKi,
+					Constants.kElevatorCarriageCurrentKd,
+					Constants.kElevatorCarriageCurrentMaxOutput);
 		}
 		((ElevatorCarriageCurrentController) m_current_controller).setGoal(
 				true, setpoint);
@@ -135,7 +134,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	public synchronized void setCurrentDownSetpoint(double setpoint) {
 		if (!(m_current_controller instanceof ElevatorCarriageCurrentController)) {
 			m_current_controller = new ElevatorCarriageCurrentController(
-					kCurrentKp, kCurrentKi, kCurrentKd, kCurrentMaxOutput);
+					Constants.kElevatorCarriageCurrentKp,
+					Constants.kElevatorCarriageCurrentKi,
+					Constants.kElevatorCarriageCurrentKd,
+					Constants.kElevatorCarriageCurrentMaxOutput);
 		}
 		((ElevatorCarriageCurrentController) m_current_controller).setGoal(
 				false, setpoint);
