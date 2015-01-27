@@ -96,6 +96,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
 	protected synchronized void setBrake(boolean on) {
 		m_brake.set(!on);
+		if (on) {
+			setSpeedUnsafe(0);
+		}
 	}
 
 	public boolean getBrake() {
@@ -155,8 +158,12 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 			setSpeedSafe(((ElevatorCarriageCurrentController) m_current_controller)
 					.update(m_motor.getCurrent()));
 		} else if (m_current_controller instanceof ElevatorCarriagePositionController) {
-			setSpeedSafe(((ElevatorCarriagePositionController) m_current_controller)
-					.update(getHeight()));
+			ElevatorCarriagePositionController position_controller = (ElevatorCarriagePositionController) m_current_controller;
+			if (position_controller.isOnTarget()) {
+				setBrake(true);
+			} else {
+				setSpeedSafe(position_controller.update(getHeight()));
+			}
 		} else {
 			// do nothing.
 		}
