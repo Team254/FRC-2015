@@ -14,15 +14,15 @@ import edu.wpi.first.wpilibj.VictorSP;
 public class HardwareAdaptor {
 	// Motors
 	static CheesySpeedController kLeftDriveMotor = new CheesySpeedController(
-			new SpeedController[] { new VictorSP(2), new VictorSP(3) }, new int[] {0, 1});
+			new SpeedController[] { new VictorSP(0) }, new int[] {0});
 	static CheesySpeedController kRightDriveMotor = new CheesySpeedController(
-			new SpeedController[] { new VictorSP(0), new VictorSP(5) }, new int[] {2, 3});
+			new SpeedController[] { new VictorSP(5) }, new int[] {2});
 	static CheesySpeedController kTopCarriageMotor = new CheesySpeedController(
 			new SpeedController[] { new VictorSP(1), new VictorSP(4) }, new int[] {4, 5});
 	static CheesySpeedController kBottomCarriageMotor = new CheesySpeedController(
-			new SpeedController[] { new VictorSP(6), new VictorSP(7) }, new int[] {6, 7});
+			new SpeedController[] { new VictorSP(2), new VictorSP(7) }, new int[] {6, 7});
 	static CheesySpeedController kLeftIntakeMotor = new CheesySpeedController(new VictorSP(8), 8);
-	static CheesySpeedController kRightIntakeMotor = new CheesySpeedController(new VictorSP(9), 9);
+	static CheesySpeedController kRightIntakeMotor = new CheesySpeedController(new VictorSP(6), 9);
 	
 	// DIO
 	static Encoder kLeftDriveEncoder = new Encoder(0, 1);
