@@ -5,12 +5,14 @@ import com.team254.lib.util.SynchronousPID;
 
 public class ElevatorCarriageCurrentController extends Controller {
 	SynchronousPID m_pid;
+	double m_max_output;
+	double m_output;
 	boolean m_go_up;
 
 	public ElevatorCarriageCurrentController(double kp, double ki, double kd,
 			double max_output) {
 		m_pid = new SynchronousPID(kp, ki, kd);
-		m_pid.setOutputRange(-Math.abs(max_output), Math.abs(max_output));
+		m_max_output = max_output;
 	}
 
 	public void setGoal(boolean push_upwards, double goal) {
@@ -27,11 +29,18 @@ public class ElevatorCarriageCurrentController extends Controller {
 		if (!m_go_up) {
 			output *= -1;
 		}
-		return output;
+		m_output += output;
+		if (m_output > m_max_output) {
+			m_output = m_max_output;
+		} else if (m_output < -m_max_output) {
+			m_output = -m_max_output;
+		}
+		return m_output;
 	}
 
 	@Override
 	public void reset() {
+		m_output = 0;
 		m_pid.reset();
 	}
 
