@@ -7,9 +7,14 @@ public class Constants extends ConstantsBase {
 		new Constants().loadFromFile();
 	}
 
+	// Program constants
+	public static double kDt = 0.05;
+
 	// Physical constants
 	public static double kElevatorPulleyRadiusInches = 0.564;
 	public static double kElevatorEncoderCountsPerRev = 256.0;
+	public static double kTopCarriageHeight = 6.0;
+	public static double kBottomCarriageHeight = 6.0;
 
 	// Top carriage limits
 	public static double kTopCarriageMinPositionInches = 10.0;

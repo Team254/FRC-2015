@@ -24,6 +24,8 @@ public class TrajectoryGenerator {
 	 *
 	 * @param config
 	 *            Definition of constraints and sampling rate
+	 * @param start_pos
+	 *            The starting position
 	 * @param start_vel
 	 *            The starting velocity
 	 * @param start_heading
@@ -35,9 +37,10 @@ public class TrajectoryGenerator {
 	 * @return A Trajectory that satisfies the relevant constraints and end
 	 *         conditions.
 	 */
-	public static Trajectory generate(Config config, double start_vel,
+	public static Trajectory generate(Config config, double start_pos, double start_vel,
 			double goal_pos, double goal_vel) {
 		Trajectory traj;
+		double adj_goal_pos = goal_pos - start_pos;
 
 		// How fast can we go given maximum acceleration and deceleration?
 		double start_discount = .5 * start_vel * start_vel / config.max_acc;
@@ -45,7 +48,7 @@ public class TrajectoryGenerator {
 
 		double adjusted_max_vel = Math.min(
 				config.max_vel,
-				Math.sqrt(config.max_acc * goal_pos - start_discount
+				Math.sqrt(config.max_acc * adj_goal_pos - start_discount
 						- end_discount));
 		double t_rampup = (adjusted_max_vel - start_vel) / config.max_acc;
 		double x_rampup = start_vel * t_rampup + .5 * config.max_acc * t_rampup
@@ -53,7 +56,7 @@ public class TrajectoryGenerator {
 		double t_rampdown = (adjusted_max_vel - goal_vel) / config.max_acc;
 		double x_rampdown = adjusted_max_vel * t_rampdown - .5 * config.max_acc
 				* t_rampdown * t_rampdown;
-		double x_cruise = goal_pos - x_rampdown - x_rampup;
+		double x_cruise = adj_goal_pos - x_rampdown - x_rampup;
 
 		// The +.5 is to round to nearest
 		int time = (int) ((t_rampup + t_rampdown + x_cruise / adjusted_max_vel)
@@ -62,16 +65,16 @@ public class TrajectoryGenerator {
 		// Compute the length of the linear filters and impulse.
 		int f1_length = (int) Math.ceil((adjusted_max_vel / config.max_acc)
 				/ config.dt);
-		double impulse = (goal_pos / adjusted_max_vel) / config.dt - start_vel
+		double impulse = (adj_goal_pos / adjusted_max_vel) / config.dt - start_vel
 				/ config.max_acc / config.dt + start_discount + end_discount;
-		traj = secondOrderFilter(f1_length, 1, config.dt, start_vel,
+		traj = secondOrderFilter(f1_length, 1, config.dt, start_pos, start_vel,
 				adjusted_max_vel, impulse, time);
 
 		return traj;
 	}
 
 	private static Trajectory secondOrderFilter(int f1_length, int f2_length,
-			double dt, double start_vel, double max_vel, double total_impulse,
+			double dt, double start_pos, double start_vel, double max_vel, double total_impulse,
 			int length) {
 		if (length <= 0) {
 			return null;
@@ -80,7 +83,7 @@ public class TrajectoryGenerator {
 
 		Trajectory.Segment last = new Trajectory.Segment();
 		// First segment is easy
-		last.pos = 0;
+		last.pos = start_pos;
 		last.vel = start_vel;
 		last.acc = 0;
 		last.dt = dt;

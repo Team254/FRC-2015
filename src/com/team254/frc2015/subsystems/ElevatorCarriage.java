@@ -71,10 +71,21 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 				* Math.PI / Constants.kElevatorEncoderCountsPerRev;
 	}
 
-	public double getVelocity() {
-		return m_encoder.getRate() * 2.0
-				* Constants.kElevatorPulleyRadiusInches * Math.PI
-				/ Constants.kElevatorEncoderCountsPerRev;
+	public synchronized double[] getCommandedPositionAndVelocity() {
+		double[] result = new double[2];
+		// Rather than reading encoder velocity, we report the last commanded
+		// velocity from a velocity profile. This ensures that the input is
+		// smooth when changing setpoints.
+		if (m_current_controller instanceof ElevatorCarriagePositionController) {
+			result[0] = ((ElevatorCarriagePositionController) m_current_controller)
+					.getProfilePosition();
+			result[1] = ((ElevatorCarriagePositionController) m_current_controller)
+					.getProfileVelocity();
+		} else {
+			result[0] = getHeight();
+			result[1] = 0.0;
+		}
+		return result;
 	}
 
 	protected synchronized void setSpeedUnsafe(double speed) {
