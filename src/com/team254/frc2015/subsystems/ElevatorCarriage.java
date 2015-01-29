@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriageCurrentController;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriagePositionController;
+import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.trajectory.TrajectoryGenerator;
 import com.team254.lib.util.CheesySpeedController;
@@ -24,6 +25,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
 	protected Position m_position;
 	protected Limits m_limits = new Limits();
+	boolean m_brake_on_target = false;
 
 	public enum Position {
 		TOP, BOTTOM
@@ -116,7 +118,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		return !m_brake.get();
 	}
 
-	public synchronized void setPositionSetpoint(double setpoint,
+	public synchronized void setTrajectory(Trajectory trajectory,
 			boolean brake_on_target) {
 		if (!(m_current_controller instanceof ElevatorCarriagePositionController)) {
 			m_current_controller = new ElevatorCarriagePositionController(
@@ -126,11 +128,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 					Constants.kElevatorCarriagePositionKv,
 					Constants.kElevatorCarriagePositionKa);
 		}
-
-		// TODO(jared): Generate trajectories
-		// TrajectoryGenerator.generate(config, start_vel, goal_pos, goal_vel)
-		// ((ElevatorCarriagePositionController)
-		// m_current_controller).setGoal();
+		((ElevatorCarriagePositionController) m_current_controller).setTrajectory(trajectory);
+		m_brake_on_target = brake_on_target;
 	}
 
 	public synchronized void setCurrentUpSetpoint(double setpoint) {
@@ -171,7 +170,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		} else if (m_current_controller instanceof ElevatorCarriagePositionController) {
 			ElevatorCarriagePositionController position_controller = (ElevatorCarriagePositionController) m_current_controller;
 			if (position_controller.isOnTarget()) {
-				setBrake(true);
+				setBrake(m_brake_on_target);
 			} else {
 				setSpeedSafe(position_controller.update(getHeight()));
 			}
