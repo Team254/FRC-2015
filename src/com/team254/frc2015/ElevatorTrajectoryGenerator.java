@@ -9,9 +9,17 @@ import com.team254.lib.trajectory.TrajectoryGenerator;
 public class ElevatorTrajectoryGenerator {
 	ElevatorCarriage kTopCarriage = HardwareAdaptor.kTopCarriage;
 	ElevatorCarriage kBottomCarriage = HardwareAdaptor.kBottomCarriage;
+	TrajectoryGenerator.Config m_config;
 
 	public static final int kBottomCarriageIndex = 0;
 	public static final int kTopCarriageIndex = 1;
+
+	public ElevatorTrajectoryGenerator() {
+		m_config = new TrajectoryGenerator.Config();
+		m_config.dt = Constants.kDt;
+		m_config.max_vel = Constants.kElevatorMaxSpeedInchesPerSec;
+		m_config.max_acc = Constants.kElevatorMaxAccelInchesPerSec2;
+	}
 
 	public Trajectory[] generateSafeTrajectories(
 			Optional<Double> bottom_setpoint, Optional<Double> top_setpoint) {
@@ -45,24 +53,16 @@ public class ElevatorTrajectoryGenerator {
 		// Generate the trajectories.
 		Trajectory[] result = new Trajectory[2];
 		if (bottom_setpoint.isPresent()) {
-			TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-			config.dt = Constants.kDt;
-			config.max_vel = Constants.kBottomCarriageMaxSpeedInchesPerSec;
-			config.max_acc = Constants.kBottomCarriageMaxAccelInchesPerSec2;
 			double[] current_command = kBottomCarriage
 					.getCommandedPositionAndVelocity();
-			result[kBottomCarriageIndex] = TrajectoryGenerator.generate(config,
-					current_command[0], current_command[1],
+			result[kBottomCarriageIndex] = TrajectoryGenerator.generate(
+					m_config, current_command[0], current_command[1],
 					adjusted_bottom_setpoint, 0.0);
 		}
 		if (top_setpoint.isPresent()) {
-			TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-			config.dt = Constants.kDt;
-			config.max_vel = Constants.kTopCarriageMaxSpeedInchesPerSec;
-			config.max_acc = Constants.kTopCarriageMaxAccelInchesPerSec2;
 			double[] current_command = kTopCarriage
 					.getCommandedPositionAndVelocity();
-			result[kTopCarriageIndex] = TrajectoryGenerator.generate(config,
+			result[kTopCarriageIndex] = TrajectoryGenerator.generate(m_config,
 					current_command[0], current_command[1],
 					adjusted_bottom_setpoint, 0.0);
 		}

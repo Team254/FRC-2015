@@ -7,27 +7,27 @@ public class Constants extends ConstantsBase {
 		new Constants().loadFromFile();
 	}
 
-	// Program constants
-	public static double kDt = 0.05;
-
 	// Physical constants
 	public static double kElevatorPulleyRadiusInches = 0.564;
 	public static double kElevatorEncoderCountsPerRev = 256.0;
 	public static double kTopCarriageHeight = 6.0;
 	public static double kBottomCarriageHeight = 6.0;
 
+	// Program constants
+	public static double kDt = 0.05;
+
+	// Common carriage parameters
+	public static double kElevatorMaxSpeedInchesPerSec = 60.0;
+	public static double kElevatorMaxAccelInchesPerSec2 = 180.0;
+
 	// Top carriage limits
 	public static double kTopCarriageMinPositionInches = 10.0;
 	public static double kTopCarriageMaxPositionInches = 70.0;
-	public static double kTopCarriageMaxSpeedInchesPerSec = 60.0;
-	public static double kTopCarriageMaxAccelInchesPerSec2 = 180.0;
 	public static double kTopCarriageHomePositionInches = 20.0;
 
 	// Bottom carriage limits
 	public static double kBottomCarriageMinPositionInches = 0.0;
 	public static double kBottomCarriageMaxPositionInches = 60.0;
-	public static double kBottomCarriageMaxSpeedInchesPerSec = 60.0;
-	public static double kBottomCarriageMaxAccelInchesPerSec2 = 180.0;
 	public static double kBottomCarriageHomePositionInches = 10.0;
 
 	// ElevatorCarriageCurrentController gains

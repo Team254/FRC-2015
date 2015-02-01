@@ -34,8 +34,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	public class Limits {
 		protected double m_min_position;
 		protected double m_max_position;
-		protected double m_max_speed;
-		protected double m_max_acceleration;
 		protected double m_home_position;
 	}
 
@@ -56,14 +54,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		if (m_position == Position.TOP) {
 			m_limits.m_min_position = Constants.kTopCarriageMinPositionInches;
 			m_limits.m_max_position = Constants.kTopCarriageMaxPositionInches;
-			m_limits.m_max_speed = Constants.kTopCarriageMaxSpeedInchesPerSec;
-			m_limits.m_max_acceleration = Constants.kTopCarriageMaxAccelInchesPerSec2;
 			m_limits.m_home_position = Constants.kTopCarriageHomePositionInches;
 		} else {
 			m_limits.m_min_position = Constants.kBottomCarriageMinPositionInches;
 			m_limits.m_max_position = Constants.kBottomCarriageMaxPositionInches;
-			m_limits.m_max_speed = Constants.kBottomCarriageMaxSpeedInchesPerSec;
-			m_limits.m_max_acceleration = Constants.kBottomCarriageMaxAccelInchesPerSec2;
 			m_limits.m_home_position = Constants.kBottomCarriageHomePositionInches;
 		}
 	}
@@ -128,7 +122,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 					Constants.kElevatorCarriagePositionKv,
 					Constants.kElevatorCarriagePositionKa);
 		}
-		((ElevatorCarriagePositionController) m_current_controller).setTrajectory(trajectory);
+		((ElevatorCarriagePositionController) m_current_controller)
+				.setTrajectory(trajectory);
 		m_brake_on_target = brake_on_target;
 	}
 
