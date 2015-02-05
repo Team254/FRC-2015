@@ -1,5 +1,7 @@
 package com.team254.frc2015;
 
+import java.util.Optional;
+
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
@@ -41,6 +43,8 @@ public class Robot extends IterativeRobot {
 		System.out.println("Start robotInit()");
 		mLidarLiteSensor.start();
 		WebServer.startServer();
+		looper.addLoopable(top_carriage);
+		looper.addLoopable(bottom_carriage);
 	}
 
 	@Override
@@ -51,7 +55,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-
 	}
 
 	@Override

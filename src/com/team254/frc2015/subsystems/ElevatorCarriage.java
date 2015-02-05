@@ -5,11 +5,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.subsystems.controllers.ElevatorCarriageCurrentController;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriagePositionController;
-import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
-import com.team254.lib.trajectory.TrajectoryGenerator;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.Controller;
 import com.team254.lib.util.Loopable;
@@ -21,7 +18,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	public Encoder m_encoder;
 	public DigitalInput m_home;
 
-	protected Controller m_current_controller = null;
+	protected Controller m_controller = null;
 
 	protected Position m_position;
 	protected Limits m_limits = new Limits();
@@ -64,24 +61,29 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
 	public double getHeight() {
 		return m_encoder.get() * 2.0 * Constants.kElevatorPulleyRadiusInches
-				* Math.PI / Constants.kElevatorEncoderCountsPerRev;
+				* Math.PI / Constants.kElevatorEncoderCountsPerRev
+				+ m_limits.m_home_position;
 	}
 
-	public synchronized double[] getCommandedPositionAndVelocity() {
-		double[] result = new double[2];
+	public double getVelocity() {
+		return m_encoder.getRate() * 2.0
+				* Constants.kElevatorPulleyRadiusInches * Math.PI
+				/ Constants.kElevatorEncoderCountsPerRev;
+	}
+
+	public synchronized TrajectoryFollower.TrajectorySetpoint getSetpoint() {
+		TrajectoryFollower.TrajectorySetpoint setpoint;
 		// Rather than reading encoder velocity, we report the last commanded
 		// velocity from a velocity profile. This ensures that the input is
 		// smooth when changing setpoints.
-		if (m_current_controller instanceof ElevatorCarriagePositionController) {
-			result[0] = ((ElevatorCarriagePositionController) m_current_controller)
-					.getProfilePosition();
-			result[1] = ((ElevatorCarriagePositionController) m_current_controller)
-					.getProfileVelocity();
+		if (m_controller instanceof ElevatorCarriagePositionController) {
+			setpoint = ((ElevatorCarriagePositionController) m_controller)
+					.getSetpoint();
 		} else {
-			result[0] = getHeight();
-			result[1] = 0.0;
+			setpoint = new TrajectoryFollower.TrajectorySetpoint();
+			setpoint.pos = getHeight();
 		}
-		return result;
+		return setpoint;
 	}
 
 	protected synchronized void setSpeedUnsafe(double speed) {
@@ -112,62 +114,44 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		return !m_brake.get();
 	}
 
-	public synchronized void setTrajectory(Trajectory trajectory,
+	public synchronized void setPositionSetpoint(double setpoint,
 			boolean brake_on_target) {
-		if (!(m_current_controller instanceof ElevatorCarriagePositionController)) {
-			m_current_controller = new ElevatorCarriagePositionController(
+		if (!(m_controller instanceof ElevatorCarriagePositionController)) {
+			TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
+			config.dt = Constants.kDt;
+			config.max_acc = Constants.kElevatorMaxAccelInchesPerSec2;
+			config.max_vel = Constants.kElevatorMaxSpeedInchesPerSec;
+			m_controller = new ElevatorCarriagePositionController(
 					Constants.kElevatorCarriagePositionKp,
 					Constants.kElevatorCarriagePositionKi,
 					Constants.kElevatorCarriagePositionKd,
 					Constants.kElevatorCarriagePositionKv,
-					Constants.kElevatorCarriagePositionKa);
+					Constants.kElevatorCarriagePositionKa, config);
 		}
-		((ElevatorCarriagePositionController) m_current_controller)
-				.setTrajectory(trajectory);
+		((ElevatorCarriagePositionController) m_controller).setGoal(
+				getSetpoint(), setpoint);
 		m_brake_on_target = brake_on_target;
 	}
 
-	public synchronized void setCurrentUpSetpoint(double setpoint) {
-		if (!(m_current_controller instanceof ElevatorCarriageCurrentController)) {
-			m_current_controller = new ElevatorCarriageCurrentController(
-					Constants.kElevatorCarriageCurrentKp,
-					Constants.kElevatorCarriageCurrentKi,
-					Constants.kElevatorCarriageCurrentKd,
-					Constants.kElevatorCarriageCurrentMaxOutput);
-		}
-		((ElevatorCarriageCurrentController) m_current_controller).setGoal(
-				true, setpoint);
-	}
-
-	public synchronized void setCurrentDownSetpoint(double setpoint) {
-		if (!(m_current_controller instanceof ElevatorCarriageCurrentController)) {
-			m_current_controller = new ElevatorCarriageCurrentController(
-					Constants.kElevatorCarriageCurrentKp,
-					Constants.kElevatorCarriageCurrentKi,
-					Constants.kElevatorCarriageCurrentKd,
-					Constants.kElevatorCarriageCurrentMaxOutput);
-		}
-		((ElevatorCarriageCurrentController) m_current_controller).setGoal(
-				false, setpoint);
-	}
-
 	public synchronized void setOpenLoop(double speed, boolean brake) {
-		m_current_controller = null;
+		m_controller = null;
 		setBrake(brake);
 		setSpeedSafe(speed);
 	}
 
 	@Override
 	public synchronized void update() {
-		if (m_current_controller instanceof ElevatorCarriageCurrentController) {
-			setSpeedSafe(((ElevatorCarriageCurrentController) m_current_controller)
-					.update(m_motor.getCurrent()));
-		} else if (m_current_controller instanceof ElevatorCarriagePositionController) {
-			ElevatorCarriagePositionController position_controller = (ElevatorCarriagePositionController) m_current_controller;
+		if (m_controller instanceof ElevatorCarriagePositionController) {
+			ElevatorCarriagePositionController position_controller = (ElevatorCarriagePositionController) m_controller;
 			if (position_controller.isOnTarget()) {
 				setBrake(m_brake_on_target);
+				if (!m_brake_on_target) {
+					setSpeedSafe(position_controller.update(getHeight(),
+							getVelocity()));
+				}
 			} else {
-				setSpeedSafe(position_controller.update(getHeight()));
+				setSpeedSafe(position_controller.update(getHeight(),
+						getVelocity()));
 			}
 		} else {
 			// do nothing.

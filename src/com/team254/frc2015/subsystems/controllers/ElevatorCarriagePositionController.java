@@ -1,66 +1,41 @@
 package com.team254.frc2015.subsystems.controllers;
 
-import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.Controller;
-import com.team254.lib.util.SynchronousPID;
 
 public class ElevatorCarriagePositionController extends Controller {
 	TrajectoryFollower m_follower;
-	Trajectory m_trajectory;
-	SynchronousPID m_pid;
+	double m_goal;
+	double m_error;
 
 	public ElevatorCarriagePositionController(double kp, double ki, double kd,
-			double kv, double ka) {
+			double kv, double ka, TrajectoryFollower.TrajectoryConfig config) {
 		m_follower = new TrajectoryFollower();
-		m_follower.configure(kp, ki, kd, kv, ka);
-
-		m_pid = new SynchronousPID(kp, ki, kd);
+		m_follower.configure(kp, ki, kd, kv, ka, config);
 	}
 
-	public void setTrajectory(Trajectory trajectory) {
-		m_trajectory = trajectory;
-		m_follower.setTrajectory(trajectory);
-		if (trajectory.getNumSegments() > 0) {
-			m_pid.setSetpoint(trajectory.getSegment(trajectory.getNumSegments() - 1).pos);
-		} else {
-			m_pid.setSetpoint(0.0);
-		}
+	public void setGoal(TrajectoryFollower.TrajectorySetpoint current_state, double goal) {
+		m_follower.setGoal(current_state, goal);
 	}
 
-	public double update(double position) {
-		if (!m_follower.isFinishedTrajectory()) {
-			return m_follower.calculate(position);
-		} else {
-			return m_pid.calculate(position);
-		}
+	public double update(double position, double velocity) {
+		m_error = m_goal - position;
+		return m_follower.calculate(position, velocity);
 	}
-
-	public double getProfileVelocity() {
-		if (!m_follower.isFinishedTrajectory()) {
-			return m_trajectory.getSegment(m_follower.getCurrentSegment()).vel;
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getProfilePosition() {
-		if (!m_follower.isFinishedTrajectory()) {
-			return m_trajectory.getSegment(m_follower.getCurrentSegment()).pos;
-		} else {
-			return m_trajectory.getSegment(m_trajectory.getNumSegments() - 1).pos;
-		}
+	
+	public TrajectoryFollower.TrajectorySetpoint getSetpoint() {
+		return m_follower.getCurrentSetpoint();
 	}
 
 	@Override
 	public void reset() {
-		m_follower.reset();
-		m_pid.reset();
+		m_error = 0;
+		m_follower.setGoal(m_follower.getCurrentSetpoint(), m_goal);
 	}
 
 	@Override
 	public boolean isOnTarget() {
-		return m_follower.isFinishedTrajectory() && m_pid.onTarget(1.0);
+		return m_follower.isFinishedTrajectory() && Math.abs(m_error) < 1.0;
 	}
 
 }

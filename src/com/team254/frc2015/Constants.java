@@ -9,12 +9,12 @@ public class Constants extends ConstantsBase {
 
 	// Physical constants
 	public static double kElevatorPulleyRadiusInches = 0.564;
-	public static double kElevatorEncoderCountsPerRev = 256.0;
+	public static double kElevatorEncoderCountsPerRev = 250.0;
 	public static double kTopCarriageHeight = 6.0;
 	public static double kBottomCarriageHeight = 6.0;
 
 	// Program constants
-	public static double kDt = 0.05;
+	public static double kDt = 0.005;
 
 	// Common carriage parameters
 	public static double kElevatorMaxSpeedInchesPerSec = 60.0;
