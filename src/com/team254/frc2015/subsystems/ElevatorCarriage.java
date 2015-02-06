@@ -86,14 +86,18 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		return setpoint;
 	}
 
+	public double getCommand() {
+	    return m_motor.get();
+	}
+
 	protected synchronized void setSpeedUnsafe(double speed) {
 		m_motor.set(speed);
 	}
 
 	protected synchronized void setSpeedSafe(double desired_speed) {
 		double height = getHeight();
-		if (getBrake()) {
-			desired_speed = 0;
+		if (desired_speed > 1E-3 || desired_speed < -1E-3) {
+		    setBrake(false);
 		}
 		if (height >= m_limits.m_max_position) {
 			desired_speed = Math.min(0, desired_speed);
@@ -104,7 +108,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	}
 
 	protected synchronized void setBrake(boolean on) {
-		m_brake.set(!on);
+		m_brake.set(!on);  // brake is normally applied
 		if (on) {
 			setSpeedUnsafe(0);
 		}
@@ -116,6 +120,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
 	public synchronized void setPositionSetpoint(double setpoint,
 			boolean brake_on_target) {
+	    TrajectoryFollower.TrajectorySetpoint prior_setpoint = getSetpoint();
 		if (!(m_controller instanceof ElevatorCarriagePositionController)) {
 			TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
 			config.dt = Constants.kDt;
@@ -129,7 +134,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 					Constants.kElevatorCarriagePositionKa, config);
 		}
 		((ElevatorCarriagePositionController) m_controller).setGoal(
-				getSetpoint(), setpoint);
+		        prior_setpoint, setpoint);
+		System.out.println("Setting elevator setpoint for " + m_position + " to " + setpoint);
 		m_brake_on_target = brake_on_target;
 	}
 

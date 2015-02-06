@@ -15,6 +15,7 @@ public class ElevatorCarriagePositionController extends Controller {
 	}
 
 	public void setGoal(TrajectoryFollower.TrajectorySetpoint current_state, double goal) {
+	    m_goal = goal;
 		m_follower.setGoal(current_state, goal);
 	}
 

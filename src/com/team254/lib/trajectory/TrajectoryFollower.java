@@ -38,9 +38,9 @@ public class TrajectoryFollower {
 	private double error_sum_;
 	private boolean reset_ = true;
 
-	private TrajectoryConfig config_;
+	private TrajectoryConfig config_ = new TrajectoryConfig();
 	private double goal_position_;
-	private TrajectorySetpoint setpoint_;
+	private TrajectorySetpoint setpoint_ = new TrajectorySetpoint();
 
 	public TrajectoryFollower() {
 	}
@@ -159,7 +159,7 @@ public class TrajectoryFollower {
 			// Only integrate error if the output isn't already saturated.
 			error_sum_ += error;
 		}
-		output += ki_ * error_sum_;
+		output += ki_ * error_sum_ * config_.dt;
 
 		last_error_ = error;
 		return output;

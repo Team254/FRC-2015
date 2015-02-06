@@ -17,71 +17,90 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import com.team254.lib.util.LidarLiteSensor;
 
 public class Robot extends IterativeRobot {
-	MultiLooper looper = new MultiLooper(1 / 200.0);
+    MultiLooper looper = new MultiLooper(1 / 200.0);
 
-	Drive drive = HardwareAdaptor.kDrive;
-	ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
-	ElevatorCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
-	PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
+    Drive drive = HardwareAdaptor.kDrive;
+    ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
+    ElevatorCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
+    PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
-	CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
+    CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
 
-	Joystick leftStick = new Joystick(0);
-	Joystick rightStick = new Joystick(1);
-	Joystick buttonBoard = new Joystick(2);
+    Joystick leftStick = new Joystick(0);
+    Joystick rightStick = new Joystick(1);
+    Joystick buttonBoard = new Joystick(2);
 
-	LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
+    LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
-	static {
-		SystemManager.getInstance().add(RobotData.robotTime);
-		SystemManager.getInstance().add(RobotData.batteryVoltage);
-		SystemManager.getInstance().add(Logger.getInstance());
-	}
+    static {
+        SystemManager.getInstance().add(RobotData.robotTime);
+        SystemManager.getInstance().add(RobotData.batteryVoltage);
+        SystemManager.getInstance().add(Logger.getInstance());
+    }
 
-	@Override
-	public void robotInit() {
-		System.out.println("Start robotInit()");
-		mLidarLiteSensor.start();
-		WebServer.startServer();
-		looper.addLoopable(top_carriage);
-		looper.addLoopable(bottom_carriage);
-	}
+    @Override
+    public void robotInit() {
+        System.out.println("Start robotInit()");
+        mLidarLiteSensor.start();
+        WebServer.startServer();
+        looper.addLoopable(top_carriage);
+        looper.addLoopable(bottom_carriage);
+    }
 
-	@Override
-	public void autonomousInit() {
-		System.out.println("Start autonomousInit()");
-		looper.start();
-	}
+    @Override
+    public void autonomousInit() {
+        System.out.println("Start autonomousInit()");
 
-	@Override
-	public void autonomousPeriodic() {
-	}
+        // JARED TESTING
+        SafeElevatorSetpointGenerator.Setpoints setpoints = new SafeElevatorSetpointGenerator.Setpoints();
+        setpoints.bottom_setpoint = Optional.of(40.0);
+        setpoints.top_setpoint = Optional.of(64.0);
+        setpoints = SafeElevatorSetpointGenerator
+                .generateSafeSetpoints(setpoints);
+        top_carriage.setPositionSetpoint(setpoints.top_setpoint.get(), true);
+        bottom_carriage.setPositionSetpoint(setpoints.bottom_setpoint.get(),
+                true);
 
-	@Override
-	public void teleopInit() {
-		System.out.println("Start teleopInit()");
-		looper.start();
-	}
+        looper.start();
+    }
 
-	@Override
-	public void teleopPeriodic() {
-		cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(),
-				rightStick.getRawButton(1), true);
-	}
+    @Override
+    public void autonomousPeriodic() {
+        // JARED TESTING
+        System.out.println("Top elevator height: " + top_carriage.getHeight()
+                + ", goal: " + top_carriage.getSetpoint().pos + ", command: "
+                + top_carriage.getCommand() + ", brake: " + top_carriage.getBrake());
+        System.out.println("Bottom elevator height: "
+                + bottom_carriage.getHeight() + ", goal: "
+                + bottom_carriage.getSetpoint().pos + ", command: "
+                + bottom_carriage.getCommand() + ", brake: " + bottom_carriage.getBrake());
+    }
 
-	@Override
-	public void disabledInit() {
-		System.out.println("Start disabledInit()");
-		looper.stop();
+    @Override
+    public void teleopInit() {
+        System.out.println("Start teleopInit()");
+        looper.start();
+    }
 
-		drive.reloadConstants();
-		top_carriage.reloadConstants();
-		bottom_carriage.reloadConstants();
-	}
+    @Override
+    public void teleopPeriodic() {
+        cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(),
+                rightStick.getRawButton(1), true);
+    }
 
-	@Override
-	public void disabledPeriodic() {
-		WebServer.updateAllStateStreams();
-		Logger.println(SystemManager.getInstance().get().toJSONString());
-	}
+    @Override
+    public void disabledInit() {
+        System.out.println("Start disabledInit()");
+        looper.stop();
+
+        drive.reloadConstants();
+        top_carriage.reloadConstants();
+        bottom_carriage.reloadConstants();
+    }
+
+    @Override
+    public void disabledPeriodic() {
+        WebServer.updateAllStateStreams();
+        Logger.println(SystemManager.getInstance().get().toJSONString());
+    }
 }
