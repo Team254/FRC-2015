@@ -7,11 +7,13 @@ public class ElevatorCarriagePositionController extends Controller {
 	TrajectoryFollower m_follower;
 	double m_goal;
 	double m_error;
+	double m_on_target_delta;
 
 	public ElevatorCarriagePositionController(double kp, double ki, double kd,
-			double kv, double ka, TrajectoryFollower.TrajectoryConfig config) {
+			double kv, double ka, double on_target_delta, TrajectoryFollower.TrajectoryConfig config) {
 		m_follower = new TrajectoryFollower();
 		m_follower.configure(kp, ki, kd, kv, ka, config);
+		m_on_target_delta = on_target_delta;
 	}
 
 	public void setGoal(TrajectoryFollower.TrajectorySetpoint current_state, double goal) {
@@ -36,7 +38,7 @@ public class ElevatorCarriagePositionController extends Controller {
 
 	@Override
 	public boolean isOnTarget() {
-		return m_follower.isFinishedTrajectory() && Math.abs(m_error) < 1.0;
+		return m_follower.isFinishedTrajectory() && Math.abs(m_error) < m_on_target_delta;
 	}
 
 }

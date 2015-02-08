@@ -76,6 +76,7 @@ public class Constants extends ConstantsBase {
     public static double kElevatorCarriagePositionKd = 0.0;
     public static double kElevatorCarriagePositionKv = 0.015;
     public static double kElevatorCarriagePositionKa = 0.0;
+    public static double kElevatorOnTargetError = 1.0;
 
     @Override
     public String getFileLocation() {

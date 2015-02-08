@@ -131,7 +131,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 					Constants.kElevatorCarriagePositionKi,
 					Constants.kElevatorCarriagePositionKd,
 					Constants.kElevatorCarriagePositionKv,
-					Constants.kElevatorCarriagePositionKa, config);
+					Constants.kElevatorCarriagePositionKa,
+					Constants.kElevatorOnTargetError,
+					config);
 		}
 		((ElevatorCarriagePositionController) m_controller).setGoal(
 		        prior_setpoint, setpoint);
