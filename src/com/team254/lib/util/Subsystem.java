@@ -13,6 +13,10 @@ public class Subsystem implements Tappable {
 		SystemManager.getInstance().add(this.getComponents());
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public final Collection<Serializable> getComponents() {
 		Field[] allFields = this.getClass().getFields();
