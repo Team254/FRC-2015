@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
-
+        /*
         // JARED TESTING
         SafeElevatorSetpointGenerator.Setpoints setpoints = new SafeElevatorSetpointGenerator.Setpoints();
         setpoints.bottom_setpoint = Optional.of(40.0);
@@ -62,6 +62,7 @@ public class Robot extends IterativeRobot {
                 true);
 
         looper.start();
+        */
     }
 
     @Override
