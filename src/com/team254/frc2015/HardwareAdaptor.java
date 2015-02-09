@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj.VictorSP;
 public class HardwareAdaptor {
     // Motors
     static CheesySpeedController kLeftDriveMotor = new CheesySpeedController(
-            new SpeedController[] { new VictorSP(Constants.kLeftDriveMotorPWM) },
-            new int[] { Constants.kLeftDriveMotorPDP });
+            new VictorSP(Constants.kLeftDriveMotorPWM),
+            new int[] { Constants.kLeftDriveMotor1PDP, Constants.kLeftDriveMotor2PDP });
     static CheesySpeedController kRightDriveMotor = new CheesySpeedController(
-            new SpeedController[] { new VictorSP(Constants.kRightDriveMotorPWM) },
-            new int[] { Constants.kRightDriveMotorPDP });
+            new VictorSP(Constants.kRightDriveMotorPWM),
+            new int[] { Constants.kRightDriveMotor2PDP, Constants.kRightDriveMotor2PDP });
     static CheesySpeedController kTopCarriageMotor = new CheesySpeedController(
             new SpeedController[] {
                     new VictorSP(Constants.kTopCarriageMotor1PWM),
@@ -33,7 +33,7 @@ public class HardwareAdaptor {
                     Constants.kBottomCarriageMotor2PDP });
     static CheesySpeedController kLeftIntakeMotor = new CheesySpeedController(
             new VictorSP(Constants.kLeftIntakeMotorPWM),
-            Constants.kLeftDriveMotorPDP);
+            Constants.kLeftIntakeMotorPDP);
     static CheesySpeedController kRightIntakeMotor = new CheesySpeedController(
             new VictorSP(Constants.kRightIntakeMotorPWM),
             Constants.kRightIntakeMotorPDP);

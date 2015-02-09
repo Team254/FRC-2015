@@ -9,22 +9,28 @@ public class Constants extends ConstantsBase {
 
     // !!! Electrical constants (do not change at runtime, lol)
     // Motors
-    public static int kLeftDriveMotorPWM = 0;
-    public static int kLeftDriveMotorPDP = 0;
+    public static int kLeftDriveMotorPWM = 4;
+    public static int kLeftDriveMotor1PDP = 14;
+    public static int kLeftDriveMotor2PDP = 15;
+
     public static int kRightDriveMotorPWM = 5;
-    public static int kRightDriveMotorPDP = 2;
-    public static int kTopCarriageMotor1PWM = 1;
-    public static int kTopCarriageMotor2PWM = 4;
-    public static int kTopCarriageMotor1PDP = 4;
-    public static int kTopCarriageMotor2PDP = 5;
-    public static int kBottomCarriageMotor1PWM = 2;
+    public static int kRightDriveMotor1PDP = 0;
+    public static int kRightDriveMotor2PDP = 1;
+
+    public static int kTopCarriageMotor1PWM = 2;
+    public static int kTopCarriageMotor2PWM = 3;
+    public static int kTopCarriageMotor1PDP = 12;
+    public static int kTopCarriageMotor2PDP = 13;
+
+    public static int kBottomCarriageMotor1PWM = 6;
     public static int kBottomCarriageMotor2PWM = 7;
-    public static int kBottomCarriageMotor1PDP = 6;
-    public static int kBottomCarriageMotor2PDP = 7;
-    public static int kLeftIntakeMotorPWM = 8;
-    public static int kLeftIntakeMotorPDP = 8;
-    public static int kRightIntakeMotorPWM = 9;
-    public static int kRightIntakeMotorPDP = 9;
+    public static int kBottomCarriageMotor1PDP = 2;
+    public static int kBottomCarriageMotor2PDP = 3;
+
+    public static int kLeftIntakeMotorPWM = 1;
+    public static int kLeftIntakeMotorPDP = 11;
+    public static int kRightIntakeMotorPWM = 8;
+    public static int kRightIntakeMotorPDP = 4;
 
     // DIO
     public static int kLeftDriveEncoderDIOA = 0;

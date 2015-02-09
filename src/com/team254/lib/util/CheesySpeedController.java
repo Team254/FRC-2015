@@ -12,6 +12,11 @@ public class CheesySpeedController implements SpeedController {
 		m_controllers = new SpeedController[] {controller};
 		m_pdp_slots = new int[] {pdp_slot};
 	}
+
+	public CheesySpeedController(SpeedController controller, int[] pdp_slots) {
+		m_controllers = new SpeedController[] {controller};
+		m_pdp_slots = pdp_slots;
+	}
 	
 	public CheesySpeedController(SpeedController[] controllers, int[] pdp_slots) {
 		assert(controllers.length == pdp_slots.length);
