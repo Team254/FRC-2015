@@ -6,6 +6,9 @@ public class Constants extends ConstantsBase {
     static {
         new Constants().loadFromFile();
     }
+    
+    public static double kOpenLoopCarriageDriveSpeed = 0.25;
+    public static double kDriveSensitivity = .75;
 
     // !!! Electrical constants (do not change at runtime, lol)
     // Motors

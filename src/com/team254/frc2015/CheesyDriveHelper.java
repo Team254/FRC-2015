@@ -60,7 +60,7 @@ public class CheesyDriveHelper {
     double negInertiaScalar;
     if (isHighGear) {
       negInertiaScalar = 5.0;
-      sensitivity = .85;//Constants.sensitivityHigh.getDouble();
+      sensitivity = Constants.kDriveSensitivity;
     } else {
       if (wheel * negInertia > 0) {
         negInertiaScalar = 2.5;
