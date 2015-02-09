@@ -87,6 +87,10 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(),
                 rightStick.getRawButton(1), true);
+        double bottom_speed = buttonBoard.getRawButton(9) ? .25 : buttonBoard.getRawButton(10) ? -.25 : 0;
+        bottom_carriage.setOpenLoop(bottom_speed,false);
+        double top_speed = buttonBoard.getRawButton(7) ? -.25 : buttonBoard.getRawButton(8) ? .25 : 0;
+        top_carriage.setOpenLoop(top_speed,false);
     }
 
     @Override
