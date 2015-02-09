@@ -1,5 +1,6 @@
 package com.team254.frc2015.subsystems;
 
+import edu.wpi.first.wpilibj.ChezyInterruptHandlerFunction;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -19,6 +20,18 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	public DigitalInput m_home;
 
 	protected Controller m_controller = null;
+
+	protected ChezyInterruptHandlerFunction<ElevatorCarriage> isr = new ChezyInterruptHandlerFunction<ElevatorCarriage>() {
+		@Override
+		public void interruptFired(int interruptAssertedMask, ElevatorCarriage param) {
+			System.out.println("Interrupt fired on " + param.getName() + "!");
+		}
+
+		@Override
+		public ElevatorCarriage overridableParamater() {
+			return ElevatorCarriage.this;
+		}
+	};
 
 	protected Position m_position;
 	protected Limits m_limits = new Limits();
@@ -44,6 +57,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		m_encoder = encoder;
 		m_home = home;
 		reloadConstants();
+		m_home.requestInterrupts(isr);
+		m_home.setUpSourceEdge(false, true);
 	}
 
 	@Override
