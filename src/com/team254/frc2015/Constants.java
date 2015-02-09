@@ -10,6 +10,9 @@ public class Constants extends ConstantsBase {
     public static double kOpenLoopCarriageDriveSpeed = 0.25;
     public static double kDriveSensitivity = .75;
 
+    // !!! End of editable Constants! !!!
+    public static int kEndEditableArea = 0;
+
     // !!! Electrical constants (do not change at runtime, lol)
     // Motors
     public static int kLeftDriveMotorPWM = 4;
