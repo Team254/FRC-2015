@@ -122,6 +122,18 @@ public abstract class ConstantsBase {
 	}
 
 	public Collection<Constant> getConstants() {
+		List<Constant> constants = (List<Constant>) getAllConstants();
+		int stop = constants.size() - 1;
+		for (int i = 0; i < constants.size(); ++i) {
+			Constant c = constants.get(i);
+			if ("kEndEditableArea".equals(c.name)) {
+				stop = i;
+			}
+		}
+		return constants.subList(0, stop);
+	}
+
+	private Collection<Constant> getAllConstants() {
 		Field[] declaredFields = this.getClass().getDeclaredFields();
 		List<Constant> constants = new ArrayList<Constant>(
 				declaredFields.length);
