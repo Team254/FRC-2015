@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.subsystems.controllers.ElevatorCarriagePositionController;
+import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.Controller;
@@ -76,8 +76,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		// Rather than reading encoder velocity, we report the last commanded
 		// velocity from a velocity profile. This ensures that the input is
 		// smooth when changing setpoints.
-		if (m_controller instanceof ElevatorCarriagePositionController) {
-			setpoint = ((ElevatorCarriagePositionController) m_controller)
+		if (m_controller instanceof TrajectoryFollowingPositionController) {
+			setpoint = ((TrajectoryFollowingPositionController) m_controller)
 					.getSetpoint();
 		} else {
 			setpoint = new TrajectoryFollower.TrajectorySetpoint();
@@ -121,12 +121,12 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 	public synchronized void setPositionSetpoint(double setpoint,
 			boolean brake_on_target) {
 	    TrajectoryFollower.TrajectorySetpoint prior_setpoint = getSetpoint();
-		if (!(m_controller instanceof ElevatorCarriagePositionController)) {
+		if (!(m_controller instanceof TrajectoryFollowingPositionController)) {
 			TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
 			config.dt = Constants.kDt;
 			config.max_acc = Constants.kElevatorMaxAccelInchesPerSec2;
 			config.max_vel = Constants.kElevatorMaxSpeedInchesPerSec;
-			m_controller = new ElevatorCarriagePositionController(
+			m_controller = new TrajectoryFollowingPositionController(
 					Constants.kElevatorCarriagePositionKp,
 					Constants.kElevatorCarriagePositionKi,
 					Constants.kElevatorCarriagePositionKd,
@@ -135,7 +135,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 					Constants.kElevatorOnTargetError,
 					config);
 		}
-		((ElevatorCarriagePositionController) m_controller).setGoal(
+		((TrajectoryFollowingPositionController) m_controller).setGoal(
 		        prior_setpoint, setpoint);
 		System.out.println("Setting elevator setpoint for " + m_position + " to " + setpoint);
 		m_brake_on_target = brake_on_target;
@@ -149,8 +149,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
 	@Override
 	public synchronized void update() {
-		if (m_controller instanceof ElevatorCarriagePositionController) {
-			ElevatorCarriagePositionController position_controller = (ElevatorCarriagePositionController) m_controller;
+		if (m_controller instanceof TrajectoryFollowingPositionController) {
+			TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
 			if (position_controller.isOnTarget()) {
 				setBrake(m_brake_on_target);
 				if (!m_brake_on_target) {
