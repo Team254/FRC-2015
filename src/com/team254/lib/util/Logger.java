@@ -75,6 +75,7 @@ public class Logger {
 			e.printStackTrace();
 		}
 		consumer = new Thread(consumerTask);
+		consumer.setName("Logger");
 		consumer.start();
 	}
 

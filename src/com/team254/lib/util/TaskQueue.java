@@ -16,6 +16,7 @@ public class TaskQueue implements Runnable {
     if (thread == null || !thread.isAlive()) {
       thread = new Thread(this);
     }
+    thread.setName("TaskQueue - " + this.toString());
     thread.setPriority(Thread.MIN_PRIORITY); // All tasks should go slow for now!
     thread.start();
     

@@ -16,10 +16,12 @@ public class Looper {
   private double period = 1.0 / 100.0;
   protected Loopable loopable;
   private Timer looperUpdater;
+  protected String m_name;
 
-  public Looper(Loopable loopable, double period) {
+  public Looper(String name, Loopable loopable, double period) {
     this.period = period;
     this.loopable = loopable;
+    this.m_name = name;
   }
 
   private class UpdaterTask extends TimerTask {
@@ -40,7 +42,7 @@ public class Looper {
 
   public void start() {
     if (looperUpdater == null) {
-      looperUpdater = new Timer();
+      looperUpdater = new Timer("Looper - " + this.m_name);
       looperUpdater.scheduleAtFixedRate(new UpdaterTask(this), 0L, (long) (this.period * 1000));
     }
   }

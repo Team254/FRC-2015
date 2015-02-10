@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
-    MultiLooper looper = new MultiLooper(1 / 200.0);
-    Looper logUpdater = new Looper(new Updater(), 1 / 50.0);
+    MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
+    Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
 
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
@@ -31,6 +31,8 @@ public class Robot extends IterativeRobot {
     Joystick buttonBoard = new Joystick(2);
 
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
+    
+    private int disabledIterations = 0;
 
     static {
         SystemManager.getInstance().add(new RobotData());
@@ -50,6 +52,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
         
+        /*
         // JARED TESTING
         boolean set_for_top = top_carriage.getSetpoint().pos > Constants.kTopCarriageHomePositionInches + 1;
         SafeElevatorSetpointGenerator.Setpoints setpoints = new SafeElevatorSetpointGenerator.Setpoints();
@@ -62,7 +65,7 @@ public class Robot extends IterativeRobot {
                 false);
 
         looper.start();
-        
+        */
         
     }
 
@@ -108,7 +111,10 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledPeriodic() {
-    	System.gc();
+    	disabledIterations++;
+    	if (disabledIterations % 50 == 0) {
+    		System.gc();
+    	}
     }
     
 }

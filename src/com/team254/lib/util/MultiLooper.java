@@ -14,8 +14,8 @@ import java.util.Vector;
 public class MultiLooper implements Loopable {
   private Looper looper;
   private Vector<Loopable> loopables = new Vector<Loopable>();
-  public MultiLooper(double period) {
-    looper = new Looper(this, period);
+  public MultiLooper(String name, double period) {
+    looper = new Looper(name, this, period);
   }
 
   public void update() {
