@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj.VictorSP;
 public class HardwareAdaptor {
     // Motors
     static CheesySpeedController kLeftDriveMotor = new CheesySpeedController(
-            new VictorSP(Constants.kLeftDriveMotorPWM),
-            new int[] { Constants.kLeftDriveMotor1PDP, Constants.kLeftDriveMotor2PDP });
+            new VictorSP(Constants.kLeftDriveMotorPWM), new int[] {
+                    Constants.kLeftDriveMotor1PDP,
+                    Constants.kLeftDriveMotor2PDP });
     static CheesySpeedController kRightDriveMotor = new CheesySpeedController(
-            new VictorSP(Constants.kRightDriveMotorPWM),
-            new int[] { Constants.kRightDriveMotor2PDP, Constants.kRightDriveMotor2PDP });
+            new VictorSP(Constants.kRightDriveMotorPWM), new int[] {
+                    Constants.kRightDriveMotor2PDP,
+                    Constants.kRightDriveMotor2PDP });
     static CheesySpeedController kTopCarriageMotor = new CheesySpeedController(
             new SpeedController[] {
                     new VictorSP(Constants.kTopCarriageMotor1PWM),
@@ -71,4 +73,8 @@ public class HardwareAdaptor {
             kBottomCarriageMotor, kBottomCarriageBrakeSolenoid,
             kBottomCarriageEncoder, kBottomCarriageHome);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
+
+    static {
+        kRightDriveMotor.setInverted(true);
+    }
 }

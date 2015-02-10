@@ -61,7 +61,7 @@ public class Constants extends ConstantsBase {
     public static double kTopCarriageHeight = 6.0;
     public static double kBottomCarriageHeight = 6.0;
     public static double kDriveWheelRadius = 2.0;
-    public static double kWheelbaseWidth = 26.0;
+    public static double kWheelbaseWidth = 26.5;
     public static double kTurnSlipFactor = 1.2;
 
     // !!! Program constants
