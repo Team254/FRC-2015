@@ -129,7 +129,7 @@ var chartCallBack = function(dataset){
         newData = dataset
         chart.dataProvider.push(newData)
 
-        if (chart.dataProvider.length > 100){
+        if (chart.dataProvider.length > 200){
             chart.dataProvider.splice(0,1);
         }
         tick++

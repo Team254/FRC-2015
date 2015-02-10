@@ -43,10 +43,10 @@ public class Constants extends ConstantsBase {
     public static int kLeftDriveEncoderDIOB = 1;
     public static int kRightDriveEncoderDIOA = 2;
     public static int kRightDriveEncoderDIOB = 3;
-    public static int kBottomCarriageEncoderDIOA = 4;
-    public static int kBottomCarriageEncoderDIOB = 5;
-    public static int kTopCarriageEncoderDIOA = 6;
-    public static int kTopCarriageEncoderDIOB = 7;
+    public static int kBottomCarriageEncoderDIOA = 15;
+    public static int kBottomCarriageEncoderDIOB = 14;
+    public static int kTopCarriageEncoderDIOA = 17;
+    public static int kTopCarriageEncoderDIOB = 16;
     public static int kBottomCarriageHomeDIO = 8;
     public static int kTopCarriageHomeDIO = 9;
     public static int kPressureSwitchDIO = 10;

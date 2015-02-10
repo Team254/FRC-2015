@@ -47,7 +47,8 @@ public class HardwareAdaptor {
             Constants.kRightDriveEncoderDIOA, Constants.kRightDriveEncoderDIOB);
     static Encoder kBottomCarriageEncoder = new Encoder(
             Constants.kBottomCarriageEncoderDIOA,
-            Constants.kBottomCarriageEncoderDIOB);
+            Constants.kBottomCarriageEncoderDIOB,
+            true);
     static Encoder kTopCarriageEncoder = new Encoder(
             Constants.kTopCarriageEncoderDIOA,
             Constants.kTopCarriageEncoderDIOB);
@@ -76,5 +77,6 @@ public class HardwareAdaptor {
 
     static {
         kRightDriveMotor.setInverted(true);
+        kBottomCarriageMotor.setInverted(true);
     }
 }

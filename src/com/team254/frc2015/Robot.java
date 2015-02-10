@@ -48,23 +48,26 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
-        
+        /*
         // JARED TESTING
+        boolean set_for_top = top_carriage.getSetpoint().pos > Constants.kTopCarriageHomePositionInches + 1;
         SafeElevatorSetpointGenerator.Setpoints setpoints = new SafeElevatorSetpointGenerator.Setpoints();
-        setpoints.bottom_setpoint = Optional.of(40.0);
-        setpoints.top_setpoint = Optional.of(64.0);
+        setpoints.bottom_setpoint = Optional.of(set_for_top ? Constants.kBottomCarriageHomePositionInches : 40.0);
+        setpoints.top_setpoint = Optional.of(set_for_top ? Constants.kTopCarriageHomePositionInches : 65.0);
         setpoints = SafeElevatorSetpointGenerator
                 .generateSafeSetpoints(setpoints);
-        top_carriage.setPositionSetpoint(setpoints.top_setpoint.get(), true);
+        top_carriage.setPositionSetpoint(setpoints.top_setpoint.get(), false);
         bottom_carriage.setPositionSetpoint(setpoints.bottom_setpoint.get(),
-                true);
+                false);
 
         looper.start();
+        */
         
     }
 
     @Override
     public void autonomousPeriodic() {
+    	/*
         // JARED TESTING
         System.out.println("Top elevator height: " + top_carriage.getHeight()
                 + ", goal: " + top_carriage.getSetpoint().pos + ", command: "
@@ -73,6 +76,7 @@ public class Robot extends IterativeRobot {
                 + bottom_carriage.getHeight() + ", goal: "
                 + bottom_carriage.getSetpoint().pos + ", command: "
                 + bottom_carriage.getCommand() + ", brake: " + bottom_carriage.getBrake());
+                */
         allPeriodic();
     }
 
@@ -105,6 +109,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledPeriodic() {
+    	System.gc();
     	allPeriodic();
     }
     
