@@ -29,7 +29,7 @@ Date.prototype.addTime= function(h,m){
 })*/
 
 var colors = ["#93E814", "#FFAD22", "#E8204A", "#3F27FF", "#FF553B", "#62FF3B", "#36CAE8", "#8D35FF", "#000", "#DDD"]
-var usedColors = []
+
 /*
 setInterval(function(){
     if (state) {
@@ -50,7 +50,7 @@ setInterval(function(){
 }, 200);
 */
 function createValueAxis(keys) {
-    /*for(var i = 0; i<keys.length;i++) {
+    for(var i = 0; i<keys.length;i++) {
         var yAxis = new AmCharts.ValueAxis();
         yAxis.position = "left";
         yAxis.id = keys[i];
@@ -59,7 +59,7 @@ function createValueAxis(keys) {
         yAxis.axisThickness = 2
         yAxis.gridAlpha = 0;
         chart.addValueAxis(yAxis);
-    }*/
+    }
 }
 
 function addChart(stream){
@@ -67,7 +67,7 @@ function addChart(stream){
     var axes = chart.valueAxes;
     for(var i = 0; i < axes.length; i++) {
         if(axes[i].title == stream) {
-            graph.valueAxis = "Data";
+            graph.valueAxis = axes[i];
             axes[i].offset = max + 80 
             max += 80
         }
@@ -76,41 +76,25 @@ function addChart(stream){
     graph.valueField = stream;
     graph.balloonText = "[[title]]: [[value]]";
     graph.lineThickness = 2;
-    if (usedColors.length <= colors.length){
-    	for (i = 0; i < colors.length; i++){
-    		if (!contains(usedColors, colors[i])){
-    			graph.lineColor = colors[i];
-    			usedColors.push(colors[i])
-    			break;
-    		}
-    	}
-    } else {
-    	graph.lineColor = "#0070FF";
-    }
+    graph.lineColor = graph.valueAxis.axisColor;
     /*graph.type = "smoothedLine";*/
     chart.addGraph(graph);
 }
 
 function removeChart(stream) {
-    /*for (var i = chart.graphs.length-1; i >= 0; i--) {
+    for (var i = chart.graphs.length-1; i >= 0; i--) {
         if (chart.graphs[i].valueField != stream) {
     	    chart.graphs[i].valueAxis.offset -= 80;
         } else {
             max -= 80;
             break;
         }
-    }*/
+    }
     for(var i=0; i<chart.graphs.length;i++) {
         if(chart.graphs[i].valueField == stream) {
             var graph = chart.graphs[i];
             chart.graphs.splice(i,1);
             chart.removeGraph(graph)
-            for (var j =0; j < usedColors.length; j++){
-            	console.log("does " + graph.lineColor + " equal " + " " + usedColors[j] + "?")
-            	if (graph.lineColor == usedColors[j]){
-            		usedColors.splice(j,1);
-            	}
-            }
         }
     }
     for (var i = 0; i < chartData.length; i++) {
@@ -132,16 +116,14 @@ var chartCallBack = function(dataset){
         if (chart.dataProvider.length > 100){
             chart.dataProvider.splice(0,1);
         }
-        tick++
         
     }
     
 
-    if (tick % 11 == 0){
+    if (tick % 10 == 0){
         chart.validateData();
-        tick++
     }
-    
+    tick++
 }
 
 var chart = AmCharts.makeChart("chartdiv", {
@@ -152,15 +134,14 @@ var chart = AmCharts.makeChart("chartdiv", {
         "useGraphSettings": true
     },
     "dataProvider": chartData,
-    "valueAxes": [{
-        "id":"Data",
-        "title":"Data",
-        "axisColor": "#0070FF",
+    "valueAxes": [/*{
+        "id":"drive.leftMotorB",
+        "axisColor": "#FF6600",
         "axisThickness": 2,
         "gridAlpha": 0,
         "axisAlpha": 1,
         "position": "left"
-    }],
+    }*/],
     "graphs": [/*{
         "valueAxis": "drive.leftMotorB",
         "lineColor": "#FF6600",
@@ -273,6 +254,7 @@ function dataAPI(socket, subsystemCallback){
         
         if (Object.keys(subscribed).length > 0){
             dat["date"] = robotTime
+            console.log(dat.robotTime)
             callback(dat)
         } else {
             //console.log("err")
