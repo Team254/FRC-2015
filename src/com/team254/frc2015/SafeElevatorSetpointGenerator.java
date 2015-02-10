@@ -12,8 +12,8 @@ public class SafeElevatorSetpointGenerator {
     }
 
     public static class Setpoints {
-        Optional<Double> bottom_setpoint;
-        Optional<Double> top_setpoint;
+        public Optional<Double> bottom_setpoint;
+        public Optional<Double> top_setpoint;
     }
 
     public static Setpoints generateSafeSetpoints(Setpoints setpoints) {

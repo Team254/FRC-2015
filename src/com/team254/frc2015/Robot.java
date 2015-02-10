@@ -2,6 +2,8 @@ package com.team254.frc2015;
 
 import java.util.Optional;
 
+import com.team254.frc2015.auto.AutoModeExecuter;
+import com.team254.frc2015.auto.modes.TestAutoMode;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
@@ -18,6 +20,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 public class Robot extends IterativeRobot {
     MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
     Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
+    
+    AutoModeExecuter autoModeRunner = new AutoModeExecuter();
 
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
@@ -51,6 +55,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
+        autoModeRunner.setAutoMode(new TestAutoMode());
+        autoModeRunner.start();
         
         /*
         // JARED TESTING
@@ -63,9 +69,9 @@ public class Robot extends IterativeRobot {
         top_carriage.setPositionSetpoint(setpoints.top_setpoint.get(), false);
         bottom_carriage.setPositionSetpoint(setpoints.bottom_setpoint.get(),
                 false);
-
-        looper.start();
         */
+        looper.start();
+
         
     }
 
@@ -102,6 +108,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledInit() {
         System.out.println("Start disabledInit()");
+        
+        autoModeRunner.stop();
+        
         looper.stop();
 
         drive.reloadConstants();
