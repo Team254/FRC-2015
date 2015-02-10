@@ -5,7 +5,8 @@ import java.util.Optional;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
-import com.team254.lib.util.Logger;
+import com.team254.lib.util.LidarLiteSensor;
+import com.team254.lib.util.Looper;
 import com.team254.lib.util.MultiLooper;
 import com.team254.lib.util.SystemManager;
 
@@ -14,10 +15,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
-import com.team254.lib.util.LidarLiteSensor;
-
 public class Robot extends IterativeRobot {
     MultiLooper looper = new MultiLooper(1 / 200.0);
+    Looper logUpdater = new Looper(new Updater(), 1 / 50.0);
 
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
@@ -43,12 +43,13 @@ public class Robot extends IterativeRobot {
         WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
+        logUpdater.start();
     }
 
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
-        /*
+        
         // JARED TESTING
         boolean set_for_top = top_carriage.getSetpoint().pos > Constants.kTopCarriageHomePositionInches + 1;
         SafeElevatorSetpointGenerator.Setpoints setpoints = new SafeElevatorSetpointGenerator.Setpoints();
@@ -61,7 +62,7 @@ public class Robot extends IterativeRobot {
                 false);
 
         looper.start();
-        */
+        
         
     }
 
@@ -77,7 +78,6 @@ public class Robot extends IterativeRobot {
                 + bottom_carriage.getSetpoint().pos + ", command: "
                 + bottom_carriage.getCommand() + ", brake: " + bottom_carriage.getBrake());
                 */
-        allPeriodic();
     }
 
     @Override
@@ -94,7 +94,6 @@ public class Robot extends IterativeRobot {
         bottom_carriage.setOpenLoop(bottom_speed,false);
         double top_speed = buttonBoard.getRawButton(7) ? -Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(8) ? Constants.kOpenLoopCarriageDriveSpeed : 0;
         top_carriage.setOpenLoop(top_speed,false);
-        allPeriodic();
     }
 
     @Override
@@ -110,11 +109,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledPeriodic() {
     	System.gc();
-    	allPeriodic();
     }
     
-    public void allPeriodic() {
-    	WebServer.updateAllStateStreams();
-    	Logger.println(SystemManager.getInstance().get().toJSONString());
-    }
 }

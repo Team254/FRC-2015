@@ -16,6 +16,7 @@ public class TaskQueue implements Runnable {
     if (thread == null || !thread.isAlive()) {
       thread = new Thread(this);
     }
+    thread.setPriority(Thread.MIN_PRIORITY);
     thread.start();
     
   }
