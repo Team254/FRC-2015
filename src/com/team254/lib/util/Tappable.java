@@ -1,8 +1,8 @@
 package com.team254.lib.util;
 
-import java.util.Collection;
+import java.util.HashMap;
 
 public interface Tappable {
-	public Collection<Serializable> getComponents();
+	public void getState(StateHolder states);
 	public String getName();
 }

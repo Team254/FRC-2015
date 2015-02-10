@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.json.simple.JSONObject;
@@ -16,8 +17,25 @@ import com.team254.frc2015.web.StateStreamSocket;
  */
 public class SystemManager {
 	private static SystemManager inst = null;
+	
+	private class TappableHolder {
+		Tappable m_tappable;
+		StateHolder m_state_holder = new StateHolder();
+		
+		public TappableHolder(Tappable t) {
+			m_tappable = t;
+		}
+		
+		public StateHolder getStateHolder() {
+			return m_state_holder;
+		}
+		
+		public void update() {
+			m_tappable.getState(m_state_holder);
+		}
+	}
 
-	private Hashtable<String, Tappable> sysmap;
+	private HashMap<String, TappableHolder> m_tappables;
 
 	public static SystemManager getInstance() {
 		if (inst == null) {
@@ -27,31 +45,46 @@ public class SystemManager {
 	}
 
 	public SystemManager() {
-		this.sysmap = new Hashtable<String, Tappable>();
+		this.m_tappables = new HashMap<String, TappableHolder>();
 	}
 
 	public void add(Tappable v) {
-		sysmap.put(v.getName(), v);
+		TappableHolder th = new TappableHolder(v);
+		m_tappables.put(v.getName(), th);
 	}
 
 	public void add(Collection<Tappable> values) {
 		for (Tappable v : values) {
-			sysmap.put(v.getName(), v);
+			TappableHolder th = new TappableHolder(v);
+			m_tappables.put(v.getName(), th);
+		}
+	}
+	
+	private void updateStates(String system_key) {
+		m_tappables.get(system_key).update();
+	}
+	
+	private void updateAllStates() {
+		Set<String> keys = m_tappables.keySet();
+		for (String key : keys) {
+			updateStates(key);
 		}
 	}
 
 	// Returns a map of all states
 	public JSONObject get() {
 		JSONObject states = new JSONObject();
-		Collection<String> keys = this.sysmap.keySet();
-
-		for (String k : keys) {
-			Collection<Serializable> serials = this.sysmap.get(k)
-					.getComponents();
-			for (Serializable s : serials) {
-				states.put(k + "." + s.getName(), s.getState());
+		Collection<String> system_keys = this.m_tappables.keySet();
+		
+		updateAllStates();
+		
+		for (String system_key : system_keys) {
+			TappableHolder th = m_tappables.get(system_key);
+			StateHolder sh = th.getStateHolder();
+			Set<String> th_keys = sh.keySet();
+			for (String th_key : th_keys) {
+				states.put(system_key + "." + th_key, sh.get(th_key));
 			}
-
 		}
 		return states;
 	}
@@ -64,25 +97,26 @@ public class SystemManager {
 		String base = pieces[0];
 		String key = pieces[1];
 
-		Tappable t = sysmap.get(base);
-		Collection<Serializable> states = t.getComponents();
-
-		for (Serializable s : states) {
-			if (s.getName().equals(key)) {
-				return s.getState();
-			}
+		TappableHolder th = m_tappables.get(base);
+		if (th == null) {
+			return null;
 		}
-		return null;
+		
+		StateHolder sh = th.getStateHolder();
+		if (sh == null) {
+			return null;
+		}
+		
+		return sh.get(key);
 	}
 
 	public JSONObject get(String k) {
-		JSONObject state = new JSONObject();
-		state.put(k, getValueForKey(k));
-		return state;
+		return get(new String[] { k });
 	}
 
 	// Returns a map of states for the devices specified in args
 	public JSONObject get(String[] args) {
+		updateAllStates();
 		JSONObject states = new JSONObject();
 		for (String k : args) {
 			states.put(k, getValueForKey(k));

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class Logger implements Serializable {
+public class Logger {
 
 	public static final double WRITE_TIME = 0.5; // Write every .5 seconds
 	
@@ -144,20 +144,4 @@ public class Logger implements Serializable {
 	public static boolean println(String s) {
 		return getInstance().printlnLocal(s);
 	}
-
-	@Override
-	public Object getState() {
-		return logFile != null && writer != null;
-	}
-
-	@Override
-	public String getName() {
-		return "logger";
-	}
-
-	@Override
-	public String getType() {
-		return Boolean.class.getName();
-	}
-
 }

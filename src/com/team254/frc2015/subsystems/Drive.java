@@ -1,10 +1,7 @@
 package com.team254.frc2015.subsystems;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.team254.lib.util.CheesySpeedController;
-import com.team254.lib.util.Serializable;
+import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Subsystem;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -33,9 +30,8 @@ public class Drive extends Subsystem {
 	}
 
 	@Override
-	public Collection<Serializable> getComponents() {
-		ArrayList<Serializable> state = new ArrayList<Serializable>();
-		return state;
+	public void getState(StateHolder states) {
+
 	}
 
 }
