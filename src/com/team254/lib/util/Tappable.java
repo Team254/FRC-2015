@@ -4,4 +4,5 @@ import java.util.Collection;
 
 public interface Tappable {
 	public Collection<Serializable> getComponents();
+	public String getName();
 }

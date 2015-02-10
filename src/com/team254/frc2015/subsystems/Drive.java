@@ -1,6 +1,10 @@
 package com.team254.frc2015.subsystems;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.team254.lib.util.CheesySpeedController;
+import com.team254.lib.util.Serializable;
 import com.team254.lib.util.Subsystem;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -26,6 +30,12 @@ public class Drive extends Subsystem {
 	public void setLeftRight(double left, double right) {
 		m_left_motor.set(left);
 		m_right_motor.set(-right);
+	}
+
+	@Override
+	public Collection<Serializable> getComponents() {
+		ArrayList<Serializable> state = new ArrayList<Serializable>();
+		return state;
 	}
 
 }

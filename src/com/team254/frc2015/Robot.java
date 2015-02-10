@@ -33,9 +33,7 @@ public class Robot extends IterativeRobot {
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
     static {
-        SystemManager.getInstance().add(RobotData.robotTime);
-        SystemManager.getInstance().add(RobotData.batteryVoltage);
-        SystemManager.getInstance().add(Logger.getInstance());
+        SystemManager.getInstance().add(new RobotData());
     }
 
     @Override
@@ -50,7 +48,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
-        /*
+        
         // JARED TESTING
         SafeElevatorSetpointGenerator.Setpoints setpoints = new SafeElevatorSetpointGenerator.Setpoints();
         setpoints.bottom_setpoint = Optional.of(40.0);
@@ -62,7 +60,7 @@ public class Robot extends IterativeRobot {
                 true);
 
         looper.start();
-        */
+        
     }
 
     @Override
@@ -75,6 +73,7 @@ public class Robot extends IterativeRobot {
                 + bottom_carriage.getHeight() + ", goal: "
                 + bottom_carriage.getSetpoint().pos + ", command: "
                 + bottom_carriage.getCommand() + ", brake: " + bottom_carriage.getBrake());
+        allPeriodic();
     }
 
     @Override
@@ -91,6 +90,7 @@ public class Robot extends IterativeRobot {
         bottom_carriage.setOpenLoop(bottom_speed,false);
         double top_speed = buttonBoard.getRawButton(7) ? -Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(8) ? Constants.kOpenLoopCarriageDriveSpeed : 0;
         top_carriage.setOpenLoop(top_speed,false);
+        allPeriodic();
     }
 
     @Override
@@ -105,7 +105,11 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledPeriodic() {
-        WebServer.updateAllStateStreams();
-        Logger.println(SystemManager.getInstance().get().toJSONString());
+    	allPeriodic();
+    }
+    
+    public void allPeriodic() {
+    	WebServer.updateAllStateStreams();
+    	Logger.println(SystemManager.getInstance().get().toJSONString());
     }
 }

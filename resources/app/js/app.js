@@ -159,7 +159,7 @@ var chart = AmCharts.makeChart("chartdiv", {
         "cursorPosition": "mouse",
         "categoryBalloonDateFormat": "JJ:NN:SS:fff, DD MMMM",
     },
-    "categoryField": "robotTime",
+    "categoryField": "robot.robotTime",
     /*"categoryAxis": {
         "parseDates": true,
         "axisColor": "#DADADA",
@@ -228,7 +228,7 @@ function dataAPI(socket, subsystemCallback){
 
     var internalNetworkRequestCallBack = function(){
         setTimeout(function(){
-            ws.send(JSON.stringify({"action": "subscribe", "keys": ["robotTime"]}))
+            ws.send(JSON.stringify({"action": "subscribe", "keys": ["robot.robotTime"]}))
         }, 500)
     }
 
@@ -246,8 +246,8 @@ function dataAPI(socket, subsystemCallback){
     ws.onmessage = function(rawmessage){
 
         message = JSON.parse(rawmessage.data)
-        if (message["robotTime"] != null){
-            robotTime = message["robotTime"]
+        if (message["robot.robotTime"] != null){
+            robotTime = message["robot.robotTime"]
         }
         var dat = message
 
@@ -264,12 +264,12 @@ function dataAPI(socket, subsystemCallback){
     this.subscribe = function(keylist, anonymousFunction){
         //takes in an array of subsystems and a callback with an array as a parameter to subscribe to
         //array of subscriptions?
-        if (!contains(subscribed, "robotTime") && contains(keylist, "robotTime")){
-            subscribed.push("robotTime")
+        if (!contains(subscribed, "robot.robotTime") && contains(keylist, "robot.robotTime")){
+            subscribed.push("robot.robotTime")
             
         }
         for (var i = 0; i < keylist.length; i++){
-            if (keylist[i] == "robotTime"){
+            if (keylist[i] == "robot.robotTime"){
                 keylist.splice(i,0);
             }
         }
@@ -277,7 +277,7 @@ function dataAPI(socket, subsystemCallback){
             callback = anonymousFunction;
         }
         for (i = 0; i < keylist.length; i++){
-            if (keylist[i] != "robotTime"){
+            if (keylist[i] != "robot.robotTime"){
                 subscribed.push(keylist[i])
             }
         }
@@ -295,7 +295,7 @@ function dataAPI(socket, subsystemCallback){
                     subscribed.splice(j, 1);
                 }
             }
-            if (removalarray[i] == "robotTime"){
+            if (removalarray[i] == "robot.robotTime"){
                 removalarray.splice(i,1);
             }
         }

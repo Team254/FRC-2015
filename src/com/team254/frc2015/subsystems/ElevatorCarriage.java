@@ -1,5 +1,8 @@
 package com.team254.frc2015.subsystems;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import edu.wpi.first.wpilibj.ChezyInterruptHandlerFunction;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -11,6 +14,8 @@ import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.Controller;
 import com.team254.lib.util.Loopable;
+import com.team254.lib.util.Serializable;
+import com.team254.lib.util.State;
 import com.team254.lib.util.Subsystem;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
@@ -179,5 +184,13 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 		} else {
 			// do nothing.
 		}
+	}
+
+	@Override
+	public Collection<Serializable> getComponents() {
+		ArrayList<Serializable> state = new ArrayList<Serializable>();
+		state.add(new State("height", getHeight()));
+		state.add(new State("setpoint", getSetpoint().pos));
+		return state;
 	}
 }

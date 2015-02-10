@@ -1,11 +1,16 @@
 package com.team254.frc2015;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.team254.lib.util.Serializable;
+import com.team254.lib.util.State;
+import com.team254.lib.util.Tappable;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 
-public class RobotData {
+public class RobotData implements Tappable {
 	public static final Serializable robotTime = new Serializable() {
         @Override
 		public Object getState() {
@@ -37,4 +42,17 @@ public class RobotData {
             return Double.class.getName();
         }
     };
+
+	@Override
+	public Collection<Serializable> getComponents() {
+		ArrayList<Serializable> state = new ArrayList<Serializable>();
+		state.add(batteryVoltage);
+		state.add(robotTime);
+		return state;
+	}
+
+	@Override
+	public String getName() {
+		return "robot";
+	}
 }
