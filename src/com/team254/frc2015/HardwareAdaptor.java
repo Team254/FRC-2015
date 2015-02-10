@@ -76,7 +76,6 @@ public class HardwareAdaptor {
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     static {
-        kRightDriveMotor.setInverted(true);
         kBottomCarriageMotor.setInverted(true);
     }
 }
