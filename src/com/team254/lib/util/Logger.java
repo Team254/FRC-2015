@@ -84,13 +84,13 @@ public class Logger {
 	}
 
 	protected static File determineMountPoint() {
-		char iter = 'a';
-		for (int i = 0; i < 26; i++) {
-			File f = new File("/media/sd" + iter);
+		char iter = 'z';
+		for (int i = 0; i < 6; i++) {
+			File f = new File("/" + iter);
 			if (f.exists() && f.isDirectory()) {
 				return f;
 			}
-			iter++;
+			iter--;
 		}
 		return null;
 	}
