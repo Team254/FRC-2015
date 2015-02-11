@@ -18,21 +18,22 @@ import edu.wpi.first.wpilibj.Timer;
 public class Logger {
 
 	public static final double WRITE_TIME = 0.5; // Write every .5 seconds
-	
+
 	private static Logger inst = null;
-	
+
 	protected File logFile = null;
 	private BufferedWriter writer;
-	private ArrayBlockingQueue<String> logMessages = new ArrayBlockingQueue<String>(300);
+	private ArrayBlockingQueue<String> logMessages = new ArrayBlockingQueue<String>(
+			300);
 	Thread consumer;
-	
+
 	public static Logger getInstance() {
 		if (inst == null) {
 			inst = new Logger();
 		}
 		return inst;
 	}
-	
+
 	Runnable consumerTask = new Runnable() {
 		public void run() {
 			double lastWriteTime = Timer.getFPGATimestamp();
@@ -54,35 +55,38 @@ public class Logger {
 
 	private Logger() {
 		File baseDrive = determineMountPoint();
-		File logDir = new File(baseDrive, "logs");
-		if (!logDir.exists()) {
-			logDir.mkdirs();
+		if (baseDrive != null) {
+			File logDir = new File(baseDrive, "logs");
+			if (!logDir.exists()) {
+				logDir.mkdirs();
+			}
+
+			File lastBoot = getLastBootLogFile();
+			int number = 0;
+			if (lastBoot != null) {
+				String name = lastBoot.getName();
+				String numberStr = name.substring(0, name.lastIndexOf('.'));
+				number = Integer.parseInt(numberStr);
+			}
+			logFile = new File(logDir, String.format("%04d.log", number + 1));
+			try {
+				writer = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(logFile), "utf-8"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			consumer = new Thread(consumerTask);
+			consumer.setName("Logger");
+			consumer.start();
 		}
-		
-		File lastBoot = getLastBootLogFile();
-		int number = 0;
-		if (lastBoot != null) {
-			String name = lastBoot.getName();
-			String numberStr = name.substring(0, name.lastIndexOf('.'));
-			number = Integer.parseInt(numberStr);
-		}
-		logFile = new File(logDir, String.format("%04d.log", number + 1));
-		try {
-			 writer = new BufferedWriter(new OutputStreamWriter(
-			          new FileOutputStream(logFile), "utf-8"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		consumer = new Thread(consumerTask);
-		consumer.setName("Logger");
-		consumer.start();
+
 	}
 
 	protected static File determineMountPoint() {
 		char iter = 'a';
-		for (int i= 0; i < 26; i++) {
-			File f = new File("/mnt/sd" + iter);
+		for (int i = 0; i < 26; i++) {
+			File f = new File("/media/sd" + iter);
 			if (f.exists() && f.isDirectory()) {
 				return f;
 			}
@@ -93,12 +97,16 @@ public class Logger {
 
 	public static File getLogDirectory() {
 		File baseDrive = determineMountPoint();
+		if (baseDrive == null) {
+			return null;
+		}
 		File logDir = new File(baseDrive, "logs");
 		return logDir;
 	}
-	
+
 	public static File getLastBootLogFile() {
-		List<String> fileNames = getAllLogFiles().stream().map(l -> l.getName()).collect(Collectors.toList());
+		List<String> fileNames = getAllLogFiles().stream()
+				.map(l -> l.getName()).collect(Collectors.toList());
 		fileNames.sort(null);
 		if (fileNames.size() <= 0)
 			return null;
@@ -114,7 +122,7 @@ public class Logger {
 			}
 		};
 		File logDir = getLogDirectory();
-		File[] files= logDir.listFiles(logFilter);
+		File[] files = logDir.listFiles(logFilter);
 		if (files == null) {
 			return new ArrayList<File>();
 		} else {
@@ -133,15 +141,15 @@ public class Logger {
 	private boolean printLocal(String s) {
 		return logMessages.offer(s);
 	}
-	
+
 	public static boolean print(String s) {
 		return getInstance().printLocal(s);
 	}
-	
+
 	private boolean printlnLocal(String s) {
-		return logMessages.offer(s+'\n');
+		return logMessages.offer(s + '\n');
 	}
-	
+
 	public static boolean println(String s) {
 		return getInstance().printlnLocal(s);
 	}
