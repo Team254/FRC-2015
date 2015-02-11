@@ -147,7 +147,7 @@ var chartCallBack = function(dataset){
         chart.dataProvider.push(newData)
 
         for (var key in newData){
-            $("#btnvalue-" + key.replace(".", "\\.")).html(newData[key])
+            $("#btnvalue-" + key.replace(".", "\\.")).html(Math.round(newData[key] * 1000)/1000)
         }
 
         if (chart.dataProvider.length > 200){
