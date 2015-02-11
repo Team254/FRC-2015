@@ -62,6 +62,23 @@ function createValueAxis(keys) {
     }*/
 }
 
+function axesSet(){
+    var max = $("#max").val()
+    var min = $("#min").val()
+
+    if (max != null && max != ""){
+        chart.valueAxes[0].maximum = parseInt(max);
+    } else {
+        delete chart.valueAxes[0].maximum
+    }
+
+    if (min != null && min != ""){
+        chart.valueAxes[0].minimum = parseInt(min);
+    } else {
+        delete chart.valueAxes[0].minimum
+    }
+}
+
 function addChart(stream){
     var graph = new AmCharts.AmGraph();
     var axes = chart.valueAxes;
@@ -128,6 +145,10 @@ var chartCallBack = function(dataset){
     if (state) {
         newData = dataset
         chart.dataProvider.push(newData)
+
+        for (var key in newData){
+            $("#btnvalue-" + key.replace(".", "\\.")).html(newData[key])
+        }
 
         if (chart.dataProvider.length > 200){
             chart.dataProvider.splice(0,1);
@@ -196,6 +217,7 @@ function pause(){
 }
 
 function access(stream) {
+    console.log("lololololololololol")
     var hasStream = data.contains(data.getSubscribe(),stream);
     if (hasStream) {
         data.unsubscribe([stream])
@@ -220,7 +242,8 @@ function generateButtons() {
     systems = Object.keys(systems);
     for(var i = 0; i < systems.length; i++) {
         var currSystem = systems[i]
-        $("#buttons").append("<label onclick='access(\""+currSystem+"\")' class='btn btn-primary'><input type='checkbox' autocomplete='off'>"+currSystem+"</label>");
+        $("#button").append("<td><div class='btn-group'  data-toggle='buttons'><label onclick='access(\""+currSystem+"\")' class='btn btn-primary'><input type='checkbox' autocomplete='off'>"+currSystem+"</label></div></td>");
+        $("#value").append("<td><center><p id='btnvalue-" + currSystem + "'></p></center></td>");
     }
     
 }

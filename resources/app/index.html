@@ -18,9 +18,17 @@
 
       <!--<span style="margin: 0 auto; text-alight:center">Delay: <input id="slide" type ="range" min ="10" max="1000" step ="10" value ="200" style="width:500px; display:inline;"/><span id="hz">&nbsp;&nbsp;&nbsp;&nbsp;5 hz</span></span>-->
       <br \> <br \>
-      <div class="btn-group" data-toggle="buttons" id="buttons">
-        
-      </div>
+      <center>
+        <table>
+          <tbody>
+            <tr id="button">
+            </tr>
+            <tr id="value">
+            </tr>
+          </tbody>
+        </table>
+      </center>
+      <input id="max" type="text" name="min" placeholder="Min Axis Value" ><input id="min" name="max" type="text" placeholder="Max Axis Value"><button onclick="axesSet()" >Set Axes</button>
     </div>
   </body>
 </html>
