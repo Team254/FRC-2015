@@ -1,7 +1,9 @@
 package com.team254.frc2015;
 
+import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesySpeedController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -47,8 +49,7 @@ public class HardwareAdaptor {
             Constants.kRightDriveEncoderDIOA, Constants.kRightDriveEncoderDIOB);
     static Encoder kBottomCarriageEncoder = new Encoder(
             Constants.kBottomCarriageEncoderDIOA,
-            Constants.kBottomCarriageEncoderDIOB,
-            true);
+            Constants.kBottomCarriageEncoderDIOB, true);
     static Encoder kTopCarriageEncoder = new Encoder(
             Constants.kTopCarriageEncoderDIOA,
             Constants.kTopCarriageEncoderDIOB);
@@ -62,17 +63,27 @@ public class HardwareAdaptor {
             Constants.kBottomCarriageBrakeSolenoidPort);
     static Solenoid kTopCarriageBrakeSolenoid = new Solenoid(
             Constants.kTopCarriageBrakeSolenoidPort);
+    static Solenoid kTopCarriagePivotSolenoid = new Solenoid(
+            Constants.kTopCarriagePivotSolenoidPort);
+    static Solenoid kTopCarriageGrabberSolenoid = new Solenoid(
+            Constants.kTopCarriageGrabberSolenoidPort);
+    static Solenoid kBottomCarriagePusherSolenoid = new Solenoid(
+            Constants.kBottomCarriagePusherSolenoidPort);
+    static Solenoid kBottomCarriageFlapperSolenoid = new Solenoid(
+            Constants.kBottomCarriageFlapperSolenoidPort);
 
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,
             kRightDriveMotor, kLeftDriveEncoder, kRightDriveEncoder);
-    public static ElevatorCarriage kTopCarriage = new ElevatorCarriage(
-            "top_carriage", ElevatorCarriage.Position.TOP, kTopCarriageMotor,
-            kTopCarriageBrakeSolenoid, kTopCarriageEncoder, kTopCarriageHome);
-    public static ElevatorCarriage kBottomCarriage = new ElevatorCarriage(
-            "bottom_carriage", ElevatorCarriage.Position.BOTTOM,
-            kBottomCarriageMotor, kBottomCarriageBrakeSolenoid,
-            kBottomCarriageEncoder, kBottomCarriageHome);
+    public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
+            kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
+            kTopCarriageHome, kTopCarriagePivotSolenoid,
+            kTopCarriageGrabberSolenoid);
+    public static BottomCarriage kBottomCarriage = new BottomCarriage(
+            "bottom_carriage", kBottomCarriageMotor,
+            kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
+            kBottomCarriageHome, kBottomCarriagePusherSolenoid,
+            kBottomCarriageFlapperSolenoid);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     static {

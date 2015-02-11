@@ -6,7 +6,7 @@ public class BehaviorManager {
     }
 
     public enum PresetHeight {
-        NONE, ONE, TWO, THREE, FOUR, FIVE, SIX
+        NONE, MANUAL, ONE, TWO, THREE, FOUR, FIVE, SIX
     }
 
     public enum IntakeAction {
@@ -40,7 +40,7 @@ public class BehaviorManager {
     public class Commands {
         public ElevatorMode elevator_mode;
         public PresetHeight preset_height;
-        public double manual_height_modifier;
+        public double manual_height;
         public IntakeAction intake_action;
         public RollerAction roller_action;
         public ElevatorAction elevator_action;
@@ -50,9 +50,14 @@ public class BehaviorManager {
         public BottomCarriagePusherAction bottom_carriage_pusher_action;
     }
 
-    private ElevatorMode m_current_mode = ElevatorMode.HUMAN_LOAD_TOTES;
+    private ElevatorMode m_current_mode = ElevatorMode.NONE;
 
     public void update(Commands commands) {
+        boolean mode_changed = false;
+        if (commands.elevator_mode != m_current_mode && commands.elevator_mode != ElevatorMode.NONE) {
+            m_current_mode = commands.elevator_mode;
+            mode_changed = true;
+        }
         if (m_current_mode == ElevatorMode.HUMAN_LOAD_TOTES) {
 
         } else if (m_current_mode == ElevatorMode.FLOOR_LOAD_TOTES) {
@@ -64,7 +69,7 @@ public class BehaviorManager {
         } else if (m_current_mode == ElevatorMode.SCORE_STACK) {
 
         } else {
-            // NONE
+            // Should never happen
         }
     }
 }

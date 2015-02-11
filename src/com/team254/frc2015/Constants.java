@@ -54,6 +54,10 @@ public class Constants extends ConstantsBase {
     // Solenoids
     public static int kBottomCarriageBrakeSolenoidPort = 0;
     public static int kTopCarriageBrakeSolenoidPort = 1;
+    public static int kTopCarriagePivotSolenoidPort = 2;
+    public static int kTopCarriageGrabberSolenoidPort = 3;
+    public static int kBottomCarriagePusherSolenoidPort = 4;
+    public static int kBottomCarriageFlapperSolenoidPort = 5;
 
     // !!! Physical constants
     public static double kElevatorPulleyRadiusInches = 0.564;
