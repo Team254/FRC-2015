@@ -45,6 +45,10 @@ public class CheesySpeedController implements SpeedController {
         return current;
     }
 
+    public double getSignedCurrent() {
+        return getCurrent() * Math.signum(get()) * sign();
+    }
+
     @Override
     public void pidWrite(double output) {
         for (SpeedController controller : m_controllers) {

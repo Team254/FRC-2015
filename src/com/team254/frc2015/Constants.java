@@ -7,7 +7,7 @@ public class Constants extends ConstantsBase {
         new Constants().loadFromFile();
     }
 
-    public static double kOpenLoopCarriageDriveSpeed = 0.25;
+    public static double kOpenLoopCarriageDriveSpeed = 0.5;
     public static double kDriveSensitivity = .75;
 
     // !!! End of editable Constants! !!!
@@ -93,11 +93,6 @@ public class Constants extends ConstantsBase {
     public static double kElevatorCarriagePositionKv = 0.015;
     public static double kElevatorCarriagePositionKa = 0.0;
     public static double kElevatorOnTargetError = 1.0;
-
-    // TopCarriageForceController gains
-    public static double kElevatorCarriageForceControllerKp = 0.025;
-    public static double kElevatorCarriageForceControllerKi = 0.0;
-    public static double kElevatorCarriageForceControllerKd = 0.0;
 
     @Override
     public String getFileLocation() {

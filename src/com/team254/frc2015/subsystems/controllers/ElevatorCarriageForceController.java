@@ -1,39 +1,48 @@
 package com.team254.frc2015.subsystems.controllers;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
-import com.team254.frc2015.subsystems.TopCarriage;
+import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.Controller;
-import com.team254.lib.util.SynchronousPID;
 
 public class ElevatorCarriageForceController extends Controller {
-    
+
     CheesySpeedController m_top_carriage = HardwareAdaptor.kTopCarriageMotor;
     CheesySpeedController m_bottom_carriage = HardwareAdaptor.kBottomCarriageMotor;
-    
-    SynchronousPID m_pid;
-    
-    public ElevatorCarriageForceController() {
-        m_pid = new SynchronousPID(Constants.kElevatorCarriageForceControllerKp,
-                Constants.kElevatorCarriageForceControllerKi,
-                Constants.kElevatorCarriageForceControllerKd);
+
+    double m_squeeze_power = 0;
+    boolean m_follow_bottom = true;
+    double m_result = 0;
+
+    public ElevatorCarriageForceController(ElevatorCarriage follower) {
+        if (follower instanceof BottomCarriage) {
+            m_follow_bottom = false;
+        } else {
+            m_follow_bottom = true;
+        }
     }
-    
-    public void setGoal(double current_sum) {
-        m_pid.setSetpoint(current_sum);
+
+    public void setSqueezePower(double squeeze_power) {
+        m_squeeze_power = squeeze_power;
     }
 
     @Override
     public void reset() {
-        m_pid.reset();
+        m_result = 0;
     }
-    
-    public double update() {
-        double total_current = -Math.signum(m_top_carriage.get()) * m_top_carriage.getCurrent() +
-                Math.signum(m_bottom_carriage.get()) * m_bottom_carriage.getCurrent();
-        return -m_pid.calculate(total_current);
+
+    public void update() {
+        if (m_follow_bottom) {
+            m_result = m_bottom_carriage.get() - m_squeeze_power;
+        } else {
+            m_result = m_top_carriage.get() - m_squeeze_power;
+        }
+    }
+
+    @Override
+    public double get() {
+        return m_result;
     }
 
     @Override

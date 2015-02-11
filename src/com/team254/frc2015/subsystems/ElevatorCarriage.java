@@ -162,18 +162,19 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         setSpeedSafe(speed);
     }
 
-    public synchronized void setCurrentSetpoint(double current) {
+    public synchronized void setSqueezeSetpoint(double squeeze_power) {
         if (!(m_controller instanceof ElevatorCarriageForceController)) {
-            m_controller = new ElevatorCarriageForceController();
+            m_controller = new ElevatorCarriageForceController(this);
         }
-        ((ElevatorCarriageForceController) m_controller).setGoal(current);
+        ((ElevatorCarriageForceController) m_controller)
+                .setSqueezePower(squeeze_power);
     }
 
     @Override
     public synchronized void update() {
         if (!m_initialized) {
-            double new_setpoint = m_homing_controller.update(getSetpoint().pos,
-                    getRelativeHeight());
+            m_homing_controller.update(getSetpoint().pos, getRelativeHeight());
+            double new_setpoint = m_homing_controller.get();
             setPositionSetpointUnsafe(new_setpoint, false);
             if (m_homing_controller.isReady()) {
                 m_initialized = true;
@@ -189,16 +190,16 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             if (position_controller.isOnTarget()) {
                 setBrake(m_brake_on_target);
                 if (!m_brake_on_target) {
-                    setSpeedSafe(position_controller.update(getHeight(),
-                            getVelocity()));
+                    position_controller.update(getHeight(), getVelocity());
+                    setSpeedSafe(position_controller.get());
                 }
             } else {
-                setSpeedSafe(position_controller.update(getHeight(),
-                        getVelocity()));
+                position_controller.update(getHeight(), getVelocity());
+                setSpeedSafe(position_controller.get());
             }
         } else if (m_controller instanceof ElevatorCarriageForceController) {
-            setSpeedSafe(((ElevatorCarriageForceController) m_controller)
-                    .update());
+            ((ElevatorCarriageForceController) m_controller).update();
+            setSpeedSafe(m_controller.get());
         } else {
             // do nothing.
         }
@@ -209,7 +210,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         states.put("height", getHeight());
         states.put("setpoint", getSetpoint().pos);
         states.put("home_dio", getHomeSensorHovered());
-        states.put("current", m_motor.getCurrent());
+        states.put("current", m_motor.getSignedCurrent());
     }
 
     public boolean getHomeSensorHovered() {
