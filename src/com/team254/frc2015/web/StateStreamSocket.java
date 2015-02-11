@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -89,7 +90,12 @@ public class StateStreamSocket extends WebSocketAdapter
       String[] keys = subscribedKeys.keySet().toArray(new String[subscribedKeys.size()]);
       JSONObject states = SystemManager.getInstance().get(keys);
       String out = states.toJSONString();
-      getRemote().sendStringByFuture(out);
+      try {
+    	  getRemote().sendStringByFuture(out);
+      } catch (WebSocketException e) {
+    	  System.err.println("Caught WebSocketException in StateStreamSocket");
+    	  return false;
+      }
       return true;
     }
     

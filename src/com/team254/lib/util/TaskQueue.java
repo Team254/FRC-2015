@@ -36,8 +36,11 @@ public class TaskQueue implements Runnable {
           runnable.run();
         }
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
+    	System.err.println("Caught InterruptedException in task queue");
         e.printStackTrace();
+      } catch (RuntimeException e) {
+    	  System.err.println("Caught run time exception in task queue");
+    	  e.printStackTrace();
       }
     }
   }
