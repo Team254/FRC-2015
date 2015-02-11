@@ -65,7 +65,7 @@ public class Constants extends ConstantsBase {
     public static double kTurnSlipFactor = 1.2;
 
     // !!! Program constants
-    public static double kDt = 0.005;
+    public static double kControlLoopsDt = 0.005;
 
     // !!! Control loop constants
     // Common carriage parameters
