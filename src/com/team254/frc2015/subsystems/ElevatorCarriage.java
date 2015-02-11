@@ -1,6 +1,7 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
+import com.team254.frc2015.subsystems.controllers.ElevatorCarriageForceController;
 import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
@@ -161,6 +162,13 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         setSpeedSafe(speed);
     }
 
+    public synchronized void setCurrentSetpoint(double current) {
+        if (!(m_controller instanceof ElevatorCarriageForceController)) {
+            m_controller = new ElevatorCarriageForceController();
+        }
+        ((ElevatorCarriageForceController) m_controller).setGoal(current);
+    }
+
     @Override
     public synchronized void update() {
         if (!m_initialized) {
@@ -188,6 +196,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 setSpeedSafe(position_controller.update(getHeight(),
                         getVelocity()));
             }
+        } else if (m_controller instanceof ElevatorCarriageForceController) {
+            setSpeedSafe(((ElevatorCarriageForceController) m_controller)
+                    .update());
         } else {
             // do nothing.
         }

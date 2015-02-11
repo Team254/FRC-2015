@@ -23,13 +23,13 @@ public class HardwareAdaptor {
             new VictorSP(Constants.kRightDriveMotorPWM), new int[] {
                     Constants.kRightDriveMotor2PDP,
                     Constants.kRightDriveMotor2PDP });
-    static CheesySpeedController kTopCarriageMotor = new CheesySpeedController(
+    public static CheesySpeedController kTopCarriageMotor = new CheesySpeedController(
             new SpeedController[] {
                     new VictorSP(Constants.kTopCarriageMotor1PWM),
                     new VictorSP(Constants.kTopCarriageMotor2PWM) }, new int[] {
                     Constants.kTopCarriageMotor1PDP,
                     Constants.kTopCarriageMotor2PDP });
-    static CheesySpeedController kBottomCarriageMotor = new CheesySpeedController(
+    public static CheesySpeedController kBottomCarriageMotor = new CheesySpeedController(
             new SpeedController[] {
                     new VictorSP(Constants.kBottomCarriageMotor1PWM),
                     new VictorSP(Constants.kBottomCarriageMotor2PWM) },
