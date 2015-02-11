@@ -209,6 +209,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         states.put("height", getHeight());
         states.put("setpoint", getSetpoint().pos);
         states.put("home_dio", getHomeSensorHovered());
+        states.put("current", m_motor.getCurrent());
     }
 
     public boolean getHomeSensorHovered() {
