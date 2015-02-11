@@ -1,5 +1,7 @@
 package com.team254.frc2015.subsystems;
 
+import com.team254.frc2015.Constants;
+import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.lib.util.CheesySpeedController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -13,9 +15,19 @@ public class TopCarriage extends ElevatorCarriage {
     public TopCarriage(String name, CheesySpeedController motor,
             Solenoid brake, Encoder encoder, DigitalInput home, Solenoid pivot,
             Solenoid grabber) {
-        super(name, ElevatorCarriage.Position.TOP, motor, brake, encoder, home);
+        super(name, motor, brake, encoder, home);
         m_pivot = pivot;
         m_grabber = grabber;
+
+        m_homing_controller = new ElevatorHomingController(this, false,
+                Constants.kControlLoopsDt);
+    }
+
+    @Override
+    public void reloadConstants() {
+        m_limits.m_min_position = Constants.kTopCarriageMinPositionInches;
+        m_limits.m_max_position = Constants.kTopCarriageMaxPositionInches;
+        m_limits.m_home_position = Constants.kTopCarriageHomePositionInches;
     }
 
     public void setPivotDown(boolean down) {

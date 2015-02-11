@@ -1,5 +1,7 @@
 package com.team254.frc2015.subsystems;
 
+import com.team254.frc2015.Constants;
+import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.lib.util.CheesySpeedController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,10 +16,19 @@ public class BottomCarriage extends ElevatorCarriage {
     public BottomCarriage(String name, CheesySpeedController motor,
             Solenoid brake, Encoder encoder, DigitalInput home,
             Solenoid pusher, Solenoid flapper) {
-        super(name, ElevatorCarriage.Position.BOTTOM, motor, brake, encoder,
-                home);
+        super(name, motor, brake, encoder, home);
         m_pusher = pusher;
         m_flapper = flapper;
+
+        m_homing_controller = new ElevatorHomingController(this, true,
+                Constants.kControlLoopsDt);
+    }
+
+    @Override
+    public void reloadConstants() {
+        m_limits.m_min_position = Constants.kBottomCarriageMinPositionInches;
+        m_limits.m_max_position = Constants.kBottomCarriageMaxPositionInches;
+        m_limits.m_home_position = Constants.kBottomCarriageHomePositionInches;
     }
 
     public void setPusherExtended(boolean extended) {
