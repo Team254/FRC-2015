@@ -1,6 +1,7 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.lib.util.CheesySpeedController;
+import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Pose;
 import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Subsystem;
@@ -34,7 +35,11 @@ public class Drive extends Subsystem {
 		this.m_right_encoder.setDistancePerPulse(m_inches_per_tick);
 	}
 
-	public void setLeftRight(double left, double right) {
+	public void set(DriveSignal signal) {
+		setLeftRight(signal.leftMotor, signal.rightMotor);
+	}
+
+	private void setLeftRight(double left, double right) {
 		m_left_motor.set(left);
 		m_right_motor.set(-right);
 	}
