@@ -31,7 +31,7 @@ public class DriveStraightController extends
 
 		Pose relative_pose = m_relative_pose_generator.get(currentPose);
 		double throttle = update(relative_pose.getLeftDistance(),
-				relative_pose.getLeftVelocity());
+				currentPose.getLeftVelocity());
 		double turn = pid.calculate(relative_pose.getHeading());
 
 		return new DriveSignal(throttle + turn, throttle - turn);

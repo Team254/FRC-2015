@@ -24,7 +24,7 @@ public class DriveTurnController extends TrajectoryFollowingPositionController {
 		}
 		Pose relative_pose = m_relative_pose_generator.get(currentPose);
 		double turn = update(relative_pose.getHeading(),
-				relative_pose.getHeadingVelocity());
+				currentPose.getHeadingVelocity());
 		return new DriveSignal(turn, -turn);
 	}
 
