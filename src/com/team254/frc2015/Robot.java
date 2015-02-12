@@ -10,6 +10,7 @@ import com.team254.lib.util.Looper;
 import com.team254.lib.util.MultiLooper;
 import com.team254.lib.util.SystemManager;
 
+import com.team254.lib.util.gyro.GyroThread;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,6 +34,7 @@ public class Robot extends IterativeRobot {
     Joystick buttonBoard = new Joystick(2);
 
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
+    GyroThread mGyroThread = new GyroThread();
 
     private int disabledIterations = 0;
 
@@ -44,6 +46,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         System.out.println("Start robotInit()");
         mLidarLiteSensor.start();
+        mGyroThread.start();
         WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
@@ -135,6 +138,7 @@ public class Robot extends IterativeRobot {
         if (disabledIterations % 50 == 0) {
             System.gc();
         }
+        // System.out.println("Gyro hasdata: " + mGyroThread.hasData() + ", Angle: " + mGyroThread.getAngle());
     }
 
 }
