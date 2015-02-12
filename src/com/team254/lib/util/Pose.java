@@ -58,4 +58,19 @@ public class Pose {
 					pose.getHeadingVelocity());
 		}
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Pose))
+			return false;
+		if (obj == this)
+			return true;
+		Pose other_pose = (Pose) obj;
+		return other_pose.getLeftDistance() == getLeftDistance()
+				&& other_pose.getRightDistance() == getRightDistance()
+				&& other_pose.getLeftVelocity() == getLeftVelocity()
+				&& other_pose.getRightVelocity() == getRightVelocity()
+				&& other_pose.getHeading() == getHeading()
+				&& other_pose.getHeadingVelocity() == getHeadingVelocity();
+	}
 }
