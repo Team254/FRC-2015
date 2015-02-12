@@ -173,8 +173,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     @Override
     public synchronized void update() {
         if (!m_initialized) {
-            m_homing_controller.update(getSetpoint().pos, getRelativeHeight());
-            double new_setpoint = m_homing_controller.get();
+            double new_setpoint = m_homing_controller.update(getSetpoint().pos, getRelativeHeight());
             setPositionSetpointUnsafe(new_setpoint, false);
             if (m_homing_controller.isReady()) {
                 m_initialized = true;
@@ -198,8 +197,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 setSpeedSafe(position_controller.get());
             }
         } else if (m_controller instanceof ElevatorCarriageForceController) {
-            ((ElevatorCarriageForceController) m_controller).update();
-            setSpeedSafe(m_controller.get());
+            setSpeedSafe(((ElevatorCarriageForceController) m_controller).update());
         } else {
             // do nothing.
         }

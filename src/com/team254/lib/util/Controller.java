@@ -6,6 +6,4 @@ public abstract class Controller {
     public abstract void reset();
 
     public abstract boolean isOnTarget();
-
-    public abstract double get();
 }

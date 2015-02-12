@@ -13,7 +13,6 @@ public class ElevatorCarriageForceController extends Controller {
 
     double m_squeeze_power = 0;
     boolean m_follow_bottom = true;
-    double m_result = 0;
 
     public ElevatorCarriageForceController(ElevatorCarriage follower) {
         if (follower instanceof BottomCarriage) {
@@ -28,21 +27,14 @@ public class ElevatorCarriageForceController extends Controller {
     }
 
     @Override
-    public void reset() {
-        m_result = 0;
-    }
+    public void reset() {}
 
-    public void update() {
+    public double update() {
         if (m_follow_bottom) {
-            m_result = m_bottom_carriage.get() - m_squeeze_power;
+            return m_bottom_carriage.get() - m_squeeze_power;
         } else {
-            m_result = m_top_carriage.get() - m_squeeze_power;
+            return m_top_carriage.get() - m_squeeze_power;
         }
-    }
-
-    @Override
-    public double get() {
-        return m_result;
     }
 
     @Override

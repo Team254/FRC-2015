@@ -10,7 +10,6 @@ public class ElevatorHomingController extends Controller {
     private boolean m_move_off_positive;
     private double m_dt;
     private double m_zero_point;
-    private double m_result = 0;
 
     public ElevatorHomingController(ElevatorCarriage carriage,
             boolean move_off_positive, double dt) {
@@ -25,7 +24,7 @@ public class ElevatorHomingController extends Controller {
 
     private HomingStates m_state = HomingStates.UNINITIALIZED;
 
-    public void update(double old_setpoint, double current_relative_position) {
+    public double update(double old_setpoint, double current_relative_position) {
         double fast_move_speed = 4.0;
         double slow_move_speed = 1.0;
 
@@ -69,7 +68,7 @@ public class ElevatorHomingController extends Controller {
             break;
         }
         m_state = next_state;
-        m_result = new_setpoint;
+        return new_setpoint;
     }
 
     public boolean isReady() {
@@ -81,14 +80,7 @@ public class ElevatorHomingController extends Controller {
     }
 
     @Override
-    public double get() {
-        return m_result;
-    }
-
-    @Override
-    public void reset() {
-        m_result = 0;
-    }
+    public void reset() {}
 
     @Override
     public boolean isOnTarget() {

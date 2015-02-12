@@ -33,7 +33,6 @@ public class TrajectoryFollowingPositionController extends Controller {
         return m_follower.getCurrentSetpoint();
     }
 
-    @Override
     public double get() {
         return m_result;
     }
