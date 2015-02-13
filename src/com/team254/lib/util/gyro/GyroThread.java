@@ -1,10 +1,10 @@
 package com.team254.lib.util.gyro;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableSet;
-
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.team254.lib.util.Util;
 
 /**
  * Thread which is responsible for reading the gyro
@@ -89,9 +89,9 @@ public class GyroThread {
                 return;
             }
             GyroInterface.StatusFlag status = GyroInterface.extractStatus(reading);
-            ImmutableSet<GyroInterface.ErrorFlag> errors = GyroInterface.extractErrors(reading);
+            List<GyroInterface.ErrorFlag> errors = GyroInterface.extractErrors(reading);
             if (GyroInterface.StatusFlag.VALID_DATA != status || !errors.isEmpty()) {
-                System.out.println("Gyro read failed. Status: " + status + ". Errors: " + Joiner.on(", ").join(errors));
+                System.out.println("Gyro read failed. Status: " + status + ". Errors: " + Util.joinStrings(", ", errors));
                 return;
             }
 

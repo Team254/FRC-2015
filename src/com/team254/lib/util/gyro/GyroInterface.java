@@ -1,10 +1,13 @@
 package com.team254.lib.util.gyro;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableSet;
 import edu.wpi.first.wpilibj.SPI;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.team254.lib.util.Util;
 
 /**
  * Deals with the SPI interface to the gyro. Datasheet for the command used here can be found at:
@@ -34,7 +37,7 @@ public class GyroInterface {
         }
     }
 
-    private final ImmutableSet<ErrorFlag> ALL_ERRORS = ImmutableSet.copyOf(ErrorFlag.values());
+    private final List<ErrorFlag> ALL_ERRORS = Arrays.asList(ErrorFlag.values());
 
     private final SPI mSPI;
 
@@ -60,7 +63,7 @@ public class GyroInterface {
         if (result != 1) {
             System.out.println(
                     "Unexpected self-check response: 0x" + Integer.toHexString(result) +
-                            " errors: " + Joiner.on(", ").join(extractErrors(result)));
+                            " errors: " + Util.joinStrings(", ", extractErrors(result)));
         }
         // wait for the fault conditions to occur
         try {
@@ -169,14 +172,14 @@ public class GyroInterface {
         }
     }
 
-    public static ImmutableSet<ErrorFlag> extractErrors(int result) {
-        ImmutableSet.Builder<ErrorFlag> builder = ImmutableSet.<ErrorFlag>builder();
+    public static List<ErrorFlag> extractErrors(int result) {
+    	ArrayList<ErrorFlag> errors = new ArrayList<ErrorFlag>(ErrorFlag.values().length);
         for (ErrorFlag errorFlag : ErrorFlag.values()) {
             if ((result & (1 << errorFlag.mBit)) != 0) {
-                builder.add(errorFlag);
+                errors.add(errorFlag);
             }
         }
-        return builder.build();
+        return errors;
     }
 
     public class GyroException extends Exception {
