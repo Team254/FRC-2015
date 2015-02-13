@@ -104,19 +104,19 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(),
                 rightStick.getRawButton(1), true);
-        // double bottom_speed = buttonBoard.getRawButton(9) ?
-        // Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(10)
-        // ? -Constants.kOpenLoopCarriageDriveSpeed : 0;
-        // bottom_carriage.setOpenLoop(bottom_speed,false);
-        if (buttonBoard.getRawButton(9)) {
+        double bottom_speed = buttonBoard.getRawButton(9) ?
+        Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(10)
+        ? -Constants.kOpenLoopCarriageDriveSpeed : 0;
+        bottom_carriage.setOpenLoop(bottom_speed,false);
+        /*if (buttonBoard.getRawButton(9)) {
             bottom_carriage.setPositionSetpoint(20.0, false);
         } else if (buttonBoard.getRawButton(10)) {
             bottom_carriage.setPositionSetpoint(10.0, false);
-        }
-        // double top_speed = buttonBoard.getRawButton(7) ?
-        // -Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(8)
-        // ? Constants.kOpenLoopCarriageDriveSpeed : 0;
-        // top_carriage.setOpenLoop(top_speed,false);
+        }*/
+         double top_speed = buttonBoard.getRawButton(7) ?
+         -Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(8)
+         ? Constants.kOpenLoopCarriageDriveSpeed : 0;
+         top_carriage.setOpenLoop(top_speed,false);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class Robot extends IterativeRobot {
         if (disabledIterations % 50 == 0) {
             System.gc();
         }
-        // System.out.println("Gyro hasdata: " + mGyroThread.hasData() + ", Angle: " + mGyroThread.getAngle());
+        //System.out.println("Gyro hasdata: " + mGyroThread.hasData() + ", Angle: " + mGyroThread.getAngle());
     }
 
 }
