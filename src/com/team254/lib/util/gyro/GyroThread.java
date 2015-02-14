@@ -23,6 +23,7 @@ public class GyroThread {
     // thread communication variables
     private volatile boolean mVolatileHasData = false;
     private volatile double mVolatileAngle = 0;
+    private volatile double mVolatileRate = 0;
     private volatile boolean mVolatileShouldReZero = true;
 
     public void start() {
@@ -37,6 +38,10 @@ public class GyroThread {
 
     public double getAngle() {
         return mVolatileAngle;
+    }
+    
+    public double getRate() {
+        return mVolatileRate;
     }
 
     public void rezero() {
@@ -78,6 +83,7 @@ public class GyroThread {
         private boolean mHasEnoughZeroingSamples;
         private double mZeroBias;
         private double mAngle = 0;
+        private double mLastAngle = 0;
 
         @Override
         public void run() {
@@ -125,7 +131,8 @@ public class GyroThread {
                 return;
             }
 
-            mAngle += (unbiasedAngleRate - mZeroBias) / K_READING_RATE;
+            mVolatileRate = unbiasedAngleRate - mZeroBias;
+            mAngle += mVolatileRate / K_READING_RATE;
             mVolatileAngle = mAngle;
             mVolatileHasData = true;
         }

@@ -7,7 +7,7 @@ import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
 
-public class TestAutoMode extends AutoMode {
+public class TestElevatorAutoMode extends AutoMode {
 
 	private void moveElevator(boolean go_down) {
 		ElevatorSafety.Setpoints setpoints = new ElevatorSafety.Setpoints();

@@ -39,10 +39,10 @@ public class Constants extends ConstantsBase {
     public static int kRightIntakeMotorPDP = 4;
 
     // DIO
-    public static int kLeftDriveEncoderDIOA = 0;
-    public static int kLeftDriveEncoderDIOB = 1;
-    public static int kRightDriveEncoderDIOA = 2;
-    public static int kRightDriveEncoderDIOB = 3;
+    public static int kLeftDriveEncoderDIOA = 12; // Flipped for polarity
+    public static int kLeftDriveEncoderDIOB = 13; // Flipped for polarity
+    public static int kRightDriveEncoderDIOA = 11;
+    public static int kRightDriveEncoderDIOB = 10;
     public static int kBottomCarriageEncoderDIOA = 15;
     public static int kBottomCarriageEncoderDIOB = 14;
     public static int kTopCarriageEncoderDIOA = 17;
@@ -94,6 +94,23 @@ public class Constants extends ConstantsBase {
     public static double kElevatorCarriagePositionKv = 0.015;
     public static double kElevatorCarriagePositionKa = 0.0;
     public static double kElevatorOnTargetError = 1.0;
+
+    // Drive gains
+    public static double kDriveEncoderCountsPerRev = 250.0;
+    public static double kDriveWheelSizeInches = 4.0;
+
+    // DriveStraightController gains
+    public static double kDriveMaxSpeedInchesPerSec = 120.0;
+    public static double kDriveMaxAccelInchesPerSec2 = 95.0;
+    public static double kDrivePositionKp = 0.08;
+    public static double kDrivePositionKi = 0;
+    public static double kDrivePositionKd = 0;
+    public static double kDriveStraightKp = 0.0;
+    public static double kDriveStraightKi = 0;
+    public static double kDriveStraightKd = 0;
+    public static double kDrivePositionKv = 0.008;
+    public static double kDrivePositionKa = 0;
+    public static double kDriveOnTargetError = 0.5;
 
     @Override
     public String getFileLocation() {

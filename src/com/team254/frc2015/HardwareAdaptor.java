@@ -5,6 +5,7 @@ import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesySpeedController;
+import com.team254.lib.util.gyro.GyroThread;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -72,9 +73,12 @@ public class HardwareAdaptor {
     static Solenoid kBottomCarriageFlapperSolenoid = new Solenoid(
             Constants.kBottomCarriageFlapperSolenoidPort);
 
+    // Sensors
+    public static GyroThread kGyroThread = new GyroThread();
+    
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,
-            kRightDriveMotor, kLeftDriveEncoder, kRightDriveEncoder);
+            kRightDriveMotor, kLeftDriveEncoder, kRightDriveEncoder, kGyroThread);
     public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
             kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
             kTopCarriageHome, kTopCarriagePivotSolenoid,

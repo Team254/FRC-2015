@@ -137,7 +137,7 @@ public class CheesyDriveHelper {
 		}
 		signal.leftMotor = leftPwm;
 		signal.rightMotor = rightPwm;
-		drive.set(signal);
+		drive.setOpenLoop(signal);
 
 	}
 

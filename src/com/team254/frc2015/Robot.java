@@ -1,16 +1,18 @@
 package com.team254.frc2015;
 
 import com.team254.frc2015.auto.AutoModeExecuter;
-import com.team254.frc2015.auto.modes.TestAutoMode;
+import com.team254.frc2015.auto.modes.TestDriveAutoMode;
+import com.team254.frc2015.auto.modes.TestElevatorAutoMode;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
+import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.LidarLiteSensor;
 import com.team254.lib.util.Looper;
 import com.team254.lib.util.MultiLooper;
 import com.team254.lib.util.SystemManager;
-
 import com.team254.lib.util.gyro.GyroThread;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -34,7 +36,6 @@ public class Robot extends IterativeRobot {
     Joystick buttonBoard = new Joystick(2);
 
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
-    GyroThread mGyroThread = new GyroThread();
 
     private int disabledIterations = 0;
 
@@ -46,17 +47,19 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         System.out.println("Start robotInit()");
         mLidarLiteSensor.start();
-        mGyroThread.start();
+        HardwareAdaptor.kGyroThread.start();
         WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
+        looper.addLoopable(drive);
         logUpdater.start();
+        
     }
 
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
-        autoModeRunner.setAutoMode(new TestAutoMode());
+        autoModeRunner.setAutoMode(new TestDriveAutoMode());
         autoModeRunner.start();
 
         /*
@@ -123,10 +126,16 @@ public class Robot extends IterativeRobot {
     public void disabledInit() {
         System.out.println("Start disabledInit()");
 
+        // Stop auto mode
         autoModeRunner.stop();
-
+        
+        // Stop control loops
         looper.stop();
 
+        // Stop drive
+        drive.setOpenLoop(DriveSignal.NEUTRAL);
+
+        // Reload constants
         drive.reloadConstants();
         top_carriage.reloadConstants();
         bottom_carriage.reloadConstants();
@@ -138,7 +147,7 @@ public class Robot extends IterativeRobot {
         if (disabledIterations % 50 == 0) {
             System.gc();
         }
-        //System.out.println("Gyro hasdata: " + mGyroThread.hasData() + ", Angle: " + mGyroThread.getAngle());
+        //System.out.println("Gyro hasdata: " + HardwareAdaptor.kGyroThread.hasData() + ", Angle: " + HardwareAdaptor.kGyroThread.getAngle() + ", Rate: " + HardwareAdaptor.kGyroThread.getRate());
     }
 
 }

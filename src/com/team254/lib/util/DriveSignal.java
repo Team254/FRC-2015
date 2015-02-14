@@ -7,4 +7,5 @@ public class DriveSignal {
 		this.leftMotor = left;
 		this.rightMotor = right;
 	}
+	public static DriveSignal NEUTRAL = new DriveSignal(0, 0);
 }
