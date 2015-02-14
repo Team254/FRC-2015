@@ -17,18 +17,40 @@ public class DriveStraightController implements Drive.DriveController {
     private SynchronousPID mTurnPid;
     private Pose mSetpointRelativePose;
 
-	public DriveStraightController(
-            double kpDist, double kiDist, double kdDist, double kvDist, double kaDist,
-            double kpTurn, double kiTurn, double kdTurn,
-			double on_target_delta, double maxVelocity) {
+	public DriveStraightController(Pose priorSetpoint, double goalSetpoint, double maxVelocity) {
         TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
         config.dt = Constants.kControlLoopsDt;
         config.max_acc = Constants.kDriveMaxAccelInchesPerSec2;
         config.max_vel = maxVelocity;
+
         mDistanceController = new TrajectoryFollowingPositionController(
-                kpDist, kiDist, kdDist, kvDist, kaDist, on_target_delta, config);
-		this.mTurnPid = new SynchronousPID();
-		mTurnPid.setPID(kpTurn, kiTurn, kdTurn);
+                Constants.kDrivePositionKp,
+                Constants.kDrivePositionKi,
+                Constants.kDrivePositionKd,
+                Constants.kDrivePositionKv,
+                Constants.kDrivePositionKa,
+                Constants.kDriveOnTargetError,
+                config);
+
+        TrajectorySetpoint initialSetpoint = new TrajectorySetpoint();
+        initialSetpoint.pos = encoderDistance(priorSetpoint);
+        initialSetpoint.vel = encoderVelocity(priorSetpoint);
+        initialSetpoint.acc = 0;
+        mDistanceController.setGoal(initialSetpoint, goalSetpoint);
+
+        mTurnPid = new SynchronousPID();
+        mTurnPid.setPID(
+                Constants.kDriveStraightKp,
+                Constants.kDriveStraightKi,
+                Constants.kDriveStraightKd);
+        mTurnPid.setSetpoint(priorSetpoint.getHeading());
+        mSetpointRelativePose = new Pose(
+                priorSetpoint.getLeftDistance(),
+                priorSetpoint.getRightDistance(),
+                0,
+                0,
+                priorSetpoint.getHeading(),
+                priorSetpoint.getHeadingVelocity());
 	}
 
     @Override
@@ -54,22 +76,6 @@ public class DriveStraightController implements Drive.DriveController {
                 mSetpointRelativePose.getRightVelocity() + velocity,
                 0,
                 0);
-    }
-
-    public void setGoal(Pose priorSetpoint, double goalSetpoint) {
-        TrajectorySetpoint initialSetpoint = new TrajectorySetpoint();
-        initialSetpoint.pos = encoderDistance(priorSetpoint);
-        initialSetpoint.vel = encoderVelocity(priorSetpoint);
-        initialSetpoint.acc = 0;
-        mDistanceController.setGoal(initialSetpoint, goalSetpoint);
-        mTurnPid.setSetpoint(priorSetpoint.getHeading());
-        mSetpointRelativePose = new Pose(
-                priorSetpoint.getLeftDistance(),
-                priorSetpoint.getRightDistance(),
-                0,
-                0,
-                priorSetpoint.getHeading(),
-                priorSetpoint.getHeadingVelocity());
     }
 
     public static double encoderVelocity(Pose pose) {

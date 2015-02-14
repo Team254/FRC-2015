@@ -57,28 +57,17 @@ public class Drive extends Subsystem implements Loopable {
 	public synchronized void setDistanceSetpoint(double distance, double velocity) {
 		// 0 < vel < max_vel
 		double vel_to_use = Math.min(Constants.kDriveMaxSpeedInchesPerSec, Math.max(velocity, 0));
-
-        Pose currentSetpoint;
-        if (m_controller != null) {
-            // taking over from a previous controller, continue from its most recent desired state
-            currentSetpoint = m_controller.getCurrentSetpoint();
-        } else {
-            // first closed-loop action, continue from the robot's current physical state
-            currentSetpoint = getPhysicalPose();
-        }
-
-        DriveStraightController driveStraightController = new DriveStraightController(
-                Constants.kDrivePositionKp, Constants.kDrivePositionKi,
-                Constants.kDrivePositionKd, Constants.kDrivePositionKv,
-                Constants.kDrivePositionKa, Constants.kDriveStraightKp,
-                Constants.kDriveStraightKi, Constants.kDriveStraightKd,
-                Constants.kDriveOnTargetError, vel_to_use);
-        driveStraightController.setGoal(currentSetpoint, distance);
-        m_controller = driveStraightController;
+        m_controller = new DriveStraightController(
+                getPoseToContinueFrom(),
+                distance,
+                vel_to_use);
 	}
 
-    public synchronized void setTurnSetPoint(double heading, double max_velocity) {
-        throw new RuntimeException("Implement me");
+    public synchronized void setTurnSetPoint(double heading, double velocity) {
+        throw new RuntimeException("not implemented");
+        /* velocity = Math.min(Constants.kDriveTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
+        TurnInPlaceController turnInPlaceController = new TurnInPlaceController();
+        turnInPlaceController.setGoal(getPoseToContinueFrom(), heading, velocity);*/
     }
 
 	@Override
@@ -108,6 +97,15 @@ public class Drive extends Subsystem implements Loopable {
     private void setDriveOutputs(DriveSignal signal) {
         m_left_motor.set(signal.leftMotor);
         m_right_motor.set(-signal.rightMotor);
+    }
+
+    private Pose getPoseToContinueFrom() {
+        if (m_controller != null) {
+            // taking over from a previous controller, continue from its most recent desired state
+            return m_controller.getCurrentSetpoint();
+        }
+        // first closed-loop action, continue from the robot's current physical state
+        return getPhysicalPose();
     }
 
     /**
