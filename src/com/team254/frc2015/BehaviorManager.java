@@ -1,8 +1,20 @@
 package com.team254.frc2015;
 
+import com.team254.frc2015.subsystems.BottomCarriage;
+import com.team254.frc2015.subsystems.Drive;
+import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.TopCarriage;
+
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
 public class BehaviorManager {
+    protected Drive drive = HardwareAdaptor.kDrive;
+    protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
+    protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
+    protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
+
     public enum ElevatorMode {
-        NONE, HUMAN_LOAD_TOTES, FLOOR_LOAD_TOTES, FLOOR_LOAD_CANS, SCORE_CAN, SCORE_STACK
+        BOTTOM_CARRIAGE_MODE, TOP_CARRIAGE_MODE
     }
 
     public enum PresetHeight {
@@ -10,15 +22,15 @@ public class BehaviorManager {
     }
 
     public enum IntakeAction {
-        NONE, OPEN, CLOSE, AUTO_CLOSE
+        NONE, OPEN, CLOSE
     }
 
     public enum RollerAction {
-        NONE, INTAKE, EXHAUST, AUTO_INTAKE
+        NONE, INTAKE, EXHAUST
     }
 
     public enum ElevatorAction {
-        NONE, INDEX, AUTO_INDEX
+        NONE, HP_LOAD_ACTION, FLOOR_LOAD_ACTION, LOAD_PREP_ACTION
     }
 
     public enum TopCarriagePivotAction {
@@ -50,26 +62,84 @@ public class BehaviorManager {
         public BottomCarriagePusherAction bottom_carriage_pusher_action;
     }
 
-    private ElevatorMode m_current_mode = ElevatorMode.NONE;
+    private ElevatorMode m_current_mode = ElevatorMode.BOTTOM_CARRIAGE_MODE;
 
     public void update(Commands commands) {
-        boolean mode_changed = false;
-        if (commands.elevator_mode != m_current_mode && commands.elevator_mode != ElevatorMode.NONE) {
+        boolean wants_mode_changed = false;
+        if (commands.elevator_mode != m_current_mode) {
             m_current_mode = commands.elevator_mode;
-            mode_changed = true;
+            wants_mode_changed = true;
         }
-        if (m_current_mode == ElevatorMode.HUMAN_LOAD_TOTES) {
+        boolean can_close_intake = true;
+        boolean can_control_top_carriage = true;
+        boolean can_control_bottom_carriage = true;
+        if (m_current_mode == ElevatorMode.BOTTOM_CARRIAGE_MODE) {
+            if (commands.elevator_action == ElevatorAction.HP_LOAD_ACTION) {
+                // TODO
+            } else if (commands.elevator_action == ElevatorAction.FLOOR_LOAD_ACTION) {
+                // TODO
+            } else if (commands.elevator_action == ElevatorAction.LOAD_PREP_ACTION) {
+                // TODO
+            }
+        } else { /* if (m_current_mode == ElevatorMode.TOP_CARRIAGE_MODE) */
+            if (commands.elevator_action == ElevatorAction.FLOOR_LOAD_ACTION) {
+                // TODO
+            } else if (commands.elevator_action == ElevatorAction.LOAD_PREP_ACTION) {
+                // TODO
+            }
+        }
 
-        } else if (m_current_mode == ElevatorMode.FLOOR_LOAD_TOTES) {
+        // Top carriage actions.
+        if (can_control_top_carriage
+                && commands.top_carriage_claw_action == TopCarriageClawAction.OPEN) {
+            top_carriage.setGrabberOpen(true);
+        } else if (can_control_top_carriage
+                && commands.top_carriage_claw_action == TopCarriageClawAction.CLOSE) {
+            top_carriage.setGrabberOpen(false);
+        }
+        if (can_control_top_carriage
+                && commands.top_carriage_pivot_action == TopCarriagePivotAction.PIVOT_DOWN) {
+            top_carriage.setPivotDown(true);
+        } else if (can_control_top_carriage
+                && commands.top_carriage_pivot_action == TopCarriagePivotAction.PIVOT_UP) {
+            top_carriage.setPivotDown(false);
+        }
 
-        } else if (m_current_mode == ElevatorMode.FLOOR_LOAD_CANS) {
+        // Bottom carriage actions.
+        if (can_control_bottom_carriage
+                && commands.bottom_carriage_flapper_action == BottomCarriageFlapperAction.OPEN) {
+            bottom_carriage.setFlapperOpen(true);
+        } else if (can_control_bottom_carriage
+                && commands.bottom_carriage_flapper_action == BottomCarriageFlapperAction.CLOSE) {
+            bottom_carriage.setFlapperOpen(false);
+        }
+        if (can_control_bottom_carriage
+                && commands.bottom_carriage_pusher_action == BottomCarriagePusherAction.EXTEND) {
+            bottom_carriage.setPusherExtended(true);
+        } else if (can_control_bottom_carriage
+                && commands.bottom_carriage_pusher_action == BottomCarriagePusherAction.RETRACT) {
+            bottom_carriage.setPusherExtended(false);
+        }
 
-        } else if (m_current_mode == ElevatorMode.SCORE_CAN) {
+        // Intake actions.
+        if (!can_close_intake || commands.intake_action == IntakeAction.OPEN) {
+            // Open intake
+            // TODO
+        } else if (commands.intake_action == IntakeAction.CLOSE) {
+            // Close intake
+            // TODO
+        }
 
-        } else if (m_current_mode == ElevatorMode.SCORE_STACK) {
-
+        // Roller actions.
+        if (commands.roller_action == RollerAction.INTAKE) {
+            // Run intake inwards.
+            // TODO
+        } else if (commands.roller_action == RollerAction.EXHAUST) {
+            // Run intake outwards.
+            // TODO
         } else {
-            // Should never happen
+            // Stop intake.
+            // TODO
         }
     }
 }
