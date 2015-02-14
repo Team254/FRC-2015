@@ -3,17 +3,29 @@ package com.team254.frc2015;
 import java.util.Optional;
 
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.controllers.ElevatorCarriageForceController;
+import com.team254.lib.trajectory.TrajectoryFollower.TrajectorySetpoint;
 
-public class SafeElevatorSetpointGenerator {
+public class ElevatorSafety {
     static ElevatorCarriage kTopCarriage = HardwareAdaptor.kTopCarriage;
     static ElevatorCarriage kBottomCarriage = HardwareAdaptor.kBottomCarriage;
 
-    public SafeElevatorSetpointGenerator() {
+    public ElevatorSafety() {
     }
 
     public static class Setpoints {
         public Optional<Double> bottom_setpoint;
         public Optional<Double> top_setpoint;
+    }
+
+    public static boolean isMoveLegal(ElevatorCarriage carriage,
+            TrajectorySetpoint setpoint) {
+        // Don't allow upwards moves if the top carriage is already near its
+        // limit
+        return !(carriage == kBottomCarriage
+                && (kTopCarriage.getCurrentController() instanceof ElevatorCarriageForceController)
+                && setpoint.vel > 0 && kTopCarriage.getHeight()
+                + Constants.kElevatorCarriageSafetyMarginInches > Constants.kTopCarriageMaxPositionInches);
     }
 
     public static Setpoints generateSafeSetpoints(Setpoints setpoints) {

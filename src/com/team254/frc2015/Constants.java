@@ -75,6 +75,7 @@ public class Constants extends ConstantsBase {
     // Common carriage parameters
     public static double kElevatorMaxSpeedInchesPerSec = 60.0;
     public static double kElevatorMaxAccelInchesPerSec2 = 180.0;
+    public static double kElevatorCarriageSafetyMarginInches = 1.0;
 
     // Top carriage limits
     public static double kTopCarriageMinPositionInches = 10.0;
@@ -86,7 +87,7 @@ public class Constants extends ConstantsBase {
     public static double kBottomCarriageMaxPositionInches = 60.0;
     public static double kBottomCarriageHomePositionInches = 10.0;
 
-    // ElevatorCarriagePositionController gains
+    // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 0.1;
     public static double kElevatorCarriagePositionKi = 0.0;
     public static double kElevatorCarriagePositionKd = 0.0;

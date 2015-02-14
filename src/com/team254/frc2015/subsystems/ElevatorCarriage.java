@@ -1,6 +1,7 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
+import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriageForceController;
 import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
@@ -60,6 +61,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         reloadConstants();
         m_home.requestInterrupts(isr);
         m_home.setUpSourceEdge(false, true);
+    }
+
+    public Controller getCurrentController() {
+        return m_controller;
     }
 
     private double getRelativeHeight() {
@@ -170,10 +175,25 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 .setSqueezePower(squeeze_power);
     }
 
+    private void setSpeedIfValid(double speed) {
+        TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
+        if (!ElevatorSafety
+                .isMoveLegal(this, position_controller.getSetpoint())) {
+            // If this move is illegal, stop immediately.
+            TrajectoryFollower.TrajectorySetpoint setpoint = new TrajectoryFollower.TrajectorySetpoint();
+            setpoint.pos = getHeight();
+            position_controller.setGoal(setpoint, getHeight());
+            setSpeedSafe(0.0);
+        } else {
+            setSpeedSafe(position_controller.get());
+        }
+    }
+
     @Override
     public synchronized void update() {
         if (!m_initialized) {
-            double new_setpoint = m_homing_controller.update(getSetpoint().pos, getRelativeHeight());
+            double new_setpoint = m_homing_controller.update(getSetpoint().pos,
+                    getRelativeHeight());
             setPositionSetpointUnsafe(new_setpoint, false);
             if (m_homing_controller.isReady()) {
                 m_initialized = true;
@@ -190,14 +210,15 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 setBrake(m_brake_on_target);
                 if (!m_brake_on_target) {
                     position_controller.update(getHeight(), getVelocity());
-                    setSpeedSafe(position_controller.get());
+                    setSpeedIfValid(position_controller.get());
                 }
             } else {
                 position_controller.update(getHeight(), getVelocity());
-                setSpeedSafe(position_controller.get());
+                setSpeedIfValid(position_controller.get());
             }
         } else if (m_controller instanceof ElevatorCarriageForceController) {
-            setSpeedSafe(((ElevatorCarriageForceController) m_controller).update());
+            setSpeedSafe(((ElevatorCarriageForceController) m_controller)
+                    .update());
         } else {
             // do nothing.
         }

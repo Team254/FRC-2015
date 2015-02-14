@@ -33,7 +33,7 @@ public class ElevatorCarriageForceController extends Controller {
         if (m_follow_bottom) {
             return m_bottom_carriage.get() - m_squeeze_power;
         } else {
-            return m_top_carriage.get() - m_squeeze_power;
+            return m_top_carriage.get() + m_squeeze_power;
         }
     }
 
