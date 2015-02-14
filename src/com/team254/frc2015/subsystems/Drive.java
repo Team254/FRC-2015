@@ -2,7 +2,6 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.controllers.DriveStraightController;
-import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Loopable;
@@ -68,16 +67,12 @@ public class Drive extends Subsystem implements Loopable {
             currentSetpoint = getPhysicalPose();
         }
 
-        TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
-        config.dt = Constants.kControlLoopsDt;
-        config.max_acc = Constants.kDriveMaxAccelInchesPerSec2;
-        config.max_vel = vel_to_use;
         DriveStraightController driveStraightController = new DriveStraightController(
                 Constants.kDrivePositionKp, Constants.kDrivePositionKi,
                 Constants.kDrivePositionKd, Constants.kDrivePositionKv,
                 Constants.kDrivePositionKa, Constants.kDriveStraightKp,
                 Constants.kDriveStraightKi, Constants.kDriveStraightKd,
-                Constants.kDriveOnTargetError, config);
+                Constants.kDriveOnTargetError, vel_to_use);
         driveStraightController.setGoal(currentSetpoint, distance);
         m_controller = driveStraightController;
 	}

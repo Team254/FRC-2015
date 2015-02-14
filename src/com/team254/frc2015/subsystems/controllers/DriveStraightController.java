@@ -1,5 +1,6 @@
 package com.team254.frc2015.subsystems.controllers;
 
+import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.DriveSignal;
@@ -19,7 +20,11 @@ public class DriveStraightController implements Drive.DriveController {
 	public DriveStraightController(
             double kpDist, double kiDist, double kdDist, double kvDist, double kaDist,
             double kpTurn, double kiTurn, double kdTurn,
-			double on_target_delta, TrajectoryConfig config) {
+			double on_target_delta, double maxVelocity) {
+        TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
+        config.dt = Constants.kControlLoopsDt;
+        config.max_acc = Constants.kDriveMaxAccelInchesPerSec2;
+        config.max_vel = maxVelocity;
         mDistanceController = new TrajectoryFollowingPositionController(
                 kpDist, kiDist, kdDist, kvDist, kaDist, on_target_delta, config);
 		this.mTurnPid = new SynchronousPID();
