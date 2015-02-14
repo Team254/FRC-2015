@@ -26,6 +26,9 @@ public class GyroThread {
     private volatile double mVolatileRate = 0;
     private volatile boolean mVolatileShouldReZero = true;
 
+    // owned by the accesser of this object
+    private double mZeroHeading = 0;
+
     public void start() {
         synchronized (mTimer) {
             mTimer.schedule(new InitTask(), 0);
@@ -37,7 +40,7 @@ public class GyroThread {
     }
 
     public double getAngle() {
-        return mVolatileAngle;
+        return mVolatileAngle - mZeroHeading;
     }
     
     public double getRate() {
@@ -46,6 +49,10 @@ public class GyroThread {
 
     public void rezero() {
         mVolatileShouldReZero = true;
+    }
+
+    public void reset() {
+        mZeroHeading = mVolatileAngle;
     }
 
     /**

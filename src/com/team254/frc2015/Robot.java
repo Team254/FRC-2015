@@ -59,6 +59,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
+        HardwareAdaptor.kGyroThread.reset();
+        HardwareAdaptor.kLeftDriveEncoder.reset();
+        HardwareAdaptor.kRightDriveEncoder.reset();
         autoModeRunner.setAutoMode(new TestDriveAutoMode());
         autoModeRunner.start();
 

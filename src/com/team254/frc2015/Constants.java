@@ -16,7 +16,7 @@ public class Constants extends ConstantsBase {
     public static double kDrivePositionKp = 0.06;
     public static double kDrivePositionKi = 0;
     public static double kDrivePositionKd = 0;
-    public static double kDriveStraightKp = 0.0;
+    public static double kDriveStraightKp = 2.0;
     public static double kDriveStraightKi = 0;
     public static double kDriveStraightKd = 0;
     public static double kDrivePositionKv = 0.0075;
