@@ -1,6 +1,7 @@
 package com.team254.frc2015.auto;
 
-import com.team254.frc2015.auto.actions.SleepAction;
+import com.team254.frc2015.actions.Action;
+import com.team254.frc2015.actions.SleepAction;
 
 public abstract class AutoModeBase {
 	protected double m_update_rate = 1.0 / 50.0;
@@ -34,7 +35,7 @@ public abstract class AutoModeBase {
 		return isActive();
 	}
 	
-	public void runAction(AutoAction action) throws AutoModeEndedException {
+	public void runAction(Action action) throws AutoModeEndedException {
 		isActiveWithThrow();
 		action.start();
 		while (isActiveWithThrow() && !action.isFinished()) {

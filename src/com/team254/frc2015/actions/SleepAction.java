@@ -1,10 +1,8 @@
-package com.team254.frc2015.auto.actions;
-
-import com.team254.frc2015.auto.AutoAction;
+package com.team254.frc2015.actions;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class SleepAction extends AutoAction {
+public class SleepAction extends Action {
 	double m_time_to_sleep;
 	double m_time_start;
 

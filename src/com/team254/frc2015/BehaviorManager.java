@@ -11,7 +11,7 @@ public class BehaviorManager {
     protected Drive drive = HardwareAdaptor.kDrive;
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
-    protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
+    protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP; 
 
     public enum ElevatorMode {
         BOTTOM_CARRIAGE_MODE, TOP_CARRIAGE_MODE
@@ -80,11 +80,15 @@ public class BehaviorManager {
                 // TODO
             } else if (commands.elevator_action == ElevatorAction.LOAD_PREP_ACTION) {
                 // TODO
+            } else {
+                // TODO
             }
         } else { /* if (m_current_mode == ElevatorMode.TOP_CARRIAGE_MODE) */
             if (commands.elevator_action == ElevatorAction.FLOOR_LOAD_ACTION) {
                 // TODO
             } else if (commands.elevator_action == ElevatorAction.LOAD_PREP_ACTION) {
+                // TODO
+            } else {
                 // TODO
             }
         }

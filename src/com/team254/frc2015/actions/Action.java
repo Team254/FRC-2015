@@ -1,4 +1,4 @@
-package com.team254.frc2015.auto;
+package com.team254.frc2015.actions;
 
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
@@ -7,7 +7,7 @@ import com.team254.frc2015.subsystems.TopCarriage;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
-public abstract class AutoAction {
+public abstract class Action {
 
     protected Drive drive = HardwareAdaptor.kDrive;
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
