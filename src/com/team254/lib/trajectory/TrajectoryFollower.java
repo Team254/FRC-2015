@@ -37,6 +37,7 @@ public class TrajectoryFollower {
 	private double last_error_;
 	private double error_sum_;
 	private boolean reset_ = true;
+	private TrajectorySetpoint next_state_ = new TrajectorySetpoint();
 
 	private TrajectoryConfig config_ = new TrajectoryConfig();
 	private double goal_position_;
@@ -108,42 +109,36 @@ public class TrajectoryFollower {
 					* t_end;
 			double x_cruise = Math.max(0, distance_to_go - x_start - x_end);
 			double t_cruise = Math.abs(x_cruise / cruise_vel);
-			// System.out.println(x_start + " " + x_cruise + " " + x_end + " " +
-			// distance_to_go);
-			// System.out.println(t_start + " " + t_cruise + " " + t_end);
-			TrajectorySetpoint next_state = new TrajectorySetpoint();
 			// Figure out where we should be one dt along this trajectory.
-			// System.out.println("distance error " + (x_cruise + x_start +
-			// x_end - distance_to_go));
 			if (t_start >= config_.dt) {
-				next_state.pos = cur_vel * config_.dt + .5 * config_.max_acc
+				next_state_.pos = cur_vel * config_.dt + .5 * config_.max_acc
 						* config_.dt * config_.dt;
-				next_state.vel = cur_vel + config_.max_acc * config_.dt;
-				next_state.acc = config_.max_acc;
+				next_state_.vel = cur_vel + config_.max_acc * config_.dt;
+				next_state_.acc = config_.max_acc;
 			} else if (t_start + t_cruise >= config_.dt) {
-				next_state.pos = x_start + cruise_vel * (config_.dt - t_start);
-				next_state.vel = cruise_vel;
-				next_state.acc = 0;
+				next_state_.pos = x_start + cruise_vel * (config_.dt - t_start);
+				next_state_.vel = cruise_vel;
+				next_state_.acc = 0;
 			} else if (t_start + t_cruise + t_end >= config_.dt) {
 				double delta_t = config_.dt - t_start - t_cruise;
-				next_state.pos = x_start + x_cruise + cruise_vel * delta_t - .5
+				next_state_.pos = x_start + x_cruise + cruise_vel * delta_t - .5
 						* config_.max_acc * delta_t * delta_t;
-				next_state.vel = cruise_vel - config_.max_acc * delta_t;
-				next_state.acc = -config_.max_acc;
+				next_state_.vel = cruise_vel - config_.max_acc * delta_t;
+				next_state_.acc = -config_.max_acc;
 			} else {
 				// Trajectory ends this cycle.
-				next_state.pos = distance_to_go;
-				next_state.vel = 0;
-				next_state.acc = 0;
+				next_state_.pos = distance_to_go;
+				next_state_.vel = 0;
+				next_state_.acc = 0;
 			}
 			if (inverted) {
-				next_state.pos *= -1;
-				next_state.vel *= -1;
-				next_state.acc *= -1;
+				next_state_.pos *= -1;
+				next_state_.vel *= -1;
+				next_state_.acc *= -1;
 			}
-			setpoint_.pos += next_state.pos;
-			setpoint_.vel = next_state.vel;
-			setpoint_.acc = next_state.acc;
+			setpoint_.pos += next_state_.pos;
+			setpoint_.vel = next_state_.vel;
+			setpoint_.acc = next_state_.acc;
 
 		}
 		double error = setpoint_.pos - position;
