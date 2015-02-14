@@ -110,7 +110,7 @@ public class Constants extends ConstantsBase {
 
     // Drive gains
     public static double kDriveEncoderCountsPerRev = 250.0;
-    public static double kDriveWheelSizeInches = 4.0;
+    public static double kDriveWheelSizeInches = 3.875;
 
     @Override
     public String getFileLocation() {
