@@ -29,9 +29,9 @@ public class DriveStraightController extends
             m_relative_pose_generator = currentPose.new RelativePoseGenerator();
 		}
 
-		update(
-                (currentPose.getLeftDistance() + currentPose.getRightDistance()) / 2.0,
-                (currentPose.getLeftVelocity() + currentPose.getRightVelocity()) / 2.0);
+        double distance = (currentPose.getLeftDistance() + currentPose.getRightDistance()) / 2.0;
+        double velocity = (currentPose.getLeftVelocity() + currentPose.getRightVelocity()) / 2.0;
+        update(distance, velocity);
 		double throttle = get();
 		double turn = pid.calculate(currentPose.getHeading());
 

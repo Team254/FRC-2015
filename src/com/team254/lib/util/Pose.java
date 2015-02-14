@@ -60,9 +60,9 @@ public class Pose {
 		}
 
 		public Pose get(Pose pose) {
-			return new Pose(pose.getLeftDistance()
-					- m_base_pose.getLeftDistance(), pose.getRightDistance()
-					- m_base_pose.getRightDistance(),
+			return new Pose(
+                    pose.getLeftDistance() - m_base_pose.getLeftDistance(),
+                    pose.getRightDistance() - m_base_pose.getRightDistance(),
 					m_base_pose.getLeftVelocity() - pose.getLeftVelocity(),
 					m_base_pose.getRightVelocity() - pose.getRightVelocity(),
 					pose.getHeading() - m_base_pose.getHeading(),

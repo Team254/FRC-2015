@@ -57,7 +57,7 @@ public class Drive extends Subsystem implements Loopable {
 					.getSetpoint();
 		} else {
 			setpoint = new TrajectoryFollower.TrajectorySetpoint();
-			setpoint.pos = getPose().getLeftDistance();
+			setpoint.pos = (getPose().getLeftDistance() + getPose().getRightDistance()) / 2.0;
 		}
 		return setpoint;
 	}
@@ -104,6 +104,8 @@ public class Drive extends Subsystem implements Loopable {
 	public void getState(StateHolder states) {
 		states.put("gyro_angle", m_gyro.getAngle());
 		states.put("left_encoder", m_left_encoder.getDistance());
+        states.put("left_encoder_rate", m_left_encoder.getRate());
+        states.put("right_encoder_rate", m_right_encoder.getRate());
         states.put("right_encoder", m_right_encoder.getDistance());
         states.put("drive_set_point_pos", getSetpoint().pos);
         // states.put("drive_set_point_velocity", getSetpoint().vel);
