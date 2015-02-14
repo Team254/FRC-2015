@@ -90,9 +90,13 @@ public class Drive extends Subsystem implements Loopable {
 	}
 
 	public Pose getPose() {
-		m_cached_pose.reset(m_left_encoder.getDistance(), m_left_encoder.getRate(),
-				m_right_encoder.getDistance(), m_right_encoder.getRate(),
-				m_gyro.getAngle(), m_gyro.getRate());
+		m_cached_pose.reset(
+                m_left_encoder.getDistance(),
+				m_right_encoder.getDistance(),
+                m_left_encoder.getRate(),
+                m_right_encoder.getRate(),
+				m_gyro.getAngle(),
+                m_gyro.getRate());
 		return m_cached_pose;
 	}
 
@@ -100,14 +104,17 @@ public class Drive extends Subsystem implements Loopable {
 	public void getState(StateHolder states) {
 		states.put("gyro_angle", m_gyro.getAngle());
 		states.put("left_encoder", m_left_encoder.getDistance());
-		states.put("right_encoder", m_right_encoder.getDistance());
+        states.put("right_encoder", m_right_encoder.getDistance());
+        states.put("drive_set_point_pos", getSetpoint().pos);
+        // states.put("drive_set_point_velocity", getSetpoint().vel);
 	}
 
 	@Override
 	public void update() {
 		if (m_controller instanceof DriveStraightController) {
 			DriveStraightController position_controller = (DriveStraightController) m_controller;
-			DriveSignal curSig = position_controller.update(getPose());
+            Pose pose = getPose();
+            DriveSignal curSig = position_controller.update(pose);
 			set(curSig);
 		} else {
 			// do nothing.

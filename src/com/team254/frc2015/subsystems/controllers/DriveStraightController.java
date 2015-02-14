@@ -26,14 +26,14 @@ public class DriveStraightController extends
 
 	public DriveSignal update(Pose currentPose) {
 		if (m_relative_pose_generator == null) {
-			m_relative_pose_generator = currentPose.new RelativePoseGenerator();
+            m_relative_pose_generator = currentPose.new RelativePoseGenerator();
 		}
 
-		Pose relative_pose = m_relative_pose_generator.get(currentPose);
-		update(relative_pose.getLeftDistance(),
-				currentPose.getLeftVelocity());
+		update(
+                (currentPose.getLeftDistance() + currentPose.getRightDistance()) / 2.0,
+                (currentPose.getLeftVelocity() + currentPose.getRightVelocity()) / 2.0);
 		double throttle = get();
-		double turn = pid.calculate(relative_pose.getHeading());
+		double turn = pid.calculate(currentPose.getHeading());
 
 		return new DriveSignal(throttle + turn, throttle - turn);
 	}

@@ -10,6 +10,19 @@ public class Constants extends ConstantsBase {
     public static double kOpenLoopCarriageDriveSpeed = 0.5;
     public static double kDriveSensitivity = .75;
 
+    // DriveStraightController gains
+    public static double kDriveMaxSpeedInchesPerSec = 120.0;
+    public static double kDriveMaxAccelInchesPerSec2 = 95.0;
+    public static double kDrivePositionKp = 0.06;
+    public static double kDrivePositionKi = 0;
+    public static double kDrivePositionKd = 0;
+    public static double kDriveStraightKp = 0.0;
+    public static double kDriveStraightKi = 0;
+    public static double kDriveStraightKd = 0;
+    public static double kDrivePositionKv = 0.0075;
+    public static double kDrivePositionKa = 0.0017;
+    public static double kDriveOnTargetError = 0.5;
+
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
 
@@ -98,19 +111,6 @@ public class Constants extends ConstantsBase {
     // Drive gains
     public static double kDriveEncoderCountsPerRev = 250.0;
     public static double kDriveWheelSizeInches = 4.0;
-
-    // DriveStraightController gains
-    public static double kDriveMaxSpeedInchesPerSec = 120.0;
-    public static double kDriveMaxAccelInchesPerSec2 = 95.0;
-    public static double kDrivePositionKp = 0.08;
-    public static double kDrivePositionKi = 0;
-    public static double kDrivePositionKd = 0;
-    public static double kDriveStraightKp = 0.0;
-    public static double kDriveStraightKi = 0;
-    public static double kDriveStraightKd = 0;
-    public static double kDrivePositionKv = 0.008;
-    public static double kDrivePositionKa = 0;
-    public static double kDriveOnTargetError = 0.5;
 
     @Override
     public String getFileLocation() {
