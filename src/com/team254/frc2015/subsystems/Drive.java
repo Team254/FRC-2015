@@ -2,6 +2,7 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.controllers.DriveStraightController;
+import com.team254.frc2015.subsystems.controllers.TurnInPlaceController;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Loopable;
@@ -64,10 +65,8 @@ public class Drive extends Subsystem implements Loopable {
 	}
 
     public synchronized void setTurnSetPoint(double heading, double velocity) {
-        throw new RuntimeException("not implemented");
-        /* velocity = Math.min(Constants.kDriveTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
-        TurnInPlaceController turnInPlaceController = new TurnInPlaceController();
-        turnInPlaceController.setGoal(getPoseToContinueFrom(), heading, velocity);*/
+        velocity = Math.min(Constants.kTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
+        m_controller = new TurnInPlaceController(getPoseToContinueFrom(), heading, velocity);
     }
 
 	@Override
@@ -84,6 +83,7 @@ public class Drive extends Subsystem implements Loopable {
         states.put(
                 "drive_set_point_pos",
                 DriveStraightController.encoderDistance(setPointPose));
+        states.put("turn_set_point_pos", setPointPose.getHeading());
 	}
 
 	@Override

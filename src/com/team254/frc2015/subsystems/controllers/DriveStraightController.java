@@ -35,7 +35,6 @@ public class DriveStraightController implements Drive.DriveController {
         TrajectorySetpoint initialSetpoint = new TrajectorySetpoint();
         initialSetpoint.pos = encoderDistance(priorSetpoint);
         initialSetpoint.vel = encoderVelocity(priorSetpoint);
-        initialSetpoint.acc = 0;
         mDistanceController.setGoal(initialSetpoint, goalSetpoint);
 
         mTurnPid = new SynchronousPID();

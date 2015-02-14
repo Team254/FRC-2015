@@ -4,6 +4,7 @@ import com.team254.frc2015.auto.AutoModeExecuter;
 import com.team254.frc2015.auto.modes.Test3BinAutoMode;
 import com.team254.frc2015.auto.modes.TestDriveAutoMode;
 import com.team254.frc2015.auto.modes.TestElevatorAutoMode;
+import com.team254.frc2015.auto.modes.TestTurnAutoMode;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
@@ -63,7 +64,8 @@ public class Robot extends IterativeRobot {
         HardwareAdaptor.kGyroThread.reset();
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
-        autoModeRunner.setAutoMode(new Test3BinAutoMode());
+        // autoModeRunner.setAutoMode(new Test3BinAutoMode());
+        autoModeRunner.setAutoMode(new TestTurnAutoMode());
         autoModeRunner.start();
 
         /*

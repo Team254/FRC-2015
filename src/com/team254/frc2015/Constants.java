@@ -3,9 +3,6 @@ package com.team254.frc2015;
 import com.team254.lib.util.ConstantsBase;
 
 public class Constants extends ConstantsBase {
-    static {
-        new Constants().loadFromFile();
-    }
 
     public static double kOpenLoopCarriageDriveSpeed = 0.5;
     public static double kDriveSensitivity = .75;
@@ -22,6 +19,17 @@ public class Constants extends ConstantsBase {
     public static double kDrivePositionKv = 0.0075;
     public static double kDrivePositionKa = 0.0017;
     public static double kDriveOnTargetError = 0.5;
+
+    // TurnInPlaceController gains
+    public static double kTurnMaxSpeedRadsPerSec = 1.5;
+    public static double kTurnMaxAccelRadsPerSec2 = 2.0;
+    public static double kTurnKp = 1.0;
+    public static double kTurnKi = 0.0;
+    public static double kTurnKd = 0.0;
+    public static double kTurnKv = 0.25;
+    public static double kTurnKa = 0.11;
+    public static double kTurnOnTargetError = 0.01;
+
 
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
@@ -115,5 +123,9 @@ public class Constants extends ConstantsBase {
     @Override
     public String getFileLocation() {
         return "~/constants.txt";
+    }
+
+    static {
+        new Constants().loadFromFile();
     }
 }
