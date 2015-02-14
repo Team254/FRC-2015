@@ -7,7 +7,7 @@ public class TestDriveAutoMode extends AutoMode {
 	
 	@Override
 	public void routine() throws AutoModeEndedException {
-		drive.setDistanceSetpoint(60);
+		drive.setDistanceSetpoint(140, 35);
 		waitTime(10);
 	}
 

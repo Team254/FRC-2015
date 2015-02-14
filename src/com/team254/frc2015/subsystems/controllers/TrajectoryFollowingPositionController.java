@@ -24,6 +24,14 @@ public class TrajectoryFollowingPositionController extends Controller {
         m_follower.setGoal(current_state, goal);
     }
 
+    public void setConfig(TrajectoryFollower.TrajectoryConfig config) {
+    	m_follower.setConfig(config);
+    }
+
+    public TrajectoryFollower.TrajectoryConfig getConfig() {
+    	return m_follower.getConfig();
+    }
+
     public void update(double position, double velocity) {
         m_error = m_goal - position;
         m_result = m_follower.calculate(position, velocity);

@@ -63,6 +63,14 @@ public class TrajectoryFollower {
 		error_sum_ = 0.0;
 	}
 
+	public TrajectoryConfig getConfig() {
+		return config_;
+	}
+
+	public void setConfig(TrajectoryConfig config) {
+		config_ = config;
+	}
+
 	public double calculate(double position, double velocity) {
 		if (isFinishedTrajectory()) {
 			setpoint_.pos = goal_position_;

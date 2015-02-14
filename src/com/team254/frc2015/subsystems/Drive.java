@@ -63,12 +63,18 @@ public class Drive extends Subsystem implements Loopable {
 	}
 
 	public synchronized void setDistanceSetpoint(double setpoint) {
+		setDistanceSetpoint(setpoint, Constants.kDriveMaxSpeedInchesPerSec);
+	}
+
+	public synchronized void setDistanceSetpoint(double setpoint, double velocity) {
+		// 0 < vel < max_vel
+		double vel_to_use = Math.min(Constants.kDriveMaxSpeedInchesPerSec, Math.max(velocity, 0));
 		TrajectoryFollower.TrajectorySetpoint prior_setpoint = getSetpoint();
 		if (!(m_controller instanceof DriveStraightController)) {
 			TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
 			config.dt = Constants.kControlLoopsDt;
 			config.max_acc = Constants.kDriveMaxAccelInchesPerSec2;
-			config.max_vel = Constants.kDriveMaxSpeedInchesPerSec;
+			config.max_vel = vel_to_use;
 			m_controller = new DriveStraightController(
 					Constants.kDrivePositionKp, Constants.kDrivePositionKi,
 					Constants.kDrivePositionKd, Constants.kDrivePositionKv,
@@ -76,8 +82,11 @@ public class Drive extends Subsystem implements Loopable {
 					Constants.kDriveStraightKi, Constants.kDriveStraightKd,
 					Constants.kDriveOnTargetError, config);
 		}
-		((DriveStraightController) m_controller).setGoal(prior_setpoint,
-				setpoint);
+		DriveStraightController controller = ((DriveStraightController) m_controller);
+		TrajectoryFollower.TrajectoryConfig config = controller.getConfig();
+		config.max_vel = vel_to_use;
+		controller.setConfig(config);
+		controller.setGoal(prior_setpoint, setpoint);
 	}
 
 	private void set(DriveSignal signal) {
