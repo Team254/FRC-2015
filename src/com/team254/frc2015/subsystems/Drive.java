@@ -27,6 +27,7 @@ public class Drive extends Subsystem implements Loopable {
 			* Math.PI / Constants.kElevatorEncoderCountsPerRev;
 	protected final double m_wheelbase_width = 26.0; // Get from CAD
 	protected final double m_turn_slip_factor = 1.2; // Measure empirically
+	private Pose m_cached_pose = new Pose(0,0,0,0,0,0); // Don't allocate poses at 200Hz!
 
 	public Drive(String name, CheesySpeedController left_drive,
 			CheesySpeedController right_drive, Encoder left_encoder,
@@ -89,9 +90,10 @@ public class Drive extends Subsystem implements Loopable {
 	}
 
 	public Pose getPose() {
-		return new Pose(m_left_encoder.getDistance(), m_left_encoder.getRate(),
+		m_cached_pose.reset(m_left_encoder.getDistance(), m_left_encoder.getRate(),
 				m_right_encoder.getDistance(), m_right_encoder.getRate(),
 				m_gyro.getAngle(), m_gyro.getRate());
+		return m_cached_pose;
 	}
 
 	@Override
