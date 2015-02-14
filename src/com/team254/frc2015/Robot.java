@@ -1,6 +1,7 @@
 package com.team254.frc2015;
 
 import com.team254.frc2015.auto.AutoModeExecuter;
+import com.team254.frc2015.auto.modes.Test3BinAutoMode;
 import com.team254.frc2015.auto.modes.TestDriveAutoMode;
 import com.team254.frc2015.auto.modes.TestElevatorAutoMode;
 import com.team254.frc2015.subsystems.Drive;
@@ -62,7 +63,7 @@ public class Robot extends IterativeRobot {
         HardwareAdaptor.kGyroThread.reset();
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
-        autoModeRunner.setAutoMode(new TestDriveAutoMode());
+        autoModeRunner.setAutoMode(new Test3BinAutoMode());
         autoModeRunner.start();
 
         /*

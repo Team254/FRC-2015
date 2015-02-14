@@ -2,17 +2,17 @@ package com.team254.frc2015.actions;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class SleepAction extends Action {
-	double m_time_to_sleep;
+public class TimeoutAction extends Action {
+	double m_timeout;
 	double m_time_start;
 
-	public SleepAction(double timeToSleep) {
-		m_time_to_sleep = timeToSleep;
+	public TimeoutAction(double timeout) {
+		m_timeout = timeout;
 	}
 
 	@Override
 	public boolean isFinished() {
-		return Timer.getFPGATimestamp() >=  m_time_start + m_time_to_sleep;
+		return Timer.getFPGATimestamp() >=  m_time_start + m_timeout;
 	}
 
 	@Override

@@ -98,7 +98,7 @@ public class Constants extends ConstantsBase {
     // Bottom carriage limits
     public static double kBottomCarriageMinPositionInches = 0.0;
     public static double kBottomCarriageMaxPositionInches = 60.0;
-    public static double kBottomCarriageHomePositionInches = 10.0;
+    public static double kBottomCarriageHomePositionInches = 0.3;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 0.1;

@@ -1,7 +1,7 @@
 package com.team254.frc2015.auto;
 
 import com.team254.frc2015.actions.Action;
-import com.team254.frc2015.actions.SleepAction;
+import com.team254.frc2015.actions.TimeoutAction;
 
 public abstract class AutoModeBase {
 	protected double m_update_rate = 1.0 / 50.0;
@@ -48,8 +48,5 @@ public abstract class AutoModeBase {
 		}
 		action.done();
 	}
-	
-	public void waitTime(double seconds) throws AutoModeEndedException {
-		runAction(new SleepAction(seconds));
-	}
+
 }
