@@ -41,7 +41,7 @@ public abstract class AutoModeBase {
 		while (isActiveWithThrow() && !action.isFinished()) {
 			action.update();
 			try {
-				Thread.sleep((long)m_update_rate * 1000);
+				Thread.sleep((long)(m_update_rate * 1000.0));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
