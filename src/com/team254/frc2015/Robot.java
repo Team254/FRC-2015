@@ -64,8 +64,7 @@ public class Robot extends IterativeRobot {
         HardwareAdaptor.kGyroThread.reset();
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
-        // autoModeRunner.setAutoMode(new Test3BinAutoMode());
-        autoModeRunner.setAutoMode(new TestTurnAutoMode());
+        autoModeRunner.setAutoMode(new Test3BinAutoMode());
         autoModeRunner.start();
 
         /*
