@@ -47,6 +47,9 @@ public class Constants extends ConstantsBase {
     public static double kPresetFiveHeight = 60.0;
     public static double kPresetSixHeight = 67.0;
 
+    // Physical constants which change with wear
+    public static double kTurnSlipFactor = 1.2;
+
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
 
@@ -109,7 +112,6 @@ public class Constants extends ConstantsBase {
     public static double kBottomCarriageHeight = 6.0;
     public static double kDriveWheelRadius = 2.0;
     public static double kWheelbaseWidth = 26.5;
-    public static double kTurnSlipFactor = 1.2;
 
     // !!! Program constants
     public static double kControlLoopsDt = 0.005;

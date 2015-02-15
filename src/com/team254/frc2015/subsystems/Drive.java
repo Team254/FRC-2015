@@ -29,8 +29,6 @@ public class Drive extends Subsystem implements Loopable {
 
 	protected final double m_inches_per_tick = Constants.kDriveWheelSizeInches
 			* Math.PI / Constants.kElevatorEncoderCountsPerRev;
-	protected final double m_wheelbase_width = 26.0; // Get from CAD
-	protected final double m_turn_slip_factor = 1.2; // Measure empirically
 	private Pose m_cached_pose = new Pose(0,0,0,0,0,0); // Don't allocate poses at 200Hz!
 
 	public Drive(String name, CheesySpeedController left_drive,
