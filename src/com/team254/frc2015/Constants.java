@@ -30,7 +30,6 @@ public class Constants extends ConstantsBase {
     public static double kTurnKa = 0.11;
     public static double kTurnOnTargetError = 0.01;
 
-
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
 
@@ -79,6 +78,8 @@ public class Constants extends ConstantsBase {
     public static int kTopCarriageGrabberSolenoidPort = 3;
     public static int kBottomCarriagePusherSolenoidPort = 4;
     public static int kBottomCarriageFlapperSolenoidPort = 5;
+    public static int kLeftIntakeSolenoidPort = 6;
+    public static int kRightIntakeSolenoidPort = 7;
 
     // !!! Physical constants
     public static double kElevatorPulleyRadiusInches = 0.564;

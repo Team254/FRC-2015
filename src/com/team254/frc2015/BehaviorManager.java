@@ -3,6 +3,7 @@ package com.team254.frc2015;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -11,7 +12,8 @@ public class BehaviorManager {
     protected Drive drive = HardwareAdaptor.kDrive;
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
-    protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP; 
+    protected Intake intake = HardwareAdaptor.kIntake;
+    protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
     public enum ElevatorMode {
         BOTTOM_CARRIAGE_MODE, TOP_CARRIAGE_MODE
@@ -71,7 +73,8 @@ public class BehaviorManager {
             wants_mode_changed = true;
         }
         boolean can_close_intake = true;
-        boolean can_control_top_carriage = true;
+        boolean can_control_top_carriage_pivot = true;
+        boolean can_control_top_carriage_grabber = true;
         boolean can_control_bottom_carriage = true;
         if (m_current_mode == ElevatorMode.BOTTOM_CARRIAGE_MODE) {
             if (commands.elevator_action == ElevatorAction.HP_LOAD_ACTION) {
@@ -94,17 +97,17 @@ public class BehaviorManager {
         }
 
         // Top carriage actions.
-        if (can_control_top_carriage
+        if (can_control_top_carriage_grabber
                 && commands.top_carriage_claw_action == TopCarriageClawAction.OPEN) {
             top_carriage.setGrabberOpen(true);
-        } else if (can_control_top_carriage
+        } else if (can_control_top_carriage_grabber
                 && commands.top_carriage_claw_action == TopCarriageClawAction.CLOSE) {
             top_carriage.setGrabberOpen(false);
         }
-        if (can_control_top_carriage
+        if (can_control_top_carriage_pivot
                 && commands.top_carriage_pivot_action == TopCarriagePivotAction.PIVOT_DOWN) {
             top_carriage.setPivotDown(true);
-        } else if (can_control_top_carriage
+        } else if (can_control_top_carriage_pivot
                 && commands.top_carriage_pivot_action == TopCarriagePivotAction.PIVOT_UP) {
             top_carriage.setPivotDown(false);
         }
@@ -128,22 +131,22 @@ public class BehaviorManager {
         // Intake actions.
         if (!can_close_intake || commands.intake_action == IntakeAction.OPEN) {
             // Open intake
-            // TODO
+            intake.open();
         } else if (commands.intake_action == IntakeAction.CLOSE) {
             // Close intake
-            // TODO
+            intake.close();
         }
 
         // Roller actions.
         if (commands.roller_action == RollerAction.INTAKE) {
             // Run intake inwards.
-            // TODO
+            intake.setSpeed(1.0);
         } else if (commands.roller_action == RollerAction.EXHAUST) {
             // Run intake outwards.
-            // TODO
+            intake.setSpeed(-1.0);
         } else {
             // Stop intake.
-            // TODO
+            intake.setSpeed(0.0);
         }
     }
 }

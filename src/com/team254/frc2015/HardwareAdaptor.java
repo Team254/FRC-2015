@@ -3,6 +3,7 @@ package com.team254.frc2015;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.gyro.GyroThread;
@@ -72,13 +73,18 @@ public class HardwareAdaptor {
             Constants.kBottomCarriagePusherSolenoidPort);
     static Solenoid kBottomCarriageFlapperSolenoid = new Solenoid(
             Constants.kBottomCarriageFlapperSolenoidPort);
+    static Solenoid kLeftIntakeSolenoid = new Solenoid(
+            Constants.kLeftIntakeSolenoidPort);
+    static Solenoid kRightIntakeSolenoid = new Solenoid(
+            Constants.kRightIntakeSolenoidPort);
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
-    
+
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,
-            kRightDriveMotor, kLeftDriveEncoder, kRightDriveEncoder, kGyroThread);
+            kRightDriveMotor, kLeftDriveEncoder, kRightDriveEncoder,
+            kGyroThread);
     public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
             kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
             kTopCarriageHome, kTopCarriagePivotSolenoid,
@@ -88,6 +94,8 @@ public class HardwareAdaptor {
             kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
             kBottomCarriageHome, kBottomCarriagePusherSolenoid,
             kBottomCarriageFlapperSolenoid);
+    public static Intake kIntake = new Intake("intake", kLeftIntakeSolenoid,
+            kRightIntakeSolenoid, kLeftIntakeMotor, kRightIntakeMotor);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     static {
