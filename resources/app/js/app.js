@@ -3,6 +3,13 @@ var state = true;
 var max = 0
 var subscribed = [];
 var tick = 0;
+
+_.mixin({
+  capitalize: function(string) {
+    return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
+  }
+});
+
 var data = new dataAPI(window.location.host, function(){
     generateButtons()
     createValueAxis(Object.keys(data.getSubsystems()))
@@ -121,7 +128,7 @@ function removeChart(stream) {
         if(chart.graphs[i].valueField == stream) {
             var graph = chart.graphs[i];
             chart.graphs.splice(i,1);
-            chart.removeGraph(graph)
+            chart.removeGraph(graph);
             for (var j =0; j < usedColors.length; j++){
             	console.log("does " + graph.lineColor + " equal " + " " + usedColors[j] + "?")
             	if (graph.lineColor == usedColors[j]){
@@ -217,7 +224,6 @@ function pause(){
 }
 
 function access(stream) {
-    console.log("lololololololololol")
     var hasStream = data.contains(data.getSubscribe(),stream);
     if (hasStream) {
         data.unsubscribe([stream])
@@ -238,14 +244,38 @@ function contains(array, stream) {
 }
 
 function generateButtons() {
-    var systems = data.getSubsystems();
-    systems = Object.keys(systems);
-    for(var i = 0; i < systems.length; i++) {
-        var currSystem = systems[i]
-        $("#button").append("<td><div class='btn-group'  data-toggle='buttons'><label onclick='access(\""+currSystem+"\")' class='btn btn-primary'><input type='checkbox' autocomplete='off'>"+currSystem+"</label></div></td>");
-        $("#value").append("<td><center><p id='btnvalue-" + currSystem + "'></p></center></td>");
-    }
-    
+    var systems = Object.keys(data.getSubsystems());
+    var grouped_systems = {};
+    //systems = Object.keys(systems);
+  //  for(var i = 0; i < systems.length; i++) {
+    var html = "";
+    _.each(systems, function(currSystem){
+        //var currSystem = systems[i];
+        var subsytem_name = currSystem.split(".")[0];
+        var signal_name = currSystem.split(".")[1];
+        var signals = grouped_systems[subsytem_name] || [];
+        signals.push(signal_name);
+        grouped_systems[subsytem_name] = signals;
+    });
+
+    _.each(Object.keys(grouped_systems), function(subsystem) {
+        var signals = grouped_systems[subsystem];
+        html += "<div><h3>" + _(subsystem).capitalize() + "</h3>";
+        html += "<table><tr>";
+        _.each(signals, function(signal) {
+            var currSystem = subsystem + "." + signal;
+            html += "<td class='button_holder'><div class='btn-group'  data-toggle='buttons'><label onclick='access(\""+currSystem+"\")' class='btn btn-primary'><input type='checkbox' autocomplete='off'>"+signal+"</label></div></td>";
+        });
+        html += "</tr><tr>";
+        _.each(signals, function(signal) {
+            var currSystem = subsystem + "." + signal;
+            html += "<td class='button_holder'><center><p id='btnvalue-" + currSystem + "'></p></center></td>";
+        });
+        html += "</tr></table></div>";
+
+    });
+
+    $("#button_area").html(html);
 }
 
 //A model API
@@ -265,7 +295,6 @@ function dataAPI(socket, subsystemCallback){
         subsystems = data;
         internalNetworkRequestCallBack();
         subsystemCallback();
-        
     });
 
     var internalNetworkRequestCallBack = function(){
