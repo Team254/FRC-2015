@@ -31,7 +31,7 @@ public class OperatorInterface {
         }
 
         // Button board
-        if (buttonBoard.getRawAxis(4) > 0.1) {
+        if (buttonBoard.getRawAxis(3) > 0.1) {
             m_commands.elevator_mode = BehaviorManager.ElevatorMode.BOTTOM_CARRIAGE_MODE;
         } else {
             m_commands.elevator_mode = BehaviorManager.ElevatorMode.TOP_CARRIAGE_MODE;

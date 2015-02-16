@@ -114,6 +114,29 @@ public class Robot extends IterativeRobot {
         cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(),
                 rightStick.getRawButton(1), true);
         behavior_manager.update(operator_interface.getCommands());
+
+        // Temp for testing
+
+        if (buttonBoard.getRawAxis(3) < 0.1) {
+            if (buttonBoard.getRawButton(12)) {
+                top_carriage.setOpenLoop(.5, false);
+            } else if (buttonBoard.getRawButton(11)) {
+                top_carriage.setOpenLoop(-.5, false);
+            } else {
+                top_carriage.setOpenLoop(0, true);
+            }
+            bottom_carriage.setOpenLoop(0, true);
+        } else {
+
+            if (buttonBoard.getRawButton(12)) {
+                bottom_carriage.setOpenLoop(.5, false);
+            } else if (buttonBoard.getRawButton(11)) {
+                bottom_carriage.setOpenLoop(-.5, false);
+            } else {
+                bottom_carriage.setOpenLoop(0, true);
+            }
+            top_carriage.setOpenLoop(0, true);
+        }
     }
 
     @Override

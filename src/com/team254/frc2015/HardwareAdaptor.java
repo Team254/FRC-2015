@@ -5,6 +5,7 @@ import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
+import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.gyro.GyroThread;
 
@@ -62,21 +63,21 @@ public class HardwareAdaptor {
             Constants.kTopCarriageHomeDIO);
 
     // Solenoids
-    static Solenoid kBottomCarriageBrakeSolenoid = new Solenoid(
+    static CheesySolenoid kBottomCarriageBrakeSolenoid = new CheesySolenoid(
             Constants.kBottomCarriageBrakeSolenoidPort);
-    static Solenoid kTopCarriageBrakeSolenoid = new Solenoid(
+    static CheesySolenoid kTopCarriageBrakeSolenoid = new CheesySolenoid(
             Constants.kTopCarriageBrakeSolenoidPort);
-    static Solenoid kTopCarriagePivotSolenoid = new Solenoid(
+    static CheesySolenoid kTopCarriagePivotSolenoid = new CheesySolenoid(
             Constants.kTopCarriagePivotSolenoidPort);
-    static Solenoid kTopCarriageGrabberSolenoid = new Solenoid(
+    static CheesySolenoid kTopCarriageGrabberSolenoid = new CheesySolenoid(
             Constants.kTopCarriageGrabberSolenoidPort);
-    static Solenoid kBottomCarriagePusherSolenoid = new Solenoid(
+    static CheesySolenoid kBottomCarriagePusherSolenoid = new CheesySolenoid(
             Constants.kBottomCarriagePusherSolenoidPort);
-    static Solenoid kBottomCarriageFlapperSolenoid = new Solenoid(
+    static CheesySolenoid kBottomCarriageFlapperSolenoid = new CheesySolenoid(
             Constants.kBottomCarriageFlapperSolenoidPort);
-    static Solenoid kLeftIntakeSolenoid = new Solenoid(
+    static CheesySolenoid kLeftIntakeSolenoid = new CheesySolenoid(
             Constants.kLeftIntakeSolenoidPort);
-    static Solenoid kRightIntakeSolenoid = new Solenoid(
+    static CheesySolenoid kRightIntakeSolenoid = new CheesySolenoid(
             Constants.kRightIntakeSolenoidPort);
 
     // Sensors
@@ -106,5 +107,6 @@ public class HardwareAdaptor {
 
     static {
         kBottomCarriageMotor.setInverted(true);
+        kLeftIntakeMotor.setInverted(true);
     }
 }

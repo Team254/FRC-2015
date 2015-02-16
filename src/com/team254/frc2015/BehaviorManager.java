@@ -100,6 +100,7 @@ public class BehaviorManager {
         if (can_control_top_carriage_grabber
                 && commands.top_carriage_claw_action == TopCarriageClawAction.OPEN) {
             top_carriage.setGrabberOpen(true);
+            can_control_top_carriage_pivot = false;
         } else if (can_control_top_carriage_grabber
                 && commands.top_carriage_claw_action == TopCarriageClawAction.CLOSE) {
             top_carriage.setGrabberOpen(false);
@@ -140,10 +141,10 @@ public class BehaviorManager {
         // Roller actions.
         if (commands.roller_action == RollerAction.INTAKE) {
             // Run intake inwards.
-            intake.setSpeed(1.0);
+            intake.setSpeed(0.5);
         } else if (commands.roller_action == RollerAction.EXHAUST) {
             // Run intake outwards.
-            intake.setSpeed(-1.0);
+            intake.setSpeed(-0.5);
         } else {
             // Stop intake.
             intake.setSpeed(0.0);

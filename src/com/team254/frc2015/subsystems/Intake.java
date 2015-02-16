@@ -23,13 +23,13 @@ public class Intake extends Subsystem {
     }
 
     public void open() {
-        m_left_solenoid.set(true);
-        m_right_solenoid.set(true);
+        m_left_solenoid.set(false);
+        m_right_solenoid.set(false);
     }
 
     public void close() {
-        m_left_solenoid.set(false);
-        m_right_solenoid.set(false);
+        m_left_solenoid.set(true);
+        m_right_solenoid.set(true);
     }
 
     public void setSpeed(double speed) {

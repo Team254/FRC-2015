@@ -63,23 +63,24 @@ public class Constants extends ConstantsBase {
     public static int kLeftDriveEncoderDIOB = 13; // Flipped for polarity
     public static int kRightDriveEncoderDIOA = 11;
     public static int kRightDriveEncoderDIOB = 10;
-    public static int kBottomCarriageEncoderDIOA = 15;
-    public static int kBottomCarriageEncoderDIOB = 14;
-    public static int kTopCarriageEncoderDIOA = 17;
-    public static int kTopCarriageEncoderDIOB = 16;
+    public static int kBottomCarriageEncoderDIOA = 17;
+    public static int kBottomCarriageEncoderDIOB = 16;
+    public static int kTopCarriageEncoderDIOA = 15;
+    public static int kTopCarriageEncoderDIOB = 14;
     public static int kBottomCarriageHomeDIO = 8;
     public static int kTopCarriageHomeDIO = 9;
     public static int kPressureSwitchDIO = 10;
 
     // Solenoids
-    public static int kBottomCarriageBrakeSolenoidPort = 0;
-    public static int kTopCarriageBrakeSolenoidPort = 1;
-    public static int kTopCarriagePivotSolenoidPort = 2;
-    public static int kTopCarriageGrabberSolenoidPort = 3;
-    public static int kBottomCarriagePusherSolenoidPort = 4;
-    public static int kBottomCarriageFlapperSolenoidPort = 5;
-    public static int kLeftIntakeSolenoidPort = 6;
-    public static int kRightIntakeSolenoidPort = 7;
+    public static int kBottomCarriageBrakeSolenoidPort = 7;
+    public static int kTopCarriageBrakeSolenoidPort = 6;
+    public static int kTopCarriagePivotSolenoidPort = 1;
+    public static int kTopCarriageGrabberSolenoidPort = 0;
+    public static int kBottomCarriagePusherSolenoidPort = 9;
+    public static int kBottomCarriageFlapperSolenoidPort = 10;
+    public static int kLeftIntakeSolenoidPort = 2;
+    public static int kRightIntakeSolenoidPort = 11;
+    // bin flap auto thing 8
 
     // !!! Physical constants
     public static double kElevatorPulleyRadiusInches = 0.564;
@@ -107,7 +108,7 @@ public class Constants extends ConstantsBase {
     // Bottom carriage limits
     public static double kBottomCarriageMinPositionInches = 0.0;
     public static double kBottomCarriageMaxPositionInches = 60.0;
-    public static double kBottomCarriageHomePositionInches = 0.3;
+    public static double kBottomCarriageHomePositionInches = 0.0;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 0.1;
