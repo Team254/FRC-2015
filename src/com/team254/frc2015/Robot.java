@@ -13,7 +13,6 @@ import com.team254.lib.util.LidarLiteSensor;
 import com.team254.lib.util.Looper;
 import com.team254.lib.util.MultiLooper;
 import com.team254.lib.util.SystemManager;
-import com.team254.lib.util.gyro.GyroThread;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -31,11 +30,14 @@ public class Robot extends IterativeRobot {
     ElevatorCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
     PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
+    BehaviorManager behavior_manager = new BehaviorManager();
+    OperatorInterface operator_interface = new OperatorInterface();
+
     CheesyDriveHelper cdh = new CheesyDriveHelper(drive);
 
-    Joystick leftStick = new Joystick(0);
-    Joystick rightStick = new Joystick(1);
-    Joystick buttonBoard = new Joystick(2);
+    Joystick leftStick = HardwareAdaptor.kLeftStick;
+    Joystick rightStick = HardwareAdaptor.kRightStick;
+    Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
 
     LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
@@ -55,7 +57,7 @@ public class Robot extends IterativeRobot {
         looper.addLoopable(bottom_carriage);
         looper.addLoopable(drive);
         logUpdater.start();
-        
+
     }
 
     @Override
@@ -104,7 +106,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
         System.out.println("Start teleopInit()");
-        top_carriage.setSqueezeSetpoint(0.4);
         looper.start();
     }
 
@@ -112,19 +113,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(),
                 rightStick.getRawButton(1), true);
-        double bottom_speed = buttonBoard.getRawButton(9) ?
-        Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(10)
-        ? -Constants.kOpenLoopCarriageDriveSpeed : 0;
-        bottom_carriage.setOpenLoop(bottom_speed,false);
-        /*if (buttonBoard.getRawButton(9)) {
-            bottom_carriage.setPositionSetpoint(20.0, false);
-        } else if (buttonBoard.getRawButton(10)) {
-            bottom_carriage.setPositionSetpoint(10.0, false);
-        }*/
-         double top_speed = buttonBoard.getRawButton(7) ?
-         -Constants.kOpenLoopCarriageDriveSpeed : buttonBoard.getRawButton(8)
-         ? Constants.kOpenLoopCarriageDriveSpeed : 0;
-         top_carriage.setOpenLoop(top_speed,false);
+        behavior_manager.update(operator_interface.getCommands());
     }
 
     @Override
@@ -133,7 +122,7 @@ public class Robot extends IterativeRobot {
 
         // Stop auto mode
         autoModeRunner.stop();
-        
+
         // Stop control loops
         looper.stop();
 
@@ -152,7 +141,10 @@ public class Robot extends IterativeRobot {
         if (disabledIterations % 50 == 0) {
             System.gc();
         }
-        //System.out.println("Gyro hasdata: " + HardwareAdaptor.kGyroThread.hasData() + ", Angle: " + HardwareAdaptor.kGyroThread.getAngle() + ", Rate: " + HardwareAdaptor.kGyroThread.getRate());
+        // System.out.println("Gyro hasdata: " +
+        // HardwareAdaptor.kGyroThread.hasData() + ", Angle: " +
+        // HardwareAdaptor.kGyroThread.getAngle() + ", Rate: " +
+        // HardwareAdaptor.kGyroThread.getRate());
     }
 
 }

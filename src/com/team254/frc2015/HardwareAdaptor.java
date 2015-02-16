@@ -10,6 +10,7 @@ import com.team254.lib.util.gyro.GyroThread;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -97,6 +98,11 @@ public class HardwareAdaptor {
     public static Intake kIntake = new Intake("intake", kLeftIntakeSolenoid,
             kRightIntakeSolenoid, kLeftIntakeMotor, kRightIntakeMotor);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
+
+    // Interface
+    public static Joystick kLeftStick = new Joystick(0);
+    public static Joystick kRightStick = new Joystick(1);
+    public static Joystick kButtonBoard = new Joystick(2);
 
     static {
         kBottomCarriageMotor.setInverted(true);

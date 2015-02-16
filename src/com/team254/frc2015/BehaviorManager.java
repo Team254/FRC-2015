@@ -51,7 +51,7 @@ public class BehaviorManager {
         NONE, EXTEND, RETRACT
     }
 
-    public class Commands {
+    public static class Commands {
         public ElevatorMode elevator_mode;
         public PresetHeight preset_height;
         public double manual_height;
