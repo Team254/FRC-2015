@@ -91,6 +91,7 @@ public class GyroThread {
         private double mZeroBias;
         private double mAngle = 0;
         private double mLastAngle = 0;
+        private double mLastTime = 0;
 
         @Override
         public void run() {
@@ -138,8 +139,12 @@ public class GyroThread {
                 return;
             }
 
+            double now = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+            double timeElapsed = mLastTime == 0 ? 1.0 / K_READING_RATE : now - mLastTime;
+            mLastTime = now;
+
             mVolatileRate = unbiasedAngleRate - mZeroBias;
-            mAngle += mVolatileRate / K_READING_RATE;
+            mAngle += mVolatileRate * timeElapsed;
             mVolatileAngle = mAngle;
             mVolatileHasData = true;
         }
