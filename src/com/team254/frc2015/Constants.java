@@ -5,7 +5,9 @@ import com.team254.lib.util.ConstantsBase;
 public class Constants extends ConstantsBase {
 
     public static double kOpenLoopCarriageDriveSpeed = 0.5;
+
     public static double kDriveSensitivity = .75;
+    public static double kNegativeInertiaScalar = 5.0;
 
     // DriveStraightController gains
     public static double kDriveMaxSpeedInchesPerSec = 120.0;
