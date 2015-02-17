@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<title>Autonomous Selector</title>
+	</head>
+	<style>
+		.top{
+			height: 50px;
+			width: 100%;
+			text-align: center;
+			font-size: 36px;
+			padding-top: 10px;
+			color: #FFF;
+			font-family:sans-serif;
+		}
+		.top.good{
+			background-color: #26A65B;
+		}
+		.top.bada{
+			background-color: #F00;
+		}
+		.top.badb{
+			background-color: #000;
+		}
+		body{
+			margin: 0px;
+			padding: 0px;
+		}
+	</style>
+	<script src="jq.js"></script>
+	<script>
+		var url = "http://localhost:1254"
+		var modes = []
+		var currentID = 0;
+		$.getJSON(url + "/autoModes", function(data){
+			console.log(data)
+			modes = data
+			for (var i = 0; i < data.length; i++){
+				$("#mode").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+			}
+	    })
+		var bada = true
+		var isConnected = false;
+		var FirstConnectLatch = false;
+		setInterval(function(){
+			$.getJSON(url + "/ping", function(data){
+				console.log("asd")
+		        if (data == "pong"){
+		        	console.log("good");
+		        	isConnected = true;
+		        	if (!FirstConnectLatch){
+		        		firstConnectFunction()
+		        	}
+		        	FirstConnectLatch = true
+		        	$("#top").attr("class", "top good")
+		        	$("#top").html("Robot Connected")
+		        } else {
+		        	bad()
+		        }
+		    }).error(function() {bad()})
+		}, 1000)
+
+		function bad(){
+			isConnected = false;
+		    FirstConnectLatch = false;
+			console.log("bad")
+			if (bada){
+        		$("#top").attr("class", "top bada")
+        	} else {
+				$("#top").attr("class", "top badb")
+        	}
+        	bada = !bada
+        	$("#mode").attr("style", "display:none")
+        	$("#top").html("Robot Disconnected")
+		}
+
+		function firstConnectFunction(){
+			console.log("Connected")
+			$.getJSON(url + "/currentAutoMode", function(d){
+				console.log(d);
+				currentID = getIDFromAutoMode(d)
+				$("select").find(":nth-child("+(currentID+1)+")").attr("selected", "selected")
+				$("#mode").attr("style", "")
+				$("#mode").bind("change", function(){
+					$.get(url + "/setAutoMode?mode=" + getIDFromAutoMode($("#mode").val()), function(d){
+						console.log(d)
+					})
+				})
+			});
+		}
+
+		function getIDFromAutoMode(mode){
+			for (var i = 0; i < modes.length; i++){
+				if (modes[i] == mode){
+					return i
+				}
+			}
+		}
+	</script>
+	<body>
+		<div class="top" id="top">Robot Connected</div>
+		<div id="automode"></div>
+		<select id="mode" class="mode" style="display:none">
+		</select>
+		<p>Edit the url variable in the source of this page to change where it looks for a robot. Right now, it is looking for a robot at localhost:1254</p>
+	</body>
+</html>

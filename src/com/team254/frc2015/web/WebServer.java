@@ -13,7 +13,11 @@ import org.eclipse.jetty.util.resource.Resource;
 import com.team254.frc2015.web.handlers.BaseServlet;
 import com.team254.frc2015.web.handlers.ConstantsServlet;
 import com.team254.frc2015.web.handlers.GetAllStatesServlet;
+import com.team254.frc2015.web.handlers.GetAutoModesServlet;
+import com.team254.frc2015.web.handlers.GetCurrentAutoModeServlet;
 import com.team254.frc2015.web.handlers.GetKeysServlet;
+import com.team254.frc2015.web.handlers.PingServlet;
+import com.team254.frc2015.web.handlers.SetAutoModeServlet;
 import com.team254.lib.util.TaskQueue;
 
 public class WebServer
@@ -46,6 +50,18 @@ public class WebServer
 
         ServletHolder constantsHolder = new ServletHolder("constants", new ConstantsServlet());
         context.addServlet(constantsHolder, "/constants");
+        
+        ServletHolder getAutoModesHolder = new ServletHolder("autoModes", new GetAutoModesServlet());
+        context.addServlet(getAutoModesHolder, "/autoModes");
+        
+        ServletHolder getCurrentAutoModeHolder = new ServletHolder("currentAutoModes", new GetCurrentAutoModeServlet());
+        context.addServlet(getCurrentAutoModeHolder, "/currentAutoMode");
+        
+        ServletHolder setAutoModeHolder = new ServletHolder("setAutoMode", new SetAutoModeServlet());
+        context.addServlet(setAutoModeHolder, "/setAutoMode");
+        
+        ServletHolder pingHolder = new ServletHolder("ping", new PingServlet());
+        context.addServlet(pingHolder, "/ping");
         
         String appDir = WebServer.class.getClassLoader().getResource("app/").toExternalForm();
         ServletHolder holderPwd = new ServletHolder("default", new DefaultServlet());
