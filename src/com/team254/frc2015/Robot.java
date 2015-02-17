@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         System.out.println("Start robotInit()");
-        mLidarLiteSensor.start();
+        //mLidarLiteSensor.start();
         HardwareAdaptor.kGyroThread.start();
         WebServer.startServer();
         looper.addLoopable(top_carriage);
@@ -70,39 +70,11 @@ public class Robot extends IterativeRobot {
         //autoModeRunner.setAutoMode(new Test3BinAutoMode());
         autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());
         autoModeRunner.start();
-
-        /*
-         * // JARED TESTING boolean set_for_top = top_carriage.getSetpoint().pos
-         * > Constants.kTopCarriageHomePositionInches + 1;
-         * SafeElevatorSetpointGenerator.Setpoints setpoints = new
-         * SafeElevatorSetpointGenerator.Setpoints(); setpoints.bottom_setpoint
-         * = Optional.of(set_for_top ?
-         * Constants.kBottomCarriageHomePositionInches : 40.0);
-         * setpoints.top_setpoint = Optional.of(set_for_top ?
-         * Constants.kTopCarriageHomePositionInches : 65.0); setpoints =
-         * SafeElevatorSetpointGenerator .generateSafeSetpoints(setpoints);
-         * top_carriage.setPositionSetpoint(setpoints.top_setpoint.get(),
-         * false);
-         * bottom_carriage.setPositionSetpoint(setpoints.bottom_setpoint.get(),
-         * false);
-         */
         looper.start();
-
     }
 
     @Override
     public void autonomousPeriodic() {
-        /*
-         * // JARED TESTING System.out.println("Top elevator height: " +
-         * top_carriage.getHeight() + ", goal: " +
-         * top_carriage.getSetpoint().pos + ", command: " +
-         * top_carriage.getCommand() + ", brake: " + top_carriage.getBrake());
-         * System.out.println("Bottom elevator height: " +
-         * bottom_carriage.getHeight() + ", goal: " +
-         * bottom_carriage.getSetpoint().pos + ", command: " +
-         * bottom_carriage.getCommand() + ", brake: " +
-         * bottom_carriage.getBrake());
-         */
     }
 
     @Override
@@ -115,29 +87,6 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(), rightStick.getRawButton(1));
         behavior_manager.update(operator_interface.getCommands());
-
-        // Temp for testing
-
-        if (buttonBoard.getRawAxis(3) < 0.1) {
-            if (buttonBoard.getRawButton(12)) {
-                top_carriage.setOpenLoop(.5, false);
-            } else if (buttonBoard.getRawButton(11)) {
-                top_carriage.setOpenLoop(-.5, false);
-            } else {
-                top_carriage.setOpenLoop(0, true);
-            }
-            bottom_carriage.setOpenLoop(0, true);
-        } else {
-
-            if (buttonBoard.getRawButton(12)) {
-                bottom_carriage.setOpenLoop(.5, false);
-            } else if (buttonBoard.getRawButton(11)) {
-                bottom_carriage.setOpenLoop(-.5, false);
-            } else {
-                bottom_carriage.setOpenLoop(0, true);
-            }
-            top_carriage.setOpenLoop(0, true);
-        }
     }
 
     @Override
@@ -150,13 +99,16 @@ public class Robot extends IterativeRobot {
         // Stop control loops
         looper.stop();
 
-        // Stop drive
+        // Stop controllers
         drive.setOpenLoop(DriveSignal.NEUTRAL);
+        top_carriage.setOpenLoop(0.0, true);
+        bottom_carriage.setOpenLoop(0.0, true);
 
         // Reload constants
         drive.reloadConstants();
         top_carriage.reloadConstants();
         bottom_carriage.reloadConstants();
+        System.out.println("end disable init!");
     }
 
     @Override

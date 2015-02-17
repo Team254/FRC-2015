@@ -29,6 +29,7 @@ public class BottomCarriage extends ElevatorCarriage {
         m_limits.m_min_position = Constants.kBottomCarriageMinPositionInches;
         m_limits.m_max_position = Constants.kBottomCarriageMaxPositionInches;
         m_limits.m_home_position = Constants.kBottomCarriageHomePositionInches;
+        super.reloadConstants();
     }
 
     public void setPusherExtended(boolean extended) {

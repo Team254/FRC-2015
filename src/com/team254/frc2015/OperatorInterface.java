@@ -37,34 +37,34 @@ public class OperatorInterface {
             m_commands.elevator_mode = BehaviorManager.ElevatorMode.TOP_CARRIAGE_MODE;
         }
 
-        if (buttonBoard.getRawButton(8)) {
+        if (buttonBoard.getRawButton(3)) {
             m_commands.bottom_carriage_flapper_action = BehaviorManager.BottomCarriageFlapperAction.OPEN;
         } else {
             m_commands.bottom_carriage_flapper_action = BehaviorManager.BottomCarriageFlapperAction.CLOSE;
         }
 
-        if (buttonBoard.getRawButton(7)) {
+        /*if (buttonBoard.getRawButton(7)) {
             m_commands.bottom_carriage_pusher_action = BehaviorManager.BottomCarriagePusherAction.EXTEND;
         } else {
             m_commands.bottom_carriage_pusher_action = BehaviorManager.BottomCarriagePusherAction.RETRACT;
-        }
-
-        if (buttonBoard.getRawButton(2)) {
-            m_commands.elevator_action = BehaviorManager.ElevatorAction.FLOOR_LOAD_ACTION;
-        } else if (buttonBoard.getRawButton(1)) {
-            m_commands.elevator_action = BehaviorManager.ElevatorAction.HP_LOAD_ACTION;
-        } else if (buttonBoard.getRawButton(3)) {
-            m_commands.elevator_action = BehaviorManager.ElevatorAction.LOAD_PREP_ACTION;
+        }*/
+        
+        if (buttonBoard.getRawButton(8)) {
+            m_commands.bottom_jog = .75;
+        } else if (buttonBoard.getRawButton(10)) {
+            m_commands.bottom_jog = -.75;
         } else {
-            m_commands.elevator_action = BehaviorManager.ElevatorAction.NONE;
+            m_commands.bottom_jog = 0;
         }
 
-        if (buttonBoard.getRawButton(12)) {
-            m_commands.manual_height += .5;
-        } else if (buttonBoard.getRawButton(11)) {
-            m_commands.manual_height -= .5;
+        if (buttonBoard.getRawButton(7)) {
+            m_commands.top_jog = .75;
+        } else if (buttonBoard.getRawButton(9)) {
+            m_commands.top_jog = -.75;
+        } else {
+            m_commands.top_jog = 0;
         }
-
+        
         if (buttonBoard.getX() < 0) {
             m_commands.preset_height = BehaviorManager.PresetHeight.SIX;
         } else if (buttonBoard.getY() < 0) {
@@ -80,17 +80,14 @@ public class OperatorInterface {
         } else {
             m_commands.preset_height = BehaviorManager.PresetHeight.NONE;
         }
-        if (m_commands.preset_height != BehaviorManager.PresetHeight.NONE) {
-            m_commands.manual_height = 0.0;
-        }
 
-        if (buttonBoard.getRawButton(10)) {
+        if (buttonBoard.getRawButton(1)) {
             m_commands.top_carriage_claw_action = BehaviorManager.TopCarriageClawAction.OPEN;
         } else {
             m_commands.top_carriage_claw_action = BehaviorManager.TopCarriageClawAction.CLOSE;
         }
 
-        if (buttonBoard.getRawButton(9)) {
+        if (buttonBoard.getRawButton(2)) {
             m_commands.top_carriage_pivot_action = BehaviorManager.TopCarriagePivotAction.PIVOT_DOWN;
         } else {
             m_commands.top_carriage_pivot_action = BehaviorManager.TopCarriagePivotAction.PIVOT_UP;

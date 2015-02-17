@@ -23,7 +23,6 @@ public class ElevatorSafety {
         // Don't allow upwards moves if the top carriage is already near its
         // limit
         return !(carriage == kBottomCarriage
-                && (kTopCarriage.getCurrentController() instanceof ElevatorCarriageForceController)
                 && setpoint.vel > 0 && kTopCarriage.getHeight()
                 + Constants.kElevatorCarriageSafetyMarginInches > Constants.kTopCarriageMaxPositionInches);
     }

@@ -14,6 +14,5 @@ public abstract class Subsystem implements Tappable {
 		return name;
 	}
 
-	public void reloadConstants() {
-	}
+	public abstract void reloadConstants();
 }

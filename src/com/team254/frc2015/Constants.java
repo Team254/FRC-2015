@@ -5,9 +5,16 @@ import com.team254.lib.util.ConstantsBase;
 public class Constants extends ConstantsBase {
 
     public static double kOpenLoopCarriageDriveSpeed = 0.5;
-
     public static double kDriveSensitivity = .75;
     public static double kNegativeInertiaScalar = 5.0;
+
+    // Elevator carriage TrajectoryFollowingPositionController gains
+    public static double kElevatorCarriagePositionKp = 1.0;
+    public static double kElevatorCarriagePositionKi = 0.1;
+    public static double kElevatorCarriagePositionKd = 0.0;
+    public static double kElevatorCarriagePositionKv = 0.02;
+    public static double kElevatorCarriagePositionKa = 6.0E-4;
+    public static double kElevatorOnTargetError = 0.125;
 
     // DriveStraightController gains
     public static double kDriveMaxSpeedInchesPerSec = 120.0;
@@ -31,6 +38,14 @@ public class Constants extends ConstantsBase {
     public static double kTurnKv = 0.25;
     public static double kTurnKa = 0.11;
     public static double kTurnOnTargetError = 0.01;
+    
+    // Height presets
+    public static double kPresetOneHeight = 0.25;
+    public static double kPresetTwoHeight = 15.0;
+    public static double kPresetThreeHeight = 8.0;
+    public static double kPresetFourHeight = 20.0;
+    public static double kPresetFiveHeight = 60.0;
+    public static double kPresetSixHeight = 67.0;
 
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
@@ -98,29 +113,21 @@ public class Constants extends ConstantsBase {
 
     // !!! Control loop constants
     // Common carriage parameters
-    public static double kElevatorMaxSpeedInchesPerSec = 60.0;
-    public static double kElevatorMaxAccelInchesPerSec2 = 180.0;
+    public static double kElevatorMaxSpeedInchesPerSec = 40.0;
+    public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
     public static double kElevatorCarriageSafetyMarginInches = 1.0;
 
     // Top carriage limits
-    public static double kTopCarriageMinPositionInches = 10.0;
-    public static double kTopCarriageMaxPositionInches = 70.0;
-    public static double kTopCarriageHomePositionInches = 20.0;
+    public static double kTopCarriageMinPositionInches = 6;
+    public static double kTopCarriageMaxPositionInches = 67;
+    public static double kTopCarriageHomePositionInches = 15.5;
 
     // Bottom carriage limits
     public static double kBottomCarriageMinPositionInches = 0.0;
     public static double kBottomCarriageMaxPositionInches = 60.0;
     public static double kBottomCarriageHomePositionInches = 0.0;
 
-    // Elevator carriage TrajectoryFollowingPositionController gains
-    public static double kElevatorCarriagePositionKp = 0.1;
-    public static double kElevatorCarriagePositionKi = 0.0;
-    public static double kElevatorCarriagePositionKd = 0.0;
-    public static double kElevatorCarriagePositionKv = 0.015;
-    public static double kElevatorCarriagePositionKa = 0.0;
-    public static double kElevatorOnTargetError = 1.0;
-
-    // Drive gains
+    // Drive parameters
     public static double kDriveEncoderCountsPerRev = 250.0;
     public static double kDriveWheelSizeInches = 3.875;
 

@@ -43,7 +43,7 @@ public class Looper {
   public void start() {
     if (looperUpdater == null) {
       looperUpdater = new Timer("Looper - " + this.m_name);
-      looperUpdater.scheduleAtFixedRate(new UpdaterTask(this), 0L, (long) (this.period * 1000));
+      looperUpdater.schedule(new UpdaterTask(this), 0L, (long) (this.period * 1000));
     }
   }
 

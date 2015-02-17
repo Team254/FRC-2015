@@ -78,6 +78,7 @@ public class Logger {
 			}
 			consumer = new Thread(consumerTask);
 			consumer.setName("Logger");
+			consumer.setPriority(Thread.MIN_PRIORITY);
 			consumer.start();
 		}
 

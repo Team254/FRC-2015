@@ -28,6 +28,7 @@ public class TopCarriage extends ElevatorCarriage {
         m_limits.m_min_position = Constants.kTopCarriageMinPositionInches;
         m_limits.m_max_position = Constants.kTopCarriageMaxPositionInches;
         m_limits.m_home_position = Constants.kTopCarriageHomePositionInches;
+        super.reloadConstants();
     }
 
     public void setPivotDown(boolean down) {

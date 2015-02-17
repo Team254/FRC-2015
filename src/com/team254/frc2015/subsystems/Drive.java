@@ -51,11 +51,11 @@ public class Drive extends Subsystem implements Loopable {
 		setDriveOutputs(signal);
 	}
 
-	public synchronized void setDistanceSetpoint(double distance) {
+	public void setDistanceSetpoint(double distance) {
 		setDistanceSetpoint(distance, Constants.kDriveMaxSpeedInchesPerSec);
 	}
 
-	public synchronized void setDistanceSetpoint(double distance, double velocity) {
+	public void setDistanceSetpoint(double distance, double velocity) {
 		// 0 < vel < max_vel
 		double vel_to_use = Math.min(Constants.kDriveMaxSpeedInchesPerSec, Math.max(velocity, 0));
         m_controller = new DriveStraightController(
@@ -64,7 +64,7 @@ public class Drive extends Subsystem implements Loopable {
                 vel_to_use);
 	}
 
-    public synchronized void setTurnSetPoint(double heading, double velocity) {
+    public void setTurnSetPoint(double heading, double velocity) {
         velocity = Math.min(Constants.kTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
         m_controller = new TurnInPlaceController(getPoseToContinueFrom(), heading, velocity);
     }
@@ -120,5 +120,11 @@ public class Drive extends Subsystem implements Loopable {
                 m_gyro.getAngle(),
                 m_gyro.getRate());
         return m_cached_pose;
+    }
+
+    @Override
+    public void reloadConstants() {
+        // TODO Auto-generated method stub
+        
     }
 }

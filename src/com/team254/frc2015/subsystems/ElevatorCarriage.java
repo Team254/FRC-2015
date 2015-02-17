@@ -2,6 +2,7 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
+import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriageForceController;
 import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.ChezyInterruptHandlerFunction;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
     public CheesySpeedController m_motor;
@@ -83,7 +85,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 / Constants.kElevatorEncoderCountsPerRev;
     }
 
-    public synchronized TrajectoryFollower.TrajectorySetpoint getSetpoint() {
+    public TrajectoryFollower.TrajectorySetpoint getSetpoint() {
         TrajectoryFollower.TrajectorySetpoint setpoint;
         // Rather than reading encoder velocity, we report the last commanded
         // velocity from a velocity profile. This ensures that the input is
@@ -98,15 +100,30 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         return setpoint;
     }
 
+    public double getGoalHeight() {
+        if (m_controller instanceof TrajectoryFollowingPositionController) {
+            return ((TrajectoryFollowingPositionController) m_controller)
+                    .getGoal();
+        } else {
+            return -1;
+        }
+    }
+
     public double getCommand() {
         return m_motor.get();
     }
 
-    protected synchronized void setSpeedUnsafe(double speed) {
+    protected void setSpeedUnsafe(double speed) {
         m_motor.set(speed);
     }
 
-    protected synchronized void setSpeedSafe(double desired_speed) {
+    @Override
+    public void reloadConstants() {
+        m_controller = null;
+
+    }
+
+    protected void setSpeedSafe(double desired_speed) {
         double height = getHeight();
         if (desired_speed > 1E-3 || desired_speed < -1E-3) {
             setBrake(false);
@@ -119,7 +136,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         setSpeedUnsafe(desired_speed);
     }
 
-    protected synchronized void setBrake(boolean on) {
+    protected void setBrake(boolean on) {
         m_brake.set(!on); // brake is normally applied
         if (on) {
             setSpeedUnsafe(0);
@@ -207,7 +224,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         if (m_controller instanceof TrajectoryFollowingPositionController) {
             TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
             if (position_controller.isOnTarget()) {
-                setBrake(m_brake_on_target);
+                // No need to brake at bottom of travel.
+                setBrake(m_brake_on_target && getHeight() > 1.0);
                 if (!m_brake_on_target) {
                     position_controller.update(getHeight(), getVelocity());
                     setSpeedIfValid(position_controller.get());
@@ -217,8 +235,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 setSpeedIfValid(position_controller.get());
             }
         } else if (m_controller instanceof ElevatorCarriageForceController) {
-            setSpeedSafe(((ElevatorCarriageForceController) m_controller)
-                    .update());
+            double power = ((ElevatorCarriageForceController) m_controller)
+                    .update();
+            setBrake(false);
+            setSpeedSafe(power);
         } else {
             // do nothing.
         }
@@ -230,6 +250,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         states.put("setpoint", getSetpoint().pos);
         states.put("home_dio", getHomeSensorHovered());
         states.put("current", m_motor.getSignedCurrent());
+        states.put("pwm", m_motor.get());
     }
 
     public boolean getHomeSensorHovered() {

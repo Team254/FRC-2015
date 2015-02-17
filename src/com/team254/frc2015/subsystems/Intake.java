@@ -47,4 +47,10 @@ public class Intake extends Subsystem {
 
     }
 
+    @Override
+    public void reloadConstants() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

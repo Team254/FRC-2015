@@ -1,5 +1,7 @@
 package com.team254.lib.trajectory;
 
+import edu.wpi.first.wpilibj.Timer;
+
 /**
  * PID + Feedforward controller for following a Trajectory.
  *
@@ -37,6 +39,7 @@ public class TrajectoryFollower {
 	private double last_error_;
 	private double error_sum_;
 	private boolean reset_ = true;
+	private double last_timestamp_;
 	private TrajectorySetpoint next_state_ = new TrajectorySetpoint();
 
 	private TrajectoryConfig config_ = new TrajectoryConfig();
@@ -62,6 +65,10 @@ public class TrajectoryFollower {
 		reset_ = true;
 		error_sum_ = 0.0;
 	}
+	
+	public double getGoal() {
+	    return goal_position_;
+	}
 
 	public TrajectoryConfig getConfig() {
 		return config_;
@@ -72,6 +79,14 @@ public class TrajectoryFollower {
 	}
 
 	public double calculate(double position, double velocity) {
+        double dt = config_.dt;
+        if (!reset_) {
+            double now = Timer.getFPGATimestamp();
+            dt = now - last_timestamp_;
+            last_timestamp_ = now;
+        } else {
+            last_timestamp_ = Timer.getFPGATimestamp();
+        }
 		if (isFinishedTrajectory()) {
 			setpoint_.pos = goal_position_;
 			setpoint_.vel = 0;
@@ -118,17 +133,17 @@ public class TrajectoryFollower {
 			double x_cruise = Math.max(0, distance_to_go - x_start - x_end);
 			double t_cruise = Math.abs(x_cruise / cruise_vel);
 			// Figure out where we should be one dt along this trajectory.
-			if (t_start >= config_.dt) {
-				next_state_.pos = cur_vel * config_.dt + .5 * config_.max_acc
-						* config_.dt * config_.dt;
-				next_state_.vel = cur_vel + config_.max_acc * config_.dt;
+			if (t_start >= dt) {
+				next_state_.pos = cur_vel * dt + .5 * config_.max_acc
+						* dt * dt;
+				next_state_.vel = cur_vel + config_.max_acc * dt;
 				next_state_.acc = config_.max_acc;
-			} else if (t_start + t_cruise >= config_.dt) {
-				next_state_.pos = x_start + cruise_vel * (config_.dt - t_start);
+			} else if (t_start + t_cruise >= dt) {
+				next_state_.pos = x_start + cruise_vel * (dt - t_start);
 				next_state_.vel = cruise_vel;
 				next_state_.acc = 0;
-			} else if (t_start + t_cruise + t_end >= config_.dt) {
-				double delta_t = config_.dt - t_start - t_cruise;
+			} else if (t_start + t_cruise + t_end >= dt) {
+				double delta_t = dt - t_start - t_cruise;
 				next_state_.pos = x_start + x_cruise + cruise_vel * delta_t - .5
 						* config_.max_acc * delta_t * delta_t;
 				next_state_.vel = cruise_vel - config_.max_acc * delta_t;
@@ -154,15 +169,20 @@ public class TrajectoryFollower {
 			// Prevent jump in derivative term when we have been reset.
 			reset_ = false;
 			last_error_ = error;
+			error_sum_ = 0;
 		}
 		double output = kp_ * error + kd_
-				* ((error - last_error_) / config_.dt - setpoint_.vel)
+				* ((error - last_error_) / dt - setpoint_.vel)
 				+ (kv_ * setpoint_.vel + ka_ * setpoint_.acc);
+		if (dt > 3.0 * config_.dt) {
+		    // Reset integral.
+		    error_sum_ = 0;
+		}
 		if (output < 1.0 && output > -1.0) {
 			// Only integrate error if the output isn't already saturated.
-			error_sum_ += error;
+			error_sum_ += error * dt;
 		}
-		output += ki_ * error_sum_ * config_.dt;
+		output += ki_ * error_sum_;
 
 		last_error_ = error;
 		return output;
