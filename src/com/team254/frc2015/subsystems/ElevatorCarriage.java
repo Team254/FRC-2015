@@ -254,6 +254,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public boolean getHomeSensorHovered() {
-        return m_home.get();
+        return !m_home.get();
     }
 }

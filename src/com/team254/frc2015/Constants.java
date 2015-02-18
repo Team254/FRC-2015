@@ -85,7 +85,7 @@ public class Constants extends ConstantsBase {
     public static int kTopCarriageEncoderDIOA = 15;
     public static int kTopCarriageEncoderDIOB = 14;
     public static int kBottomCarriageHomeDIO = 8;
-    public static int kTopCarriageHomeDIO = 9;
+    public static int kTopCarriageHomeDIO = 1;
     public static int kPressureSwitchDIO = 0;
 
     // Solenoids
