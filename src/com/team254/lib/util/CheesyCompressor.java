@@ -11,7 +11,7 @@ public class CheesyCompressor {
 	Loopable updater = new Loopable() {
 		@Override
 		public void update() {
-			boolean turn_on = m_pressure_switch.get();
+			boolean turn_on = !m_pressure_switch.get();
 			m_compressor_relay.set(turn_on ? Relay.Value.kOn : Relay.Value.kOff);
 		}
 	};
