@@ -5,6 +5,7 @@ import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
+import com.team254.lib.util.CheesyCompressor;
 import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.gyro.GyroThread;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -99,6 +101,11 @@ public class HardwareAdaptor {
     public static Intake kIntake = new Intake("intake", kLeftIntakeSolenoid,
             kRightIntakeSolenoid, kLeftIntakeMotor, kRightIntakeMotor);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
+
+    // Compressor
+    public static Relay kCompressorRelay = new Relay(Constants.kCompressorRelayPort);
+    public static DigitalInput kCompressorSwitch = new DigitalInput(Constants.kPressureSwitchDIO);
+    public static CheesyCompressor kCompressor = new CheesyCompressor(kCompressorRelay, kCompressorSwitch);
 
     // Interface
     public static Joystick kLeftStick = new Joystick(0);

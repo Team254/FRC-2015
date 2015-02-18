@@ -99,6 +99,9 @@ public class Constants extends ConstantsBase {
     public static int kRightIntakeSolenoidPort = 11;
     // bin flap auto thing 8
 
+    // Relays
+    public static int kCompressorRelayPort = 0;
+
     // !!! Physical constants
     public static double kElevatorPulleyRadiusInches = 0.564;
     public static double kElevatorEncoderCountsPerRev = 250.0;
