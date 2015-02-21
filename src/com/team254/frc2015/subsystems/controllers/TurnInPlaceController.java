@@ -26,10 +26,10 @@ public class TurnInPlaceController implements Drive.DriveController {
         TrajectoryConfig config = new TrajectoryConfig();
         config.dt = Constants.kControlLoopsDt;
         config.max_acc = Constants.kTurnMaxAccelRadsPerSec2;
-        config.max_vel = roatationToWheelTravel(maxTurnVelocity);
+        config.max_vel = rotationToWheelTravel(maxTurnVelocity);
 
         double angularTravelDistance = normalizedSubtractAngles(destHeading, mInitialSetpointPose.getHeading());
-        double encoderTravelDistance = roatationToWheelTravel(angularTravelDistance);
+        double encoderTravelDistance = rotationToWheelTravel(angularTravelDistance);
         System.out.println("encoder: " + encoderTravelDistance);
 
         mLeftController = makeController(
@@ -81,7 +81,7 @@ public class TurnInPlaceController implements Drive.DriveController {
         return modDistance;
     }
 
-    private static double roatationToWheelTravel(double radians) {
+    private static double rotationToWheelTravel(double radians) {
         return radians * Constants.kWheelbaseWidth * Constants.kTurnSlipFactor;
     }
 

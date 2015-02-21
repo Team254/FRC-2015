@@ -125,7 +125,7 @@ public class BehaviorManager {
         } else if (commands.preset_height == PresetHeight.HUMAN) {
             // Human Loading
             m_setpoints.bottom_setpoint = Optional.of(33.0);
-            top_carriage.setSqueezeSetpoint(.4);
+            m_setpoints.top_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
             m_top_jogging = false;
             m_bottom_jogging = false;
 
