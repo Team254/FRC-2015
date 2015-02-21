@@ -74,6 +74,12 @@ public class BehaviorManager {
     private boolean m_bottom_jogging = true;
 
     public void update(Commands commands) {
+		if (!bottom_carriage.isInitialized()) {
+			m_bottom_jogging = false;
+		}
+		if (!top_carriage.isInitialized()) {
+			m_top_jogging = false;
+		}
         boolean wants_mode_changed = false;
         if (commands.elevator_mode != m_current_mode) {
             m_current_mode = commands.elevator_mode;

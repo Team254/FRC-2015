@@ -50,6 +50,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public class Limits {
         protected double m_min_position;
         protected double m_max_position;
+        protected double m_rezero_position;
         protected double m_home_position;
     }
 
@@ -75,8 +76,12 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public double getHeight() {
-        return m_limits.m_home_position
-                + (getRelativeHeight() - m_homing_controller.getZeroOffset());
+    	if (m_initialized) {
+	        return m_limits.m_rezero_position
+	                + (getRelativeHeight() - m_homing_controller.getZeroOffset());
+    	} else {
+    		return getRelativeHeight() + m_limits.m_home_position;
+    	}
     }
 
     public double getVelocity() {
@@ -135,6 +140,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
         setSpeedUnsafe(desired_speed);
     }
+    
+    public void setNeedsHoming(boolean needs_homing) {
+    	m_initialized = !needs_homing;
+    }
 
     protected void setBrake(boolean on) {
         m_brake.set(on); // brake is normally applied
@@ -177,6 +186,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
 
     }
+    
+    public boolean isInitialized() {
+    	return m_initialized;
+    }
 
     public synchronized void setOpenLoop(double speed, boolean brake) {
         m_controller = null;
@@ -209,11 +222,16 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     @Override
     public synchronized void update() {
         if (!m_initialized) {
-            double new_setpoint = m_homing_controller.update(getSetpoint().pos,
+        	double old_goal = getGoalHeight() == -1 ? getSetpoint().pos : getGoalHeight();
+            double new_setpoint = m_homing_controller.update(old_goal,
                     getRelativeHeight());
+            if (m_homing_controller.needsControllerNullOut()) {
+            	m_controller = null;
+            }
             setPositionSetpointUnsafe(new_setpoint, false);
             if (m_homing_controller.isReady()) {
                 m_initialized = true;
+                m_controller = null;
                 if (cached_setpoint != null) {
                     setPositionSetpointUnsafe(cached_setpoint, true);
                 } else {

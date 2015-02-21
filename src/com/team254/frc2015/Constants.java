@@ -129,11 +129,13 @@ public class Constants extends ConstantsBase {
     public static double kTopCarriageMinPositionInches = 6;
     public static double kTopCarriageMaxPositionInches = 67;
     public static double kTopCarriageHomePositionInches = 15.5;
+    public static double kTopCarriageReZeroPositionInches = 28.3;
 
     // Bottom carriage limits
     public static double kBottomCarriageMinPositionInches = 0.0;
     public static double kBottomCarriageMaxPositionInches = 60.0;
     public static double kBottomCarriageHomePositionInches = 0.0;
+    public static double kBottomCarriageReZeroPositionInches = 0.0;
 
     // Drive parameters
     public static double kDriveEncoderCountsPerRev = 250.0;

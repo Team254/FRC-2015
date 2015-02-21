@@ -10,6 +10,7 @@ public class ElevatorHomingController extends Controller {
     private boolean m_move_off_positive;
     private double m_dt;
     private double m_zero_point;
+    private boolean m_null_controller = false;
 
     public ElevatorHomingController(ElevatorCarriage carriage,
             boolean move_off_positive, double dt) {
@@ -25,8 +26,8 @@ public class ElevatorHomingController extends Controller {
     private HomingStates m_state = HomingStates.UNINITIALIZED;
 
     public double update(double old_setpoint, double current_relative_position) {
-        double fast_move_speed = 4.0;
-        double slow_move_speed = 1.0;
+        double fast_move_speed = 12.5;
+        double slow_move_speed = 0.25;
 
         double new_setpoint = old_setpoint;
         double direction = m_move_off_positive ? 1.0 : -1.0;
@@ -35,6 +36,9 @@ public class ElevatorHomingController extends Controller {
         boolean on_sensor = m_carriage.getHomeSensorHovered();
         HomingStates next_state = m_state;
         boolean enabled = DriverStation.getInstance().isEnabled();
+
+        m_null_controller = false;
+        
         switch (m_state) {
         case UNINITIALIZED:
             if (!enabled) {
@@ -46,12 +50,14 @@ public class ElevatorHomingController extends Controller {
             }
             break;
         case MOVING_OFF:
+        	new_setpoint = current_relative_position;
             new_setpoint += slow_move_delta;
             if (!enabled) {
                 next_state = HomingStates.UNINITIALIZED;
             } else if (!on_sensor) {
                 m_zero_point = current_relative_position;
                 next_state = HomingStates.READY;
+                m_null_controller = true;
             }
             break;
         case MOVING_ON:
@@ -60,6 +66,7 @@ public class ElevatorHomingController extends Controller {
                 next_state = HomingStates.UNINITIALIZED;
             } else if (on_sensor) {
                 next_state = HomingStates.MOVING_OFF;
+                m_null_controller = true;
             }
             break;
         case READY:
@@ -85,6 +92,10 @@ public class ElevatorHomingController extends Controller {
     @Override
     public boolean isOnTarget() {
         return false;
+    }
+    
+    public boolean needsControllerNullOut() {
+    	return m_null_controller;
     }
 
 }
