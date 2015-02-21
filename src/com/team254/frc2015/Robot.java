@@ -85,7 +85,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(), rightStick.getRawButton(1));
+        cdh.cheesyDrive(-leftStick.getY(), rightStick.getX(), rightStick.getRawButton(1), true);
         behavior_manager.update(operator_interface.getCommands());
     }
 

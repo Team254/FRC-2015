@@ -13,85 +13,132 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class CheesyDriveHelper {
 
 	private Drive drive;
-	double m_old_turn, m_quick_stop_accumulator;
-	private static final double kthrottleDeadband = 0.02;
-	private static final double kWheelDeadband = 0.02;
-	private static final double kWheelNonLinearity = 0.6;
+	double oldWheel, quickStopAccumulator;
+	private double throttleDeadband = 0.02;
+	private double wheelDeadband = 0.02;
 	private DriveSignal signal = new DriveSignal(0, 0);
-	double m_neg_inertia_accumulator = 0.0;
 
 	public CheesyDriveHelper(Drive drive) {
 		this.drive = drive;
 	}
 
-	public void cheesyDrive(double throttle_in, double turn_in, boolean isQuickTurn) {
+	public void cheesyDrive(double throttle, double wheel, boolean isQuickTurn,
+			boolean isHighGear) {
 		if (DriverStation.getInstance().isAutonomous()) {
 			return;
 		}
 
-		double left_pwm, right_pwm, over_power, angular_power;
-		double sensitivity = Constants.kDriveSensitivity;
-		double turn = handleDeadband(turn_in, kWheelDeadband);
-		double throttle = handleDeadband(throttle_in, kthrottleDeadband);
+		double wheelNonLinearity;
 
-		double neg_inertia = turn - m_old_turn;
-		m_old_turn = turn;
+		wheel = handleDeadband(wheel, wheelDeadband);
+		throttle = handleDeadband(throttle, throttleDeadband);
 
-		turn = Math.sin(Math.PI / 2.0 * kWheelNonLinearity * turn) / Math.sin(Math.PI / 2.0 * kWheelNonLinearity);
-		turn = Math.sin(Math.PI / 2.0 * kWheelNonLinearity * turn) / Math.sin(Math.PI / 2.0 * kWheelNonLinearity);
+		double negInertia = wheel - oldWheel;
+		oldWheel = wheel;
 
-		double neg_inertia_power = neg_inertia * Constants.kNegativeInertiaScalar;
-		m_neg_inertia_accumulator += neg_inertia_power;
-
-		turn = turn + m_neg_inertia_accumulator;
-		if (m_neg_inertia_accumulator > 1) {
-			m_neg_inertia_accumulator -= 1;
-		} else if (m_neg_inertia_accumulator < -1) {
-			m_neg_inertia_accumulator += 1;
+		if (isHighGear) {
+			wheelNonLinearity = 0.6;
+			// Apply a sin function that's scaled to make it feel better.
+			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
+					/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
+					/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 		} else {
-			m_neg_inertia_accumulator = 0;
+			wheelNonLinearity = 0.5;
+			// Apply a sin function that's scaled to make it feel better.
+			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
+					/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
+					/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
+					/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 		}
 
-		if (isQuickTurn) {
-			if (Math.abs(throttle) < 0.2) {
-				double alpha = 0.1;
-				m_quick_stop_accumulator = (1 - alpha) * m_quick_stop_accumulator + alpha * Util.limit(turn, 1.0) * 5;
-			}
-			over_power = 1.0;
-			sensitivity = 1.0;
-			angular_power = turn;
+		double leftPwm, rightPwm, overPower;
+		double sensitivity;
+
+		double angularPower;
+		double linearPower;
+
+		// Negative inertia!
+		double negInertiaAccumulator = 0.0;
+		double negInertiaScalar;
+		if (isHighGear) {
+			negInertiaScalar = 5.0;
+			sensitivity = Constants.kDriveSensitivity;
 		} else {
-			over_power = 0.0;
-			angular_power = Math.abs(throttle) * turn * sensitivity
-					- m_quick_stop_accumulator;
-			if (m_quick_stop_accumulator > 1) {
-				m_quick_stop_accumulator -= 1;
-			} else if (m_quick_stop_accumulator < -1) {
-				m_quick_stop_accumulator += 1;
+			if (wheel * negInertia > 0) {
+				negInertiaScalar = 2.5;
 			} else {
-				m_quick_stop_accumulator = 0.0;
+				if (Math.abs(wheel) > 0.65) {
+					negInertiaScalar = 5.0;
+				} else {
+					negInertiaScalar = 3.0;
+				}
+			}
+			sensitivity = .85; // Constants.sensitivityLow.getDouble();
+		}
+		double negInertiaPower = negInertia * negInertiaScalar;
+		negInertiaAccumulator += negInertiaPower;
+
+		wheel = wheel + negInertiaAccumulator;
+		if (negInertiaAccumulator > 1) {
+			negInertiaAccumulator -= 1;
+		} else if (negInertiaAccumulator < -1) {
+			negInertiaAccumulator += 1;
+		} else {
+			negInertiaAccumulator = 0;
+		}
+		linearPower = throttle;
+
+		// Quickturn!
+		if (isQuickTurn) {
+			if (Math.abs(linearPower) < 0.2) {
+				double alpha = 0.1;
+				quickStopAccumulator = (1 - alpha) * quickStopAccumulator
+						+ alpha * Util.limit(wheel, 1.0) * 5;
+			}
+			overPower = 1.0;
+			if (isHighGear) {
+				sensitivity = 1.0;
+			} else {
+				sensitivity = 1.0;
+			}
+			angularPower = wheel;
+		} else {
+			overPower = 0.0;
+			angularPower = Math.abs(throttle) * wheel * sensitivity
+					- quickStopAccumulator;
+			if (quickStopAccumulator > 1) {
+				quickStopAccumulator -= 1;
+			} else if (quickStopAccumulator < -1) {
+				quickStopAccumulator += 1;
+			} else {
+				quickStopAccumulator = 0.0;
 			}
 		}
 
-		right_pwm = left_pwm = throttle;
-		left_pwm += angular_power;
-		right_pwm -= angular_power;
-		if (left_pwm > 1.0) {
-			right_pwm -= over_power * (left_pwm - 1.0);
-			left_pwm = 1.0;
-		} else if (right_pwm > 1.0) {
-			left_pwm -= over_power * (right_pwm - 1.0);
-			right_pwm = 1.0;
-		} else if (left_pwm < -1.0) {
-			right_pwm += over_power * (-1.0 - left_pwm);
-			left_pwm = -1.0;
-		} else if (right_pwm < -1.0) {
-			left_pwm += over_power * (-1.0 - right_pwm);
-			right_pwm = -1.0;
+		rightPwm = leftPwm = linearPower;
+		leftPwm += angularPower;
+		rightPwm -= angularPower;
+
+		if (leftPwm > 1.0) {
+			rightPwm -= overPower * (leftPwm - 1.0);
+			leftPwm = 1.0;
+		} else if (rightPwm > 1.0) {
+			leftPwm -= overPower * (rightPwm - 1.0);
+			rightPwm = 1.0;
+		} else if (leftPwm < -1.0) {
+			rightPwm += overPower * (-1.0 - leftPwm);
+			leftPwm = -1.0;
+		} else if (rightPwm < -1.0) {
+			leftPwm += overPower * (-1.0 - rightPwm);
+			rightPwm = -1.0;
 		}
-		signal.leftMotor = left_pwm;
-		signal.rightMotor = right_pwm;
+		signal.leftMotor = leftPwm;
+		signal.rightMotor = rightPwm;
 		drive.setOpenLoop(signal);
+
 	}
 
 	public double handleDeadband(double val, double deadband) {
