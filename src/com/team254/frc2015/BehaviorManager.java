@@ -93,8 +93,8 @@ public class BehaviorManager {
         m_setpoints.bottom_setpoint = m_nullopt;
         if (commands.preset_height == PresetHeight.CARRY) {
             // Carrying
-            m_setpoints.bottom_setpoint = Optional.of(28.0);
-            top_carriage.setSqueezeSetpoint(.4);
+            m_setpoints.bottom_setpoint = Optional.of(18.0);
+            top_carriage.setSqueezeSetpoint(.2);
             m_top_jogging = false;
             m_bottom_jogging = false;
         } else if (commands.preset_height == PresetHeight.CAPPING) {
@@ -106,8 +106,8 @@ public class BehaviorManager {
             m_bottom_jogging = false;
         } else if (commands.preset_height == PresetHeight.CAN) {
             // Can loading
-            m_setpoints.top_setpoint = Optional.of(7.0);
-            m_setpoints.bottom_setpoint = Optional.of(0.25);
+            m_setpoints.top_setpoint = Optional.of(5.5);
+            m_setpoints.bottom_setpoint = Optional.of(3.5);
             m_top_jogging = false;
             m_bottom_jogging = false;
         } else if (commands.preset_height == PresetHeight.FLOOR) {

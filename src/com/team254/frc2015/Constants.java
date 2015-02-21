@@ -33,14 +33,14 @@ public class Constants extends ConstantsBase {
     public static double kDriveOnTargetError = 0.5;
 
     // TurnInPlaceController gains
-    public static double kTurnMaxSpeedRadsPerSec = 1.5;
-    public static double kTurnMaxAccelRadsPerSec2 = 2.0;
-    public static double kTurnKp = 1.0;
-    public static double kTurnKi = 0.0;
+    public static double kTurnMaxSpeedRadsPerSec = 3.14;
+    public static double kTurnMaxAccelRadsPerSec2 = 4.5;
+    public static double kTurnKp = 2.5;
+    public static double kTurnKi = 0.1;
     public static double kTurnKd = 0.0;
-    public static double kTurnKv = 0.25;
-    public static double kTurnKa = 0.11;
-    public static double kTurnOnTargetError = 0.01;
+    public static double kTurnKv = 0.12;
+    public static double kTurnKa = 0.03;
+    public static double kTurnOnTargetError = 0.02;
     
     // Height presets
     public static double kPresetOneHeight = 0.25;
@@ -109,7 +109,7 @@ public class Constants extends ConstantsBase {
     public static double kElevatorPulleyRadiusInches = 0.564;
     public static double kElevatorEncoderCountsPerRev = 250.0;
     public static double kTopCarriageHeight = 6.0;
-    public static double kBottomCarriageHeight = 6.0;
+    public static double kBottomCarriageHeight = 0.0;
     public static double kDriveWheelRadius = 2.0;
     public static double kWheelbaseWidth = 26.5;
     public static double kTurnSlipFactor = 1.2;
@@ -119,19 +119,19 @@ public class Constants extends ConstantsBase {
 
     // !!! Control loop constants
     // Common carriage parameters
-    public static double kElevatorMaxSpeedInchesPerSec = 80.0;
-    public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
+    public static double kElevatorMaxSpeedInchesPerSec = 60.0;
+    public static double kElevatorMaxAccelInchesPerSec2 = 120.0;
     public static double kElevatorCarriageSafetyMarginInches = 1.0;
 
     // Top carriage limits
-    public static double kTopCarriageMinPositionInches = 6;
-    public static double kTopCarriageMaxPositionInches = 67;
+    public static double kTopCarriageMinPositionInches = 5;
+    public static double kTopCarriageMaxPositionInches = 66;
     public static double kTopCarriageHomePositionInches = 15.5;
     public static double kTopCarriageReZeroPositionInches = 28.3;
 
     // Bottom carriage limits
     public static double kBottomCarriageMinPositionInches = 0.0;
-    public static double kBottomCarriageMaxPositionInches = 60.0;
+    public static double kBottomCarriageMaxPositionInches = 65.0;
     public static double kBottomCarriageHomePositionInches = 0.0;
     public static double kBottomCarriageReZeroPositionInches = 0.0;
 

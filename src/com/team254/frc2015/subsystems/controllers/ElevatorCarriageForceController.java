@@ -40,7 +40,7 @@ public class ElevatorCarriageForceController extends Controller {
             // First move until contact.
             double speed = 0;
             if (!m_in_contact) {
-                if (m_top_carriage.getCurrent() > 35.0) {
+                if (m_top_carriage.getCurrent() > 25.0) {
                     m_in_contact = true;
                 } else {
                     speed = -0.5;
