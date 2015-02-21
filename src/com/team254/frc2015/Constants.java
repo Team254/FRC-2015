@@ -7,6 +7,9 @@ public class Constants extends ConstantsBase {
     public static double kOpenLoopCarriageDriveSpeed = 0.5;
     public static double kDriveSensitivity = .75;
     public static double kNegativeInertiaScalar = 5.0;
+    
+    // Operator controls
+    public static double kElevatorJogPwm = 1.0;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -118,7 +121,7 @@ public class Constants extends ConstantsBase {
 
     // !!! Control loop constants
     // Common carriage parameters
-    public static double kElevatorMaxSpeedInchesPerSec = 60.0;
+    public static double kElevatorMaxSpeedInchesPerSec = 80.0;
     public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
     public static double kElevatorCarriageSafetyMarginInches = 1.0;
 

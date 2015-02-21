@@ -22,7 +22,7 @@ public class BehaviorManager {
     }
 
     public enum PresetHeight {
-        NONE, MANUAL, ONE, TWO, THREE, FOUR, FIVE, SIX
+        NONE, MANUAL, CARRY, CAPPING, CAN, FLOOR, HUMAN, HOME
     }
 
     public enum IntakeAction {
@@ -85,26 +85,26 @@ public class BehaviorManager {
         boolean can_control_bottom_carriage = true;
         m_setpoints.top_setpoint = m_nullopt;
         m_setpoints.bottom_setpoint = m_nullopt;
-        if (commands.preset_height == PresetHeight.ONE) {
+        if (commands.preset_height == PresetHeight.CARRY) {
             // Carrying
             m_setpoints.bottom_setpoint = Optional.of(28.0);
             top_carriage.setSqueezeSetpoint(.4);
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.TWO) {
+        } else if (commands.preset_height == PresetHeight.CAPPING) {
             // Capping
             m_setpoints.top_setpoint = Optional
                     .of(Constants.kTopCarriageMaxPositionInches);
             m_setpoints.bottom_setpoint = Optional.of(0.25);
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.THREE) {
+        } else if (commands.preset_height == PresetHeight.CAN) {
             // Can loading
             m_setpoints.top_setpoint = Optional.of(7.0);
             m_setpoints.bottom_setpoint = Optional.of(0.25);
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.FOUR) {
+        } else if (commands.preset_height == PresetHeight.FLOOR) {
             // Floor load
             m_setpoints.bottom_setpoint = Optional.of(0.25);
             double bottom_movement = bottom_carriage.getHeight() - .25;
@@ -116,14 +116,14 @@ public class BehaviorManager {
             }
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.FIVE) {
+        } else if (commands.preset_height == PresetHeight.HUMAN) {
             // Human Loading
             m_setpoints.bottom_setpoint = Optional.of(33.0);
             top_carriage.setSqueezeSetpoint(.4);
             m_top_jogging = false;
             m_bottom_jogging = false;
 
-        } else if (commands.preset_height == PresetHeight.SIX) {
+        } else if (commands.preset_height == PresetHeight.HOME) {
             // Home
             m_setpoints.bottom_setpoint = Optional
                     .of(Constants.kBottomCarriageHomePositionInches);

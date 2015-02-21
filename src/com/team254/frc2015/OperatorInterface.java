@@ -50,33 +50,33 @@ public class OperatorInterface {
         }*/
         
         if (buttonBoard.getRawButton(8)) {
-            m_commands.bottom_jog = .75;
+            m_commands.bottom_jog = Constants.kElevatorJogPwm;
         } else if (buttonBoard.getRawButton(10)) {
-            m_commands.bottom_jog = -.75;
+            m_commands.bottom_jog = -Constants.kElevatorJogPwm;
         } else {
             m_commands.bottom_jog = 0;
         }
 
         if (buttonBoard.getRawButton(7)) {
-            m_commands.top_jog = .75;
+            m_commands.top_jog = Constants.kElevatorJogPwm;
         } else if (buttonBoard.getRawButton(9)) {
-            m_commands.top_jog = -.75;
+            m_commands.top_jog = -Constants.kElevatorJogPwm;
         } else {
             m_commands.top_jog = 0;
         }
         
         if (buttonBoard.getX() < 0) {
-            m_commands.preset_height = BehaviorManager.PresetHeight.SIX;
+            m_commands.preset_height = BehaviorManager.PresetHeight.HOME;
         } else if (buttonBoard.getY() < 0) {
-            m_commands.preset_height = BehaviorManager.PresetHeight.FIVE;
+            m_commands.preset_height = BehaviorManager.PresetHeight.HUMAN;
         } else if (buttonBoard.getZ() < 0) {
-            m_commands.preset_height = BehaviorManager.PresetHeight.FOUR;
+            m_commands.preset_height = BehaviorManager.PresetHeight.FLOOR;
         } else if (buttonBoard.getRawButton(6)) {
-            m_commands.preset_height = BehaviorManager.PresetHeight.THREE;
+            m_commands.preset_height = BehaviorManager.PresetHeight.CAN;
         } else if (buttonBoard.getRawButton(5)) {
-            m_commands.preset_height = BehaviorManager.PresetHeight.TWO;
+            m_commands.preset_height = BehaviorManager.PresetHeight.CAPPING;
         } else if (buttonBoard.getRawButton(4)) {
-            m_commands.preset_height = BehaviorManager.PresetHeight.ONE;
+            m_commands.preset_height = BehaviorManager.PresetHeight.CARRY;
         } else {
             m_commands.preset_height = BehaviorManager.PresetHeight.NONE;
         }
