@@ -30,6 +30,7 @@ public class TurnInPlaceController implements Drive.DriveController {
 
         double angularTravelDistance = normalizedSubtractAngles(destHeading, mInitialSetpointPose.getHeading());
         double encoderTravelDistance = roatationToWheelTravel(angularTravelDistance);
+        System.out.println("encoder: " + encoderTravelDistance);
 
         mLeftController = makeController(
                 config,

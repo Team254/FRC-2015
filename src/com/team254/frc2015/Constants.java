@@ -118,7 +118,7 @@ public class Constants extends ConstantsBase {
 
     // !!! Control loop constants
     // Common carriage parameters
-    public static double kElevatorMaxSpeedInchesPerSec = 40.0;
+    public static double kElevatorMaxSpeedInchesPerSec = 60.0;
     public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
     public static double kElevatorCarriageSafetyMarginInches = 1.0;
 

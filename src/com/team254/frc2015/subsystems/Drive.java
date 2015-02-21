@@ -62,6 +62,10 @@ public class Drive extends Subsystem implements Loopable {
                 vel_to_use);
 	}
 
+	public void setTurnSetPoint(double heading) {
+		setTurnSetPoint(heading, Constants.kTurnMaxSpeedRadsPerSec);
+	}
+
     public void setTurnSetPoint(double heading, double velocity) {
         velocity = Math.min(Constants.kTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
         m_controller = new TurnInPlaceController(getPoseToContinueFrom(), heading, velocity);
