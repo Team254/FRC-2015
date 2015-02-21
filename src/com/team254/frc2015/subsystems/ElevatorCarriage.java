@@ -137,7 +137,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     protected void setBrake(boolean on) {
-        m_brake.set(!on); // brake is normally applied
+        m_brake.set(on); // brake is normally applied
         if (on) {
             setSpeedUnsafe(0);
         }
