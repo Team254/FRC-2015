@@ -10,20 +10,36 @@ public class Test3BinAutoMode extends AutoMode {
 
 	@Override
 	protected void routine() throws AutoModeEndedException {
-		bottom_carriage.setPositionSetpoint(14.75, false);
-		waitTime(1.0);
+		top_carriage.setPositionSetpoint(50, false);
+		bottom_carriage.setPositionSetpoint(17.75, false);
+		waitForCarriage(bottom_carriage, 1.0);
+		
 		drive.setDistanceSetpoint(81, 48);
 		waitForDrive(3.0);
+		
 		bottom_carriage.setPositionSetpoint(0, false);
-		waitTime(1.0);
-		bottom_carriage.setPositionSetpoint(14.75, false);
-		waitTime(1.0);
+		waitForCarriage(bottom_carriage, 1.0);
+		bottom_carriage.setPositionSetpoint(17.75, false);
+		waitForCarriage(bottom_carriage, 1.0);
+		
 		drive.setDistanceSetpoint(81*2.0, 48);
 		waitForDrive(3.0);
+		
 		bottom_carriage.setPositionSetpoint(0, false);
-		waitTime(1.0);
-		bottom_carriage.setPositionSetpoint(14.75, false);
-		waitTime(1.0);
+		waitForCarriage(bottom_carriage, 1.0);
+		bottom_carriage.setPositionSetpoint(17.75, false);
+		waitForCarriage(bottom_carriage, 1.0);
+		
+		drive.setDistanceSetpoint((81*2.0) + 20, 48);
+		waitForDrive(2.0);
+		
+		bottom_carriage.setPositionSetpoint(0, false);
+		waitForCarriage(bottom_carriage, 1.0);
+		
+		drive.setDistanceSetpoint(81*2.0, 48);
+		waitForDrive(3.0);
+
+		/*
         drive.setTurnSetPoint(Math.PI / 2, Constants.kTurnMaxSpeedRadsPerSec);
         waitForDrive(3.0);
         drive.m_left_encoder.reset();
@@ -36,6 +52,7 @@ public class Test3BinAutoMode extends AutoMode {
         waitTime(1.0);
         drive.setDistanceSetpoint(30);
         waitForDrive(3.0);
+        */
 	}
 
 }

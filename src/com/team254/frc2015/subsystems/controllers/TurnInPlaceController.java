@@ -54,4 +54,9 @@ public class TurnInPlaceController implements Drive.DriveController {
                 setpoint.pos,
                 setpoint.vel);
     }
+
+	@Override
+	public boolean onTarget() {
+		return mController.isOnTarget();
+	}
 }

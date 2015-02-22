@@ -274,4 +274,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public boolean getHomeSensorHovered() {
         return !m_home.get();
     }
+    
+    public boolean isOnTarget() {
+    	return m_controller != null ? m_controller.isOnTarget() : false; 
+    }
 }

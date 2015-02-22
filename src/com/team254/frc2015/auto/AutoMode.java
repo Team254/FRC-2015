@@ -2,6 +2,7 @@ package com.team254.frc2015.auto;
 
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.actions.TimeoutAction;
+import com.team254.frc2015.actions.WaitForCarriageAction;
 import com.team254.frc2015.actions.WaitForDriveAction;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
@@ -21,5 +22,9 @@ public abstract class AutoMode extends AutoModeBase {
 
 	public void waitForDrive(double timeout) throws AutoModeEndedException {
 		runAction(new WaitForDriveAction(timeout));
+	}
+	
+	public void waitForCarriage(ElevatorCarriage carriage, double timeout) throws AutoModeEndedException {
+		runAction(new WaitForCarriageAction(carriage, timeout));
 	}
 }

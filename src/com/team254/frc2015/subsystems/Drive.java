@@ -18,6 +18,7 @@ public class Drive extends Subsystem implements Loopable {
     public interface DriveController {
         DriveSignal update(Pose pose);
         Pose getCurrentSetpoint();
+        public boolean onTarget();
     }
 
 	public CheesySpeedController m_left_motor;
@@ -133,6 +134,6 @@ public class Drive extends Subsystem implements Loopable {
     }
     
     public boolean controllerOnTarget() {
-    	return false;
+    	return m_controller != null ? m_controller.onTarget() : false;
     }
 }

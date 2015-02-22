@@ -84,4 +84,9 @@ public class DriveStraightController implements Drive.DriveController {
     public static double encoderDistance(Pose pose) {
         return (pose.getLeftDistance() + pose.getRightDistance()) / 2.0;
     }
+
+	@Override
+	public boolean onTarget() {
+		return mDistanceController.isOnTarget();
+	}
 }
