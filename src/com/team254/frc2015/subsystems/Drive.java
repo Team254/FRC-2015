@@ -131,4 +131,8 @@ public class Drive extends Subsystem implements Loopable {
         // TODO Auto-generated method stub
         
     }
+    
+    public boolean controllerOnTarget() {
+    	return false;
+    }
 }
