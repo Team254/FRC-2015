@@ -12,8 +12,7 @@ public class WaitForCarriageAction extends TimeoutAction {
 	
 	@Override
 	public boolean isFinished() {
-		return false;
-		//return m_carriage.isOnTarget() || super.isFinished();
+		return m_carriage.isOnTarget() || super.isFinished();
 	}
 
 }

@@ -138,6 +138,10 @@ public class Drive extends Subsystem implements Loopable {
                 m_gyro.getRate());
         return m_cached_pose;
     }
+    
+    public Drive.DriveController getController() {
+    	return m_controller;
+    }
 
     @Override
     public void reloadConstants() {

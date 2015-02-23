@@ -84,7 +84,6 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         System.out.println("Start teleopInit()");
         looper.start();
-        slowLooper.start();
     }
 
     @Override

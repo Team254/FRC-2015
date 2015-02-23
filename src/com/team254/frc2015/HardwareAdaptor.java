@@ -8,6 +8,7 @@ import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesyCompressor;
 import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
+import com.team254.lib.util.SharpGP2Y0A60SZ;
 import com.team254.lib.util.gyro.GyroThread;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -85,7 +86,7 @@ public class HardwareAdaptor {
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
-    public static AnalogInput kHumanLoadSensor = new AnalogInput(0);
+    public static SharpGP2Y0A60SZ kHumanLoadSensor = new SharpGP2Y0A60SZ(0);
 
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,

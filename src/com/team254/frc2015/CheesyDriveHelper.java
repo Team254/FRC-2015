@@ -138,7 +138,6 @@ public class CheesyDriveHelper {
 		signal.leftMotor = leftPwm;
 		signal.rightMotor = rightPwm;
 		drive.setOpenLoop(signal);
-
 	}
 
 	public double handleDeadband(double val, double deadband) {
