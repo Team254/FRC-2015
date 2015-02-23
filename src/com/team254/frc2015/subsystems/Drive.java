@@ -1,8 +1,10 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
+import com.team254.frc2015.subsystems.controllers.DrivePathController;
 import com.team254.frc2015.subsystems.controllers.DriveStraightController;
 import com.team254.frc2015.subsystems.controllers.TurnInPlaceController;
+import com.team254.lib.trajectory.Path;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Loopable;
@@ -73,6 +75,17 @@ public class Drive extends Subsystem implements Loopable {
         velocity = Math.min(Constants.kTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
         m_controller = new TurnInPlaceController(getPoseToContinueFrom(), heading, velocity);
     }
+    
+    public void reset() {
+    	m_left_encoder.reset();
+    	m_right_encoder.reset();
+    	m_controller = null;
+    }
+    
+    public void setPathSetpoint(Path path) {
+    	reset();
+    	m_controller = new DrivePathController(path);
+    }
 
 	@Override
 	public void getState(StateHolder states) {
@@ -89,6 +102,8 @@ public class Drive extends Subsystem implements Loopable {
                 "drive_set_point_pos",
                 DriveStraightController.encoderDistance(setPointPose));
         states.put("turn_set_point_pos", setPointPose.getHeading());
+        states.put("left_signal", m_left_motor.get());
+        states.put("right_signal", m_right_motor.get());
 	}
 
 	@Override
@@ -105,12 +120,9 @@ public class Drive extends Subsystem implements Loopable {
     }
 
     private Pose getPoseToContinueFrom() {
-        if (m_controller != null) {
-            // taking over from a previous controller, continue from its most recent desired state
-            return m_controller.getCurrentSetpoint();
-        }
-        // first closed-loop action, continue from the robot's current physical state
-        return getPhysicalPose();
+    	Pose p = m_controller != null ? m_controller.getCurrentSetpoint() : null;
+    	p = p == null ? getPhysicalPose() : p;
+        return p;
     }
 
     /**

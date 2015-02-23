@@ -10,6 +10,7 @@ import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.gyro.GyroThread;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -84,6 +85,7 @@ public class HardwareAdaptor {
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
+    public static AnalogInput kHumanLoadSensor = new AnalogInput(0);
 
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
     MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
+    MultiLooper slowLooper = new MultiLooper("SlowControllers", 1 / 100.0);
     Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
 
     AutoModeExecuter autoModeRunner = new AutoModeExecuter();
@@ -56,7 +57,7 @@ public class Robot extends IterativeRobot {
         WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
-        looper.addLoopable(drive);
+        slowLooper.addLoopable(drive);
         logUpdater.start();
 
     }
@@ -64,6 +65,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         System.out.println("Start autonomousInit()");
+        HardwareAdaptor.kGyroThread.rezero();
         HardwareAdaptor.kGyroThread.reset();
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
@@ -71,6 +73,7 @@ public class Robot extends IterativeRobot {
         autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());
         autoModeRunner.start();
         looper.start();
+        slowLooper.start();
     }
 
     @Override
@@ -81,6 +84,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         System.out.println("Start teleopInit()");
         looper.start();
+        slowLooper.start();
     }
 
     @Override
@@ -98,6 +102,7 @@ public class Robot extends IterativeRobot {
 
         // Stop control loops
         looper.stop();
+        slowLooper.stop();
 
         // Stop controllers
         drive.setOpenLoop(DriveSignal.NEUTRAL);
