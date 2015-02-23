@@ -19,7 +19,7 @@ public class TestDriveAutoMode extends AutoMode {
 		waitForDrive(2);
 		
 		drive.reset();
-		drive.setDistanceSetpoint(80, 75);
+		drive.setDistanceSetpoint(108, 75);
 		waitForDrive(3);
 		
 		drive.reset();
