@@ -11,15 +11,15 @@ public class TrajectoryFollowingPositionController extends Controller {
     double m_result = 0;
 
     public TrajectoryFollowingPositionController(double kp, double ki,
-            double kd, double kv, double ka, double on_target_delta,
-            TrajectoryFollower.TrajectoryConfig config) {
+                                                 double kd, double kv, double ka, double on_target_delta,
+                                                 TrajectoryFollower.TrajectoryConfig config) {
         m_follower = new TrajectoryFollower();
         m_follower.configure(kp, ki, kd, kv, ka, config);
         m_on_target_delta = on_target_delta;
     }
 
     public void setGoal(TrajectoryFollower.TrajectorySetpoint current_state,
-            double goal) {
+                        double goal) {
         m_goal = goal;
         m_follower.setGoal(current_state, goal);
     }

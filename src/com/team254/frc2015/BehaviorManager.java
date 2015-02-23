@@ -1,14 +1,12 @@
 package com.team254.frc2015;
 
-import java.util.Optional;
-
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
-import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
-
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
+import java.util.Optional;
 
 public class BehaviorManager {
     protected Drive drive = HardwareAdaptor.kDrive;
@@ -74,12 +72,12 @@ public class BehaviorManager {
     private boolean m_bottom_jogging = true;
 
     public void update(Commands commands) {
-		if (!bottom_carriage.isInitialized()) {
-			m_bottom_jogging = false;
-		}
-		if (!top_carriage.isInitialized()) {
-			m_top_jogging = false;
-		}
+        if (!bottom_carriage.isInitialized()) {
+            m_bottom_jogging = false;
+        }
+        if (!top_carriage.isInitialized()) {
+            m_top_jogging = false;
+        }
         boolean wants_mode_changed = false;
         if (commands.elevator_mode != m_current_mode) {
             m_current_mode = commands.elevator_mode;
@@ -162,7 +160,7 @@ public class BehaviorManager {
         if (m_setpoints.bottom_setpoint.isPresent() && !m_bottom_jogging && !m_bottom_jogging) {
             bottom_carriage.setPositionSetpoint(m_setpoints.bottom_setpoint.get(), true);
         }
-        
+
         // can_close_intake = ElevatorSafety.canCloseIntake();
 
         // Top carriage actions.

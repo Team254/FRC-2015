@@ -7,7 +7,7 @@ public class Constants extends ConstantsBase {
     public static double kOpenLoopCarriageDriveSpeed = 0.5;
     public static double kDriveSensitivity = .75;
     public static double kNegativeInertiaScalar = 5.0;
-    
+
     // Operator controls
     public static double kElevatorJogPwm = 1.0;
 
@@ -42,7 +42,7 @@ public class Constants extends ConstantsBase {
     public static double kTurnKv = 0.12;
     public static double kTurnKa = 0.03;
     public static double kTurnOnTargetError = 0.02;
-    
+
     // Height presets
     public static double kPresetOneHeight = 0.25;
     public static double kPresetTwoHeight = 15.0;

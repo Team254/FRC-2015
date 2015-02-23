@@ -2,22 +2,15 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
-import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.controllers.ElevatorCarriageForceController;
 import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
-import com.team254.lib.util.CheesySpeedController;
-import com.team254.lib.util.Controller;
-import com.team254.lib.util.Loopable;
-import com.team254.lib.util.StateHolder;
-import com.team254.lib.util.Subsystem;
-
+import com.team254.lib.util.*;
 import edu.wpi.first.wpilibj.ChezyInterruptHandlerFunction;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
     public CheesySpeedController m_motor;
@@ -34,7 +27,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     protected ChezyInterruptHandlerFunction<ElevatorCarriage> isr = new ChezyInterruptHandlerFunction<ElevatorCarriage>() {
         @Override
         public void interruptFired(int interruptAssertedMask,
-                ElevatorCarriage param) {
+                                   ElevatorCarriage param) {
             System.out.println("Interrupt fired on " + param.getName() + "!");
         }
 
@@ -55,7 +48,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public ElevatorCarriage(String name, CheesySpeedController motor,
-            Solenoid brake, Encoder encoder, DigitalInput home) {
+                            Solenoid brake, Encoder encoder, DigitalInput home) {
         super(name);
         m_motor = motor;
         m_brake = brake;
@@ -76,12 +69,12 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public double getHeight() {
-    	if (m_initialized) {
-	        return m_limits.m_rezero_position
-	                + (getRelativeHeight() - m_homing_controller.getZeroOffset());
-    	} else {
-    		return getRelativeHeight() + m_limits.m_home_position;
-    	}
+        if (m_initialized) {
+            return m_limits.m_rezero_position
+                    + (getRelativeHeight() - m_homing_controller.getZeroOffset());
+        } else {
+            return getRelativeHeight() + m_limits.m_home_position;
+        }
     }
 
     public double getVelocity() {
@@ -140,9 +133,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
         setSpeedUnsafe(desired_speed);
     }
-    
+
     public void setNeedsHoming(boolean needs_homing) {
-    	m_initialized = !needs_homing;
+        m_initialized = !needs_homing;
     }
 
     protected void setBrake(boolean on) {
@@ -157,7 +150,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public synchronized void setPositionSetpointUnsafe(double setpoint,
-            boolean brake_on_target) {
+                                                       boolean brake_on_target) {
         m_brake_on_target = brake_on_target;
         TrajectoryFollower.TrajectorySetpoint prior_setpoint = getSetpoint();
         if (!(m_controller instanceof TrajectoryFollowingPositionController)) {
@@ -178,7 +171,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public synchronized void setPositionSetpoint(double setpoint,
-            boolean brake_on_target) {
+                                                 boolean brake_on_target) {
         if (!m_initialized) {
             cached_setpoint = setpoint;
         } else {
@@ -186,9 +179,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
 
     }
-    
+
     public boolean isInitialized() {
-    	return m_initialized;
+        return m_initialized;
     }
 
     public synchronized void setOpenLoop(double speed, boolean brake) {
@@ -222,11 +215,11 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     @Override
     public synchronized void update() {
         if (!m_initialized) {
-        	double old_goal = getGoalHeight() == -1 ? getSetpoint().pos : getGoalHeight();
+            double old_goal = getGoalHeight() == -1 ? getSetpoint().pos : getGoalHeight();
             double new_setpoint = m_homing_controller.update(old_goal,
                     getRelativeHeight());
             if (m_homing_controller.needsControllerNullOut()) {
-            	m_controller = null;
+                m_controller = null;
             }
             setPositionSetpointUnsafe(new_setpoint, false);
             if (m_homing_controller.isReady()) {
@@ -274,8 +267,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public boolean getHomeSensorHovered() {
         return !m_home.get();
     }
-    
+
     public boolean isOnTarget() {
-    	return m_controller != null ? m_controller.isOnTarget() : false; 
+        return m_controller != null ? m_controller.isOnTarget() : false;
     }
 }

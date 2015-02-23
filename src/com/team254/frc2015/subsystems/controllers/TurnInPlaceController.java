@@ -3,7 +3,6 @@ package com.team254.frc2015.subsystems.controllers;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.lib.trajectory.TrajectoryFollower;
-import com.team254.lib.util.ConstantsBase;
 import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Pose;
 
@@ -55,8 +54,8 @@ public class TurnInPlaceController implements Drive.DriveController {
                 setpoint.vel);
     }
 
-	@Override
-	public boolean onTarget() {
-		return mController.isOnTarget();
-	}
+    @Override
+    public boolean onTarget() {
+        return mController.isOnTarget();
+    }
 }

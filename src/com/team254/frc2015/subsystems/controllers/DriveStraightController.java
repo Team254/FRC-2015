@@ -4,10 +4,8 @@ import com.team254.frc2015.Constants;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.DriveSignal;
-import com.team254.lib.util.Pose.RelativePoseGenerator;
-import com.team254.lib.util.SynchronousPID;
-import com.team254.lib.trajectory.TrajectoryFollower.TrajectoryConfig;
 import com.team254.lib.util.Pose;
+import com.team254.lib.util.SynchronousPID;
 
 import static com.team254.lib.trajectory.TrajectoryFollower.TrajectorySetpoint;
 
@@ -17,7 +15,7 @@ public class DriveStraightController implements Drive.DriveController {
     private SynchronousPID mTurnPid;
     private Pose mSetpointRelativePose;
 
-	public DriveStraightController(Pose priorSetpoint, double goalSetpoint, double maxVelocity) {
+    public DriveStraightController(Pose priorSetpoint, double goalSetpoint, double maxVelocity) {
         TrajectoryFollower.TrajectoryConfig config = new TrajectoryFollower.TrajectoryConfig();
         config.dt = Constants.kControlLoopsDt;
         config.max_acc = Constants.kDriveMaxAccelInchesPerSec2;
@@ -50,18 +48,18 @@ public class DriveStraightController implements Drive.DriveController {
                 0,
                 priorSetpoint.getHeading(),
                 priorSetpoint.getHeadingVelocity());
-	}
+    }
 
     @Override
-	public DriveSignal update(Pose currentPose) {
+    public DriveSignal update(Pose currentPose) {
         mDistanceController.update(
                 (currentPose.getLeftDistance() + currentPose.getRightDistance()) / 2.0,
                 (currentPose.getLeftVelocity() + currentPose.getRightVelocity()) / 2.0);
-		double throttle = mDistanceController.get();
-		double turn = mTurnPid.calculate(currentPose.getHeading());
+        double throttle = mDistanceController.get();
+        double turn = mTurnPid.calculate(currentPose.getHeading());
 
-		return new DriveSignal(throttle + turn, throttle - turn);
-	}
+        return new DriveSignal(throttle + turn, throttle - turn);
+    }
 
     @Override
     public Pose getCurrentSetpoint() {
@@ -85,8 +83,8 @@ public class DriveStraightController implements Drive.DriveController {
         return (pose.getLeftDistance() + pose.getRightDistance()) / 2.0;
     }
 
-	@Override
-	public boolean onTarget() {
-		return mDistanceController.isOnTarget();
-	}
+    @Override
+    public boolean onTarget() {
+        return mDistanceController.isOnTarget();
+    }
 }

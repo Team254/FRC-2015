@@ -1,6 +1,5 @@
 package com.team254.frc2015.subsystems.controllers;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
@@ -52,7 +51,7 @@ public class ElevatorCarriageForceController extends Controller {
                     speed = m_bottom_carriage.get() - m_squeeze_power;
                 }
             }
-            
+
             if (HardwareAdaptor.kTopCarriage.getHeight() < 28.0) {
                 m_in_contact = false;
                 return 0.5;

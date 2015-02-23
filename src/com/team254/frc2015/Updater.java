@@ -7,10 +7,10 @@ import com.team254.lib.util.SystemManager;
 
 public class Updater implements Loopable {
 
-	@Override
-	public void update() {
-		WebServer.updateAllStateStreams();
-    	Logger.println(SystemManager.getInstance().get().toJSONString());
-	}
+    @Override
+    public void update() {
+        WebServer.updateAllStateStreams();
+        Logger.println(SystemManager.getInstance().get().toJSONString());
+    }
 
 }

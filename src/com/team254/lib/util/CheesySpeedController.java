@@ -1,7 +1,6 @@
 package com.team254.lib.util;
 
 import com.team254.frc2015.HardwareAdaptor;
-
 import edu.wpi.first.wpilibj.SpeedController;
 
 public class CheesySpeedController implements SpeedController {
@@ -10,12 +9,12 @@ public class CheesySpeedController implements SpeedController {
     protected boolean m_invert = false;
 
     public CheesySpeedController(SpeedController controller, int pdp_slot) {
-        m_controllers = new SpeedController[] { controller };
-        m_pdp_slots = new int[] { pdp_slot };
+        m_controllers = new SpeedController[]{controller};
+        m_pdp_slots = new int[]{pdp_slot};
     }
 
     public CheesySpeedController(SpeedController controller, int[] pdp_slots) {
-        m_controllers = new SpeedController[] { controller };
+        m_controllers = new SpeedController[]{controller};
         m_pdp_slots = pdp_slots;
     }
 

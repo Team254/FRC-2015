@@ -48,7 +48,7 @@ public class OperatorInterface {
         } else {
             m_commands.bottom_carriage_pusher_action = BehaviorManager.BottomCarriagePusherAction.RETRACT;
         }*/
-        
+
         if (buttonBoard.getRawButton(8)) {
             m_commands.bottom_jog = Constants.kElevatorJogPwm;
         } else if (buttonBoard.getRawButton(10)) {
@@ -64,7 +64,7 @@ public class OperatorInterface {
         } else {
             m_commands.top_jog = 0;
         }
-        
+
         if (buttonBoard.getX() < 0) {
             m_commands.preset_height = BehaviorManager.PresetHeight.HOME;
         } else if (buttonBoard.getY() < 0) {

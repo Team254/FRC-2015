@@ -2,7 +2,6 @@ package com.team254.frc2015.subsystems.controllers;
 
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.lib.util.Controller;
-
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class ElevatorHomingController extends Controller {
@@ -13,7 +12,7 @@ public class ElevatorHomingController extends Controller {
     private boolean m_null_controller = false;
 
     public ElevatorHomingController(ElevatorCarriage carriage,
-            boolean move_off_positive, double dt) {
+                                    boolean move_off_positive, double dt) {
         m_carriage = carriage;
         m_move_off_positive = move_off_positive;
         m_dt = dt;
@@ -21,7 +20,9 @@ public class ElevatorHomingController extends Controller {
 
     enum HomingStates {
         UNINITIALIZED, MOVING_ON, MOVING_OFF, READY
-    };
+    }
+
+    ;
 
     private HomingStates m_state = HomingStates.UNINITIALIZED;
 
@@ -38,41 +39,41 @@ public class ElevatorHomingController extends Controller {
         boolean enabled = DriverStation.getInstance().isEnabled();
 
         m_null_controller = false;
-        
+
         switch (m_state) {
-        case UNINITIALIZED:
-            if (!enabled) {
+            case UNINITIALIZED:
+                if (!enabled) {
+                    break;
+                } else if (on_sensor) {
+                    next_state = HomingStates.MOVING_OFF;
+                } else {
+                    next_state = HomingStates.MOVING_ON;
+                }
                 break;
-            } else if (on_sensor) {
-                next_state = HomingStates.MOVING_OFF;
-            } else {
-                next_state = HomingStates.MOVING_ON;
-            }
-            break;
-        case MOVING_OFF:
-        	new_setpoint = current_relative_position;
-            new_setpoint += slow_move_delta;
-            if (!enabled) {
-                next_state = HomingStates.UNINITIALIZED;
-            } else if (!on_sensor) {
-                m_zero_point = current_relative_position;
-                next_state = HomingStates.READY;
-                m_null_controller = true;
-            }
-            break;
-        case MOVING_ON:
-            new_setpoint -= fast_move_delta;
-            if (!enabled) {
-                next_state = HomingStates.UNINITIALIZED;
-            } else if (on_sensor) {
-                next_state = HomingStates.MOVING_OFF;
-                m_null_controller = true;
-            }
-            break;
-        case READY:
-            break;
-        default:
-            break;
+            case MOVING_OFF:
+                new_setpoint = current_relative_position;
+                new_setpoint += slow_move_delta;
+                if (!enabled) {
+                    next_state = HomingStates.UNINITIALIZED;
+                } else if (!on_sensor) {
+                    m_zero_point = current_relative_position;
+                    next_state = HomingStates.READY;
+                    m_null_controller = true;
+                }
+                break;
+            case MOVING_ON:
+                new_setpoint -= fast_move_delta;
+                if (!enabled) {
+                    next_state = HomingStates.UNINITIALIZED;
+                } else if (on_sensor) {
+                    next_state = HomingStates.MOVING_OFF;
+                    m_null_controller = true;
+                }
+                break;
+            case READY:
+                break;
+            default:
+                break;
         }
         m_state = next_state;
         return new_setpoint;
@@ -87,15 +88,16 @@ public class ElevatorHomingController extends Controller {
     }
 
     @Override
-    public void reset() {}
+    public void reset() {
+    }
 
     @Override
     public boolean isOnTarget() {
         return false;
     }
-    
+
     public boolean needsControllerNullOut() {
-    	return m_null_controller;
+        return m_null_controller;
     }
 
 }

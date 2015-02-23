@@ -1,9 +1,10 @@
 package com.team254.lib.util;
 
-import java.util.TimerTask;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.Timer;
+
+import java.util.TimerTask;
 
 public class LidarLiteSensor {
     private I2C mI2C;
@@ -26,7 +27,7 @@ public class LidarLiteSensor {
      * @return Distance in meters
      */
     public double getDistance() {
-        int distCm = (int)Integer.toUnsignedLong(mDistance[0] << 8) + Byte.toUnsignedInt(mDistance[1]);
+        int distCm = (int) Integer.toUnsignedLong(mDistance[0] << 8) + Byte.toUnsignedInt(mDistance[1]);
         return distCm / 100.0;
     }
 

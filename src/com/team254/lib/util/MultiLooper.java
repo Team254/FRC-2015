@@ -4,39 +4,40 @@ import java.util.Vector;
 
 /**
  * MultiLooper.java
- * 
+ * <p>
  * Runs several Loopables simultaneously with one Looper.
  * Useful for running a bunch of control loops
  * with only one Thread worth of overhead.
- * 
+ *
  * @author Tom Bottiglieri
  */
 public class MultiLooper implements Loopable {
-  private Looper looper;
-  private Vector<Loopable> loopables = new Vector<Loopable>();
-  public MultiLooper(String name, double period) {
-    looper = new Looper(name, this, period);
-  }
+    private Looper looper;
+    private Vector<Loopable> loopables = new Vector<Loopable>();
 
-  public void update() {
-    int i;
-    for (i = 0; i < loopables.size(); ++i) {
-      Loopable c = (Loopable) loopables.elementAt(i);
-      if (c != null) {
-          c.update();
-      }
+    public MultiLooper(String name, double period) {
+        looper = new Looper(name, this, period);
     }
-  }
 
-  public void start() {
-    looper.start();
-  }
-  
-  public void stop() {
-    looper.stop();
-  }
+    public void update() {
+        int i;
+        for (i = 0; i < loopables.size(); ++i) {
+            Loopable c = (Loopable) loopables.elementAt(i);
+            if (c != null) {
+                c.update();
+            }
+        }
+    }
 
-  public void addLoopable(Loopable c) {
-    loopables.addElement(c);
-  }
+    public void start() {
+        looper.start();
+    }
+
+    public void stop() {
+        looper.stop();
+    }
+
+    public void addLoopable(Loopable c) {
+        loopables.addElement(c);
+    }
 }

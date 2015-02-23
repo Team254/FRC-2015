@@ -1,10 +1,10 @@
 package com.team254.lib.util.gyro;
 
+import com.team254.lib.util.Util;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.team254.lib.util.Util;
 
 /**
  * Thread which is responsible for reading the gyro
@@ -42,7 +42,7 @@ public class GyroThread {
     public double getAngle() {
         return mVolatileAngle - mZeroHeading;
     }
-    
+
     public double getRate() {
         return mVolatileRate;
     }

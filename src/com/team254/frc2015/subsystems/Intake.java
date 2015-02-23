@@ -3,7 +3,6 @@ package com.team254.frc2015.subsystems;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Subsystem;
-
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends Subsystem {
@@ -14,7 +13,7 @@ public class Intake extends Subsystem {
     CheesySpeedController m_right_motor;
 
     public Intake(String name, Solenoid left_solenoid, Solenoid right_solenoid,
-            CheesySpeedController left_motor, CheesySpeedController right_motor) {
+                  CheesySpeedController left_motor, CheesySpeedController right_motor) {
         super(name);
         m_left_solenoid = left_solenoid;
         m_right_solenoid = right_solenoid;
@@ -50,7 +49,7 @@ public class Intake extends Subsystem {
     @Override
     public void reloadConstants() {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

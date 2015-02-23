@@ -2,7 +2,6 @@ package com.team254.frc2015;
 
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
-import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesyCompressor;
@@ -10,39 +9,30 @@ import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.SharpGP2Y0A60SZ;
 import com.team254.lib.util.gyro.GyroThread;
-
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.*;
 
 public class HardwareAdaptor {
     // Motors
     static CheesySpeedController kLeftDriveMotor = new CheesySpeedController(
-            new VictorSP(Constants.kLeftDriveMotorPWM), new int[] {
-                    Constants.kLeftDriveMotor1PDP,
-                    Constants.kLeftDriveMotor2PDP });
+            new VictorSP(Constants.kLeftDriveMotorPWM), new int[]{
+            Constants.kLeftDriveMotor1PDP,
+            Constants.kLeftDriveMotor2PDP});
     static CheesySpeedController kRightDriveMotor = new CheesySpeedController(
-            new VictorSP(Constants.kRightDriveMotorPWM), new int[] {
-                    Constants.kRightDriveMotor2PDP,
-                    Constants.kRightDriveMotor2PDP });
+            new VictorSP(Constants.kRightDriveMotorPWM), new int[]{
+            Constants.kRightDriveMotor2PDP,
+            Constants.kRightDriveMotor2PDP});
     public static CheesySpeedController kTopCarriageMotor = new CheesySpeedController(
-            new SpeedController[] {
+            new SpeedController[]{
                     new VictorSP(Constants.kTopCarriageMotor1PWM),
-                    new VictorSP(Constants.kTopCarriageMotor2PWM) }, new int[] {
-                    Constants.kTopCarriageMotor1PDP,
-                    Constants.kTopCarriageMotor2PDP });
+                    new VictorSP(Constants.kTopCarriageMotor2PWM)}, new int[]{
+            Constants.kTopCarriageMotor1PDP,
+            Constants.kTopCarriageMotor2PDP});
     public static CheesySpeedController kBottomCarriageMotor = new CheesySpeedController(
-            new SpeedController[] {
+            new SpeedController[]{
                     new VictorSP(Constants.kBottomCarriageMotor1PWM),
-                    new VictorSP(Constants.kBottomCarriageMotor2PWM) },
-            new int[] { Constants.kBottomCarriageMotor1PDP,
-                    Constants.kBottomCarriageMotor2PDP });
+                    new VictorSP(Constants.kBottomCarriageMotor2PWM)},
+            new int[]{Constants.kBottomCarriageMotor1PDP,
+                    Constants.kBottomCarriageMotor2PDP});
     static CheesySpeedController kLeftIntakeMotor = new CheesySpeedController(
             new VictorSP(Constants.kLeftIntakeMotorPWM),
             Constants.kLeftIntakeMotorPDP);

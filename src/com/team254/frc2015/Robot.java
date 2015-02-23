@@ -2,19 +2,10 @@ package com.team254.frc2015;
 
 import com.team254.frc2015.auto.AutoModeExecuter;
 import com.team254.frc2015.auto.AutoModeSelector;
-import com.team254.frc2015.auto.modes.Test3BinAutoMode;
-import com.team254.frc2015.auto.modes.TestDriveAutoMode;
-import com.team254.frc2015.auto.modes.TestElevatorAutoMode;
-import com.team254.frc2015.auto.modes.TestTurnAutoMode;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
-import com.team254.lib.util.DriveSignal;
-import com.team254.lib.util.LidarLiteSensor;
-import com.team254.lib.util.Looper;
-import com.team254.lib.util.MultiLooper;
-import com.team254.lib.util.SystemManager;
-
+import com.team254.lib.util.*;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;

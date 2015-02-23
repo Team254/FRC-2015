@@ -7,26 +7,26 @@ import com.team254.lib.util.Pose.RelativePoseGenerator;
 
 public class DriveTurnController extends TrajectoryFollowingPositionController {
 
-	private RelativePoseGenerator m_relative_pose_generator;
+    private RelativePoseGenerator m_relative_pose_generator;
 
-	public DriveTurnController(double kp, double ki, double kd, double kv,
-			double ka, double on_target_delta, TrajectoryConfig config) {
-		super(kp, ki, kd, kv, ka, on_target_delta, config);
-	}
+    public DriveTurnController(double kp, double ki, double kd, double kv,
+                               double ka, double on_target_delta, TrajectoryConfig config) {
+        super(kp, ki, kd, kv, ka, on_target_delta, config);
+    }
 
-	public void setStartPose(Pose pose) {
-		m_relative_pose_generator = pose.new RelativePoseGenerator();
-	}
+    public void setStartPose(Pose pose) {
+        m_relative_pose_generator = pose.new RelativePoseGenerator();
+    }
 
-	public DriveSignal update(Pose currentPose) {
-		if (m_relative_pose_generator == null) {
-			m_relative_pose_generator = currentPose.new RelativePoseGenerator();
-		}
-		Pose relative_pose = m_relative_pose_generator.get(currentPose);
-		update(relative_pose.getHeading(),
+    public DriveSignal update(Pose currentPose) {
+        if (m_relative_pose_generator == null) {
+            m_relative_pose_generator = currentPose.new RelativePoseGenerator();
+        }
+        Pose relative_pose = m_relative_pose_generator.get(currentPose);
+        update(relative_pose.getHeading(),
                 currentPose.getHeadingVelocity());
-		double turn = get();
-		return new DriveSignal(turn, -turn);
-	}
+        double turn = get();
+        return new DriveSignal(turn, -turn);
+    }
 
 }

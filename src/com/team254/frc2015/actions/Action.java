@@ -4,7 +4,6 @@ import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.TopCarriage;
-
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public abstract class Action {
