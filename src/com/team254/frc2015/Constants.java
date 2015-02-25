@@ -3,13 +3,12 @@ package com.team254.frc2015;
 import com.team254.lib.util.ConstantsBase;
 
 public class Constants extends ConstantsBase {
-
-    public static double kOpenLoopCarriageDriveSpeed = 0.5;
     public static double kDriveSensitivity = .75;
     public static double kNegativeInertiaScalar = 5.0;
 
     // Operator controls
-    public static double kElevatorJogPwm = 1.0;
+    public static double kElevatorJogPwm = 0.75;
+    public static double kManualIntakeSpeed = .75;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -22,7 +21,7 @@ public class Constants extends ConstantsBase {
     // DriveStraightController gains
     public static double kDriveMaxSpeedInchesPerSec = 120.0;
     public static double kDriveMaxAccelInchesPerSec2 = 95.0;
-    public static double kDrivePositionKp = 0.035;
+    public static double kDrivePositionKp = 0.7;
     public static double kDrivePositionKi = 0;
     public static double kDrivePositionKd = 0;
     public static double kDriveStraightKp = 2.0;
@@ -36,11 +35,11 @@ public class Constants extends ConstantsBase {
     // TurnInPlaceController gains
     public static double kTurnMaxSpeedRadsPerSec = 3.14;
     public static double kTurnMaxAccelRadsPerSec2 = 4.5;
-    public static double kTurnKp = 2.5;
-    public static double kTurnKi = 0.1;
+    public static double kTurnKp = 1.5;
+    public static double kTurnKi = 0.13;
     public static double kTurnKd = 0.0;
-    public static double kTurnKv = 0.12;
-    public static double kTurnKa = 0.03;
+    public static double kTurnKv = 0.11;
+    public static double kTurnKa = 0.05;
     public static double kTurnOnTargetError = 0.02;
 
     // Height presets

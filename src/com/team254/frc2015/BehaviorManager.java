@@ -211,10 +211,10 @@ public class BehaviorManager {
         // Roller actions.
         if (commands.roller_action == RollerAction.INTAKE) {
             // Run intake inwards.
-            intake.setSpeed(0.35);
+            intake.setSpeed(Constants.kManualIntakeSpeed);
         } else if (commands.roller_action == RollerAction.EXHAUST) {
             // Run intake outwards.
-            intake.setSpeed(-0.35);
+            intake.setSpeed(-Constants.kManualIntakeSpeed);
         } else {
             // Stop intake.
             intake.setSpeed(0.0);
