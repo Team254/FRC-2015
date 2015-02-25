@@ -1,5 +1,8 @@
-package com.team254.frc2015;
+package com.team254.frc2015.behavior;
 
+import com.team254.frc2015.Constants;
+import com.team254.frc2015.ElevatorSafety;
+import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.Intake;
@@ -15,57 +18,7 @@ public class BehaviorManager {
     protected Intake intake = HardwareAdaptor.kIntake;
     protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
-    public enum ElevatorMode {
-        BOTTOM_CARRIAGE_MODE, TOP_CARRIAGE_MODE
-    }
-
-    public enum PresetHeight {
-        NONE, MANUAL, CARRY, CAPPING, CAN, FLOOR, HUMAN, HOME
-    }
-
-    public enum IntakeAction {
-        NONE, OPEN, CLOSE, NEUTRAL
-    }
-
-    public enum RollerAction {
-        NONE, INTAKE, EXHAUST
-    }
-
-    public enum ElevatorAction {
-        NONE, HP_LOAD_ACTION, FLOOR_LOAD_ACTION, LOAD_PREP_ACTION
-    }
-
-    public enum TopCarriagePivotAction {
-        NONE, PIVOT_DOWN, PIVOT_UP
-    }
-
-    public enum TopCarriageClawAction {
-        NONE, OPEN, CLOSE
-    }
-
-    public enum BottomCarriageFlapperAction {
-        NONE, OPEN, CLOSE
-    }
-
-    public enum BottomCarriagePusherAction {
-        NONE, EXTEND, RETRACT
-    }
-
-    public static class Commands {
-        public ElevatorMode elevator_mode;
-        public PresetHeight preset_height;
-        public double top_jog;
-        public double bottom_jog;
-        public IntakeAction intake_action;
-        public RollerAction roller_action;
-        public ElevatorAction elevator_action;
-        public TopCarriagePivotAction top_carriage_pivot_action;
-        public TopCarriageClawAction top_carriage_claw_action;
-        public BottomCarriageFlapperAction bottom_carriage_flapper_action;
-        public BottomCarriagePusherAction bottom_carriage_pusher_action;
-    }
-
-    private ElevatorMode m_current_mode = ElevatorMode.BOTTOM_CARRIAGE_MODE;
+    private Commands.ElevatorMode m_current_mode = Commands.ElevatorMode.BOTTOM_CARRIAGE_MODE;
     private static Optional<Double> m_nullopt = Optional.empty();
     private ElevatorSafety.Setpoints m_setpoints = new ElevatorSafety.Setpoints();
     private boolean m_top_jogging = true;
@@ -89,39 +42,39 @@ public class BehaviorManager {
         boolean can_control_bottom_carriage = true;
         m_setpoints.top_setpoint = m_nullopt;
         m_setpoints.bottom_setpoint = m_nullopt;
-        if (commands.preset_height == PresetHeight.CARRY) {
+        if (commands.preset_height == Commands.PresetHeight.CARRY) {
             // Carrying
             m_setpoints.bottom_setpoint = Optional.of(18.0);
             top_carriage.setSqueezeSetpoint(.2);
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.CAPPING) {
+        } else if (commands.preset_height == Commands.PresetHeight.CAPPING) {
             // Capping
             m_setpoints.top_setpoint = Optional
                     .of(Constants.kTopCarriageMaxPositionInches);
             m_setpoints.bottom_setpoint = Optional.of(0.25);
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.CAN) {
+        } else if (commands.preset_height == Commands.PresetHeight.CAN) {
             // Can loading
             m_setpoints.top_setpoint = Optional.of(5.5);
             m_setpoints.bottom_setpoint = Optional.of(3.5);
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.FLOOR) {
+        } else if (commands.preset_height == Commands.PresetHeight.FLOOR) {
             // Floor load
             m_setpoints.bottom_setpoint = Optional.of(0.25);
             m_setpoints.top_setpoint = Optional.of(Math.max(30.0, top_carriage.getHeight()));
             m_top_jogging = false;
             m_bottom_jogging = false;
-        } else if (commands.preset_height == PresetHeight.HUMAN) {
+        } else if (commands.preset_height == Commands.PresetHeight.HUMAN) {
             // Human Loading
             m_setpoints.bottom_setpoint = Optional.of(33.0);
             m_setpoints.top_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
             m_top_jogging = false;
             m_bottom_jogging = false;
 
-        } else if (commands.preset_height == PresetHeight.HOME) {
+        } else if (commands.preset_height == Commands.PresetHeight.HOME) {
             // Home
             m_setpoints.bottom_setpoint = Optional
                     .of(Constants.kBottomCarriageHomePositionInches);
@@ -159,54 +112,54 @@ public class BehaviorManager {
 
         // Top carriage actions.
         if (can_control_top_carriage_grabber
-                && commands.top_carriage_claw_action == TopCarriageClawAction.OPEN) {
+                && commands.top_carriage_claw_action == Commands.TopCarriageClawAction.OPEN) {
             top_carriage.setGrabberOpen(true);
             can_control_top_carriage_pivot = false;
         } else if (can_control_top_carriage_grabber
-                && commands.top_carriage_claw_action == TopCarriageClawAction.CLOSE) {
+                && commands.top_carriage_claw_action == Commands.TopCarriageClawAction.CLOSE) {
             top_carriage.setGrabberOpen(false);
         }
         if (can_control_top_carriage_pivot
-                && commands.top_carriage_pivot_action == TopCarriagePivotAction.PIVOT_DOWN) {
+                && commands.top_carriage_pivot_action == Commands.TopCarriagePivotAction.PIVOT_DOWN) {
             top_carriage.setPivotDown(true);
         } else if (can_control_top_carriage_pivot
-                && commands.top_carriage_pivot_action == TopCarriagePivotAction.PIVOT_UP) {
+                && commands.top_carriage_pivot_action == Commands.TopCarriagePivotAction.PIVOT_UP) {
             top_carriage.setPivotDown(false);
         }
 
         // Bottom carriage actions.
         if (can_control_bottom_carriage
-                && commands.bottom_carriage_flapper_action == BottomCarriageFlapperAction.OPEN) {
+                && commands.bottom_carriage_flapper_action == Commands.BottomCarriageFlapperAction.OPEN) {
             bottom_carriage.setFlapperOpen(true);
         } else if (can_control_bottom_carriage
-                && commands.bottom_carriage_flapper_action == BottomCarriageFlapperAction.CLOSE) {
+                && commands.bottom_carriage_flapper_action == Commands.BottomCarriageFlapperAction.CLOSE) {
             bottom_carriage.setFlapperOpen(false);
         }
         if (can_control_bottom_carriage
-                && commands.bottom_carriage_pusher_action == BottomCarriagePusherAction.EXTEND) {
+                && commands.bottom_carriage_pusher_action == Commands.BottomCarriagePusherAction.EXTEND) {
             bottom_carriage.setPusherExtended(true);
         } else if (can_control_bottom_carriage
-                && commands.bottom_carriage_pusher_action == BottomCarriagePusherAction.RETRACT) {
+                && commands.bottom_carriage_pusher_action == Commands.BottomCarriagePusherAction.RETRACT) {
             bottom_carriage.setPusherExtended(false);
         }
 
         // Intake actions.
-        if (!can_close_intake || commands.intake_action == IntakeAction.OPEN) {
+        if (!can_close_intake || commands.intake_action == Commands.IntakeAction.OPEN) {
             // Open intake
             intake.open();
-        } else if (commands.intake_action == IntakeAction.CLOSE) {
+        } else if (commands.intake_action == Commands.IntakeAction.CLOSE) {
             // Close intake
             intake.close();
-        }  else if (commands.intake_action == IntakeAction.NEUTRAL) {
+        }  else if (commands.intake_action == Commands.IntakeAction.NEUTRAL) {
             // Neutral intake
             intake.neutral();
         }
 
         // Roller actions.
-        if (commands.roller_action == RollerAction.INTAKE) {
+        if (commands.roller_action == Commands.RollerAction.INTAKE) {
             // Run intake inwards.
             intake.setSpeed(Constants.kManualIntakeSpeed);
-        } else if (commands.roller_action == RollerAction.EXHAUST) {
+        } else if (commands.roller_action == Commands.RollerAction.EXHAUST) {
             // Run intake outwards.
             intake.setSpeed(-Constants.kManualIntakeSpeed);
         } else {

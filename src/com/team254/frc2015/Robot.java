@@ -2,6 +2,7 @@ package com.team254.frc2015;
 
 import com.team254.frc2015.auto.AutoModeExecuter;
 import com.team254.frc2015.auto.AutoModeSelector;
+import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.frc2015.web.WebServer;
