@@ -12,7 +12,7 @@ public class Constants extends ConstantsBase {
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
-    public static double kElevatorCarriagePositionKi = 0.1;
+    public static double kElevatorCarriagePositionKi = 0.2;
     public static double kElevatorCarriagePositionKd = 0.0;
     public static double kElevatorCarriagePositionKv = 0.02;
     public static double kElevatorCarriagePositionKa = 6.0E-4;
@@ -121,7 +121,7 @@ public class Constants extends ConstantsBase {
     // Common carriage parameters
     public static double kElevatorMaxSpeedInchesPerSec = 60.0;
     public static double kElevatorMaxAccelInchesPerSec2 = 120.0;
-    public static double kElevatorCarriageSafetyMarginInches = 1.0;
+    public static double kElevatorCarriageSafetyMarginInches = -0.5;
 
     // Top carriage limits
     public static double kTopCarriageMinPositionInches = 5;

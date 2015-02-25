@@ -12,6 +12,7 @@ public class ElevatorCarriageForceController extends Controller {
     CheesySpeedController m_bottom_carriage = HardwareAdaptor.kBottomCarriageMotor;
 
     double m_squeeze_power = 0;
+    double m_bottom_highest_height = 0;
     boolean m_follow_bottom = true;
     boolean m_in_contact;
 
@@ -38,26 +39,30 @@ public class ElevatorCarriageForceController extends Controller {
         if (m_follow_bottom) {
             // First move until contact.
             double speed = 0;
-            if (!m_in_contact) {
-                if (m_top_carriage.getCurrent() > 25.0) {
-                    m_in_contact = true;
-                } else {
-                    speed = -0.5;
-                }
+            if (HardwareAdaptor.kBottomCarriage.getSetpoint().vel != 0 || HardwareAdaptor.kBottomCarriage.getSetpoint().acc != 0) {
+                //speed = m_bottom_carriage.get() - m_squeeze_power;
+                speed = m_squeeze_power;
+                m_bottom_highest_height = 0;
+                m_in_contact = false;
             } else {
-                if (m_bottom_carriage.get() == 0) {
-                    speed = 0;
+                if (m_in_contact) {
+                    return 0;
                 } else {
-                    speed = m_bottom_carriage.get() - m_squeeze_power;
+                    speed = -1.0;
+                    if (HardwareAdaptor.kBottomCarriage.getHeight() < m_bottom_highest_height - .125) {
+                        System.out.println("touch!");
+                        m_in_contact = true;
+                    }
                 }
             }
+            m_bottom_highest_height = Math.max(m_bottom_highest_height, HardwareAdaptor.kBottomCarriage.getHeight());
 
             if (HardwareAdaptor.kTopCarriage.getHeight() < 28.0) {
                 m_in_contact = false;
                 return 0.5;
             } else if (HardwareAdaptor.kTopCarriage.getHeight() < 30.0) {
                 m_in_contact = false;
-                return 0.0;
+                return Math.max(0.0, speed);
             } else {
                 return speed;
             }

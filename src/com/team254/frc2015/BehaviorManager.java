@@ -111,13 +111,7 @@ public class BehaviorManager {
         } else if (commands.preset_height == PresetHeight.FLOOR) {
             // Floor load
             m_setpoints.bottom_setpoint = Optional.of(0.25);
-            double bottom_movement = bottom_carriage.getHeight() - .25;
-            double new_top_setpoint = top_carriage.getHeight() - bottom_movement + 13.0;
-            if (new_top_setpoint > 28.0) {
-                m_setpoints.top_setpoint = Optional.of(new_top_setpoint);
-            } else {
-                m_setpoints.top_setpoint = Optional.of(top_carriage.getHeight());
-            }
+            m_setpoints.top_setpoint = Optional.of(Math.max(30.0, top_carriage.getHeight()));
             m_top_jogging = false;
             m_bottom_jogging = false;
         } else if (commands.preset_height == PresetHeight.HUMAN) {
