@@ -58,7 +58,7 @@ public class Drive extends Subsystem implements Loopable {
         // 0 < vel < max_vel
         double vel_to_use = Math.min(Constants.kDriveMaxSpeedInchesPerSec, Math.max(velocity, 0));
         m_controller = new DriveStraightController(
-                getPoseToContinueFrom(),
+                getPoseToContinueFrom(false),
                 distance,
                 vel_to_use);
     }
@@ -69,7 +69,7 @@ public class Drive extends Subsystem implements Loopable {
 
     public void setTurnSetPoint(double heading, double velocity) {
         velocity = Math.min(Constants.kTurnMaxSpeedRadsPerSec, Math.max(velocity, 0));
-        m_controller = new TurnInPlaceController(getPoseToContinueFrom(), heading, velocity);
+        m_controller = new TurnInPlaceController(getPoseToContinueFrom(true), heading, velocity);
     }
 
     public void reset() {
@@ -115,10 +115,12 @@ public class Drive extends Subsystem implements Loopable {
         m_right_motor.set(-signal.rightMotor);
     }
 
-    private Pose getPoseToContinueFrom() {
-        Pose p = m_controller != null ? m_controller.getCurrentSetpoint() : null;
-        p = p == null ? getPhysicalPose() : p;
-        return p;
+    private Pose getPoseToContinueFrom(boolean for_turn_controller) {
+        if (m_controller == null || (m_controller instanceof DriveStraightController && for_turn_controller)) {
+            return getPhysicalPose();
+        } else {
+            return m_controller.getCurrentSetpoint();
+        }
     }
 
     /**
