@@ -1,4 +1,4 @@
-package com.team254.frc2015.actions;
+package com.team254.frc2015.auto.actions;
 
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.controllers.DrivePathController;

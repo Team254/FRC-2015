@@ -1,6 +1,6 @@
 package com.team254.frc2015.auto;
 
-import com.team254.frc2015.actions.Action;
+import com.team254.frc2015.auto.actions.Action;
 
 public abstract class AutoModeBase {
     protected double m_update_rate = 1.0 / 50.0;

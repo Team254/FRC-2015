@@ -1,4 +1,4 @@
-package com.team254.frc2015.actions;
+package com.team254.frc2015.auto.actions;
 
 public class WaitForDriveAction extends TimeoutAction {
     public WaitForDriveAction(double timeout) {
