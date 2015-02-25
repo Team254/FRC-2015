@@ -99,8 +99,8 @@ public class Constants extends ConstantsBase {
     public static int kTopCarriageGrabberSolenoidPort = 0;
     public static int kBottomCarriagePusherSolenoidPort = 9;
     public static int kBottomCarriageFlapperSolenoidPort = 10;
-    public static int kLeftIntakeSolenoidPort = 2;
-    public static int kRightIntakeSolenoidPort = 11;
+    public static int kOpenIntakeSolenoidPort = 11;
+    public static int kCloseIntakeSolenoidPort = 2;
     // bin flap auto thing 8
 
     // Relays

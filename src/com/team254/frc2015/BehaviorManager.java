@@ -24,7 +24,7 @@ public class BehaviorManager {
     }
 
     public enum IntakeAction {
-        NONE, OPEN, CLOSE
+        NONE, OPEN, CLOSE, NEUTRAL
     }
 
     public enum RollerAction {
@@ -203,6 +203,9 @@ public class BehaviorManager {
         } else if (commands.intake_action == IntakeAction.CLOSE) {
             // Close intake
             intake.close();
+        }  else if (commands.intake_action == IntakeAction.NEUTRAL) {
+            // Neutral intake
+            intake.neutral();
         }
 
         // Roller actions.

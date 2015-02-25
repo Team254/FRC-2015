@@ -27,7 +27,7 @@ public class OperatorInterface {
         if (rightStick.getRawButton(2)) {
             m_commands.intake_action = BehaviorManager.IntakeAction.CLOSE;
         } else {
-            m_commands.intake_action = BehaviorManager.IntakeAction.OPEN;
+            m_commands.intake_action = BehaviorManager.IntakeAction.NEUTRAL;
         }
 
         // Button board

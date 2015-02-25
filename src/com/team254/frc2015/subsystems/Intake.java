@@ -7,28 +7,33 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends Subsystem {
 
-    Solenoid m_left_solenoid;
-    Solenoid m_right_solenoid;
+    Solenoid m_open_solenoid;
+    Solenoid m_close_solenoid;
     CheesySpeedController m_left_motor;
     CheesySpeedController m_right_motor;
 
-    public Intake(String name, Solenoid left_solenoid, Solenoid right_solenoid,
+    public Intake(String name, Solenoid open_solenoid, Solenoid close_solenoid,
                   CheesySpeedController left_motor, CheesySpeedController right_motor) {
         super(name);
-        m_left_solenoid = left_solenoid;
-        m_right_solenoid = right_solenoid;
+        m_open_solenoid = open_solenoid;
+        m_close_solenoid = close_solenoid;
         m_left_motor = left_motor;
         m_right_motor = right_motor;
     }
 
     public void open() {
-        m_left_solenoid.set(false);
-        m_right_solenoid.set(false);
+        m_open_solenoid.set(true);
+        m_close_solenoid.set(false);
     }
 
     public void close() {
-        m_left_solenoid.set(true);
-        m_right_solenoid.set(true);
+        m_open_solenoid.set(false);
+        m_close_solenoid.set(true);
+    }
+
+    public void neutral() {
+        m_open_solenoid.set(false);
+        m_close_solenoid.set(false);
     }
 
     public void setSpeed(double speed) {
