@@ -1,5 +1,6 @@
 package com.team254.frc2015.subsystems.controllers;
 
+import com.team254.frc2015.Constants;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
@@ -34,23 +35,28 @@ public class ElevatorCarriageForceController extends Controller {
         m_in_contact = false;
     }
 
+    double m_on_target_counter = 0;
     public double update() {
         // TODO(jared): Clean this up.
         if (m_follow_bottom) {
             // First move until contact.
             double speed = 0;
-            if (HardwareAdaptor.kBottomCarriage.getSetpoint().vel != 0 || HardwareAdaptor.kBottomCarriage.getSetpoint().acc != 0) {
+            if (HardwareAdaptor.kBottomCarriage.getSetpoint().vel != 0 || HardwareAdaptor.kBottomCarriage.getSetpoint().acc != 0 || m_bottom_carriage.get() != 0) {
                 //speed = m_bottom_carriage.get() - m_squeeze_power;
                 speed = m_squeeze_power;
                 m_bottom_highest_height = 0;
                 m_in_contact = false;
+                m_on_target_counter = 0;
             } else {
+                m_on_target_counter++;
+                if (m_on_target_counter <= 10) {
+                    m_bottom_highest_height = Math.min(m_bottom_highest_height, HardwareAdaptor.kBottomCarriage.getHeight());
+                }
                 if (m_in_contact) {
                     return 0;
                 } else {
                     speed = -1.0;
-                    if (HardwareAdaptor.kBottomCarriage.getHeight() < m_bottom_highest_height - .125) {
-                        System.out.println("touch!");
+                    if (HardwareAdaptor.kBottomCarriage.getHeight() < m_bottom_highest_height - .2 && m_on_target_counter > 10) {
                         m_in_contact = true;
                     }
                 }
@@ -63,6 +69,8 @@ public class ElevatorCarriageForceController extends Controller {
             } else if (HardwareAdaptor.kTopCarriage.getHeight() < 30.0) {
                 m_in_contact = false;
                 return Math.max(0.0, speed);
+            } else if (HardwareAdaptor.kTopCarriage.getHeight() > Constants.kTopCarriageMaxPositionInches - .5) {
+                return Math.min(0.0, speed);
             } else {
                 return speed;
             }

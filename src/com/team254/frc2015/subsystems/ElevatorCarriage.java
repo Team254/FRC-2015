@@ -240,6 +240,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 if (!m_brake_on_target) {
                     position_controller.update(getHeight(), getVelocity());
                     setSpeedIfValid(position_controller.get());
+                } else {
+                    m_controller = null;
                 }
             } else {
                 position_controller.update(getHeight(), getVelocity());

@@ -45,7 +45,7 @@ public class BehaviorManager {
         if (commands.preset_height == Commands.PresetHeight.CARRY) {
             // Carrying
             m_setpoints.bottom_setpoint = Optional.of(18.0);
-            top_carriage.setSqueezeSetpoint(.2);
+            top_carriage.setSqueezeSetpoint(.7);
             m_top_jogging = false;
             m_bottom_jogging = false;
         } else if (commands.preset_height == Commands.PresetHeight.CAPPING) {

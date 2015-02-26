@@ -20,7 +20,7 @@ public class OperatorInterface {
         if (leftStick.getRawButton(1)) {
             m_commands.roller_action = Commands.RollerAction.INTAKE;
         } else if (leftStick.getRawButton(2)) {
-            m_commands.roller_action = Commands.RollerAction.EXHAUST;
+            //m_commands.roller_action = Commands.RollerAction.EXHAUST;
         } else {
             m_commands.roller_action = Commands.RollerAction.NONE;
         }
@@ -28,6 +28,8 @@ public class OperatorInterface {
         // Right stick
         if (rightStick.getRawButton(2)) {
             m_commands.intake_action = Commands.IntakeAction.CLOSE;
+        } else if (leftStick.getRawButton(2)) {
+            m_commands.intake_action = Commands.IntakeAction.OPEN;
         } else {
             m_commands.intake_action = Commands.IntakeAction.NEUTRAL;
         }

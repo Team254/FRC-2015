@@ -91,7 +91,6 @@ public class TrajectoryFollower {
             setpoint_.pos = goal_position_;
             setpoint_.vel = 0;
             setpoint_.acc = 0;
-            reset_ = true;
         } else {
             // Compute the new commanded position, velocity, and acceleration.
             double distance_to_go = goal_position_ - setpoint_.pos;
@@ -99,7 +98,6 @@ public class TrajectoryFollower {
             double cur_vel2 = cur_vel * cur_vel;
             boolean inverted = false;
             if (distance_to_go < 0) {
-                // System.out.println("inverted");
                 inverted = true;
                 distance_to_go *= -1;
                 cur_vel *= -1;
@@ -115,8 +113,6 @@ public class TrajectoryFollower {
                 cruise_vel = Math.min(config_.max_vel,
                         Math.sqrt(max_reachable_velocity_disc));
             }
-            // System.out.println("Cruise vel " + cruise_vel + ", Cur vel " +
-            // cur_vel);
             double t_start = (cruise_vel - cur_vel) / config_.max_acc; // Accelerate
             // to
             // cruise_vel
@@ -125,9 +121,6 @@ public class TrajectoryFollower {
             double t_end = Math.abs(cruise_vel / config_.max_acc); // Decelerate
             // to zero
             // vel.
-            if (cruise_vel < 0) {
-                // System.out.println("WHAT");
-            }
             double x_end = cruise_vel * t_end - .5 * config_.max_acc * t_end
                     * t_end;
             double x_cruise = Math.max(0, distance_to_go - x_start - x_end);
@@ -174,10 +167,6 @@ public class TrajectoryFollower {
         double output = kp_ * error + kd_
                 * ((error - last_error_) / dt - setpoint_.vel)
                 + (kv_ * setpoint_.vel + ka_ * setpoint_.acc);
-        if (dt > 3.0 * config_.dt) {
-            // Reset integral.
-            error_sum_ = 0;
-        }
         if (output < 1.0 && output > -1.0) {
             // Only integrate error if the output isn't already saturated.
             error_sum_ += error * dt;
