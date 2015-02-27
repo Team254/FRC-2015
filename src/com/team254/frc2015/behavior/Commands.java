@@ -1,5 +1,7 @@
 package com.team254.frc2015.behavior;
 
+import java.util.Optional;
+
 /**
  * Created by tombot on 2/25/15.
  */
@@ -12,43 +14,54 @@ public class Commands {
         NONE, MANUAL, CARRY, CAPPING, CAN, FLOOR, HUMAN, HOME
     }
 
-    public enum IntakeAction {
+    public enum IntakeRequest {
         NONE, OPEN, CLOSE, NEUTRAL
     }
 
-    public enum RollerAction {
+    public enum RollerRequest {
         NONE, INTAKE, EXHAUST
     }
+
+    public enum TopCarriageClawRequest {
+        NONE, OPEN, CLOSE
+    }
+
+    public enum TopCarriagePivotRequest {
+        NONE, PIVOT_DOWN, PIVOT_UP
+    }
+
+    public enum BottomCarriageFlapperRequest {
+        NONE, OPEN, CLOSE
+    }
+
+    public enum BottomCarriagePusherRequest {
+        NONE, EXTEND, RETRACT
+    }
+
 
     public enum ElevatorAction {
         NONE, HP_LOAD_ACTION, FLOOR_LOAD_ACTION, LOAD_PREP_ACTION
     }
 
-    public enum TopCarriagePivotAction {
-        NONE, PIVOT_DOWN, PIVOT_UP
+    public enum CanGrabberRequests {
+        NONE, STAGE_FOR_GRAB, DO_GRAB
     }
 
-    public enum TopCarriageClawAction {
-        NONE, OPEN, CLOSE
-    }
-
-    public enum BottomCarriageFlapperAction {
-        NONE, OPEN, CLOSE
-    }
-
-    public enum BottomCarriagePusherAction {
-        NONE, EXTEND, RETRACT
+    public enum RoutineToRun {
+        NO_CARE, CAN_GRAB, CANCEL
     }
 
     public ElevatorMode elevator_mode;
     public PresetHeight preset_height;
-    public double top_jog;
-    public double bottom_jog;
-    public IntakeAction intake_action;
-    public RollerAction roller_action;
+    public Optional<Double> top_jog = Optional.empty();
+    public Optional<Double> bottom_jog = Optional.empty();
+    public IntakeRequest intake_request;
+    public RollerRequest roller_request;
     public ElevatorAction elevator_action;
-    public TopCarriagePivotAction top_carriage_pivot_action;
-    public TopCarriageClawAction top_carriage_claw_action;
-    public BottomCarriageFlapperAction bottom_carriage_flapper_action;
-    public BottomCarriagePusherAction bottom_carriage_pusher_action;
+    public TopCarriageClawRequest top_carriage_claw_request;
+    public TopCarriagePivotRequest top_carriage_pivot_request;
+    public BottomCarriageFlapperRequest bottom_carriage_flapper_request;
+    public BottomCarriagePusherRequest bottom_carriage_pusher_request;
+    public RoutineToRun routine_to_run;
+    public CanGrabberRequests can_grabber_request;
 }

@@ -4,6 +4,8 @@ import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.behavior.Commands;
 import edu.wpi.first.wpilibj.Joystick;
 
+import java.util.Optional;
+
 public class OperatorInterface {
     private Commands m_commands = new Commands();
 
@@ -18,20 +20,20 @@ public class OperatorInterface {
     public Commands getCommands() {
         // Left stick
         if (leftStick.getRawButton(1)) {
-            m_commands.roller_action = Commands.RollerAction.INTAKE;
+            m_commands.roller_request = Commands.RollerRequest.INTAKE;
         } else if (leftStick.getRawButton(2)) {
-            //m_commands.roller_action = Commands.RollerAction.EXHAUST;
+            //m_commands.roller_request = Commands.RollerAction.EXHAUST;
         } else {
-            m_commands.roller_action = Commands.RollerAction.NONE;
+            m_commands.roller_request = Commands.RollerRequest.NONE;
         }
 
         // Right stick
         if (rightStick.getRawButton(2)) {
-            m_commands.intake_action = Commands.IntakeAction.CLOSE;
+            m_commands.intake_request = Commands.IntakeRequest.CLOSE;
         } else if (leftStick.getRawButton(2)) {
-            m_commands.intake_action = Commands.IntakeAction.OPEN;
+            m_commands.intake_request = Commands.IntakeRequest.OPEN;
         } else {
-            m_commands.intake_action = Commands.IntakeAction.NEUTRAL;
+            m_commands.intake_request = Commands.IntakeRequest.NEUTRAL;
         }
 
         // Button board
@@ -42,31 +44,31 @@ public class OperatorInterface {
         }
 
         if (buttonBoard.getRawButton(3)) {
-            m_commands.bottom_carriage_flapper_action = Commands.BottomCarriageFlapperAction.OPEN;
+            m_commands.bottom_carriage_flapper_request = Commands.BottomCarriageFlapperRequest.OPEN;
         } else {
-            m_commands.bottom_carriage_flapper_action = Commands.BottomCarriageFlapperAction.CLOSE;
+            m_commands.bottom_carriage_flapper_request = Commands.BottomCarriageFlapperRequest.CLOSE;
         }
 
         /*if (buttonBoard.getRawButton(7)) {
-            m_commands.bottom_carriage_pusher_action = BehaviorManager.BottomCarriagePusherAction.EXTEND;
+            m_commands.bottom_carriage_pusher_request = BehaviorManager.BottomCarriagePusherAction.EXTEND;
         } else {
-            m_commands.bottom_carriage_pusher_action = BehaviorManager.BottomCarriagePusherAction.RETRACT;
+            m_commands.bottom_carriage_pusher_request = BehaviorManager.BottomCarriagePusherAction.RETRACT;
         }*/
 
         if (buttonBoard.getRawButton(8)) {
-            m_commands.bottom_jog = Constants.kElevatorJogPwm;
+            m_commands.bottom_jog = Optional.of(Constants.kElevatorJogPwm);
         } else if (buttonBoard.getRawButton(10)) {
-            m_commands.bottom_jog = -Constants.kElevatorJogPwm;
+            m_commands.bottom_jog = Optional.of(-Constants.kElevatorJogPwm);
         } else {
-            m_commands.bottom_jog = 0;
+            m_commands.bottom_jog = Optional.empty();
         }
 
         if (buttonBoard.getRawButton(7)) {
-            m_commands.top_jog = Constants.kElevatorJogPwm;
+            m_commands.top_jog = Optional.of(Constants.kElevatorJogPwm);
         } else if (buttonBoard.getRawButton(9)) {
-            m_commands.top_jog = -Constants.kElevatorJogPwm;
+            m_commands.top_jog = Optional.of(-Constants.kElevatorJogPwm);
         } else {
-            m_commands.top_jog = 0;
+            m_commands.top_jog = Optional.empty();
         }
 
         if (buttonBoard.getX() < 0) {
@@ -86,15 +88,9 @@ public class OperatorInterface {
         }
 
         if (buttonBoard.getRawButton(1)) {
-            m_commands.top_carriage_claw_action = Commands.TopCarriageClawAction.OPEN;
+            m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.OPEN;
         } else {
-            m_commands.top_carriage_claw_action = Commands.TopCarriageClawAction.CLOSE;
-        }
-
-        if (buttonBoard.getRawButton(2)) {
-            m_commands.top_carriage_pivot_action = Commands.TopCarriagePivotAction.PIVOT_DOWN;
-        } else {
-            m_commands.top_carriage_pivot_action = Commands.TopCarriagePivotAction.PIVOT_UP;
+            m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.CLOSE;
         }
         return m_commands;
     }
