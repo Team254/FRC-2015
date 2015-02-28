@@ -25,8 +25,8 @@ public class AutoModeSelector {
     }
 
     public AutoModeSelector() {
-        registerAutonomous(new TestDriveAutoMode());
         registerAutonomous(new Test3BinAutoMode());
+        registerAutonomous(new TestDriveAutoMode());
         registerAutonomous(new TestElevatorAutoMode());
         registerAutonomous(new TestTurnAutoMode());
     }

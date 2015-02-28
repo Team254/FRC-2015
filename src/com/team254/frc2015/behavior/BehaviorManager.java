@@ -53,6 +53,7 @@ public class BehaviorManager {
 
     private void setNewRoutine(Routine new_routine) {
         boolean needs_cancel = new_routine != m_cur_routine && m_cur_routine != null;
+
         boolean needs_reset = new_routine != m_cur_routine && new_routine != null;
         if (needs_cancel) {
             m_cur_routine.cancel();

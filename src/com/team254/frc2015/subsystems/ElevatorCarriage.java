@@ -269,6 +269,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public boolean isOnTarget() {
-        return m_controller != null ? m_controller.isOnTarget() : false;
+        return m_initialized && (m_controller != null ? m_controller.isOnTarget() : false);
     }
 }
