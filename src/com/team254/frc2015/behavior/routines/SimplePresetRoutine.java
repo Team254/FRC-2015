@@ -1,5 +1,6 @@
 package com.team254.frc2015.behavior.routines;
 
+import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 
@@ -9,16 +10,21 @@ import java.util.Optional;
  * Created by tombot on 2/27/15.
  */
 public abstract class SimplePresetRoutine extends Routine {
-    RobotSetpoints m_preset_setpoints = new RobotSetpoints();
+    protected RobotSetpoints m_preset_setpoints = new RobotSetpoints();
     boolean m_first_run = true;
-    Optional<Double> m_top_height_setpoint = Optional.empty();
-    Optional<Double> m_bottom_height_setpoint = Optional.empty();
-    Optional<Double> m_nullopt = Optional.empty();
+    protected Optional<Double> m_top_height_setpoint = Optional.empty();
+    protected Optional<Double> m_bottom_height_setpoint = Optional.empty();
+    protected Optional<Double> m_nullopt = Optional.empty();
 
     @Override
     public void reset() {
+        setPresets();
         m_first_run = true;
 
+    }
+
+    public SimplePresetRoutine() {
+        setPresets();
     }
 
     @Override
@@ -50,13 +56,4 @@ public abstract class SimplePresetRoutine extends Routine {
 
     public abstract void setPresets();
 
-    public static SimplePresetRoutine RammingModePresetRoutine = new SimplePresetRoutine() {
-
-        @Override
-        public void setPresets() {
-            m_bottom_height_setpoint = Optional.of(0.0);
-            m_top_height_setpoint = Optional.of(20.0);
-            m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-        }
-    };
 }

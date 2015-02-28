@@ -3,14 +3,13 @@ package com.team254.frc2015.behavior;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.HardwareAdaptor;
-import com.team254.frc2015.behavior.routines.CanGrabRoutine;
-import com.team254.frc2015.behavior.routines.HumanLoadRoutine;
-import com.team254.frc2015.behavior.routines.ManualRoutine;
-import com.team254.frc2015.behavior.routines.Routine;
+import com.team254.frc2015.behavior.routines.*;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
+
+import java.util.Optional;
 
 public class BehaviorManager {
 
@@ -30,6 +29,27 @@ public class BehaviorManager {
     private Routine m_cur_routine = null;
     private RobotSetpoints m_setpoints;
     private ManualRoutine m_manual_routine = new ManualRoutine();
+
+
+    public static SimplePresetRoutine rammingModePresetRoutine = new SimplePresetRoutine() {
+        @Override
+        public void setPresets() {
+            m_bottom_height_setpoint = Optional.of(0.0);
+            m_top_height_setpoint = Optional.of(20.0);
+            m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+        }
+    };
+
+
+    public static SimplePresetRoutine coopPresetRoutine = new SimplePresetRoutine() {
+        @Override
+        public void setPresets() {
+            m_bottom_height_setpoint = Optional.of(40.0);
+            m_top_height_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
+            m_preset_setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
+            m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+        }
+    };
 
     private void setNewRoutine(Routine new_routine) {
         boolean needs_cancel = new_routine != m_cur_routine && m_cur_routine != null;
@@ -67,6 +87,10 @@ public class BehaviorManager {
             setNewRoutine(new HumanLoadRoutine());
         } else if (!commands.human_player_mode && m_cur_routine instanceof HumanLoadRoutine) {
             setNewRoutine(null);
+        } else if (commands.preset_request == Commands.PresetRequest.RAMMING) {
+            setNewRoutine(rammingModePresetRoutine);
+        } else if (commands.preset_request == Commands.PresetRequest.COOP) {
+            setNewRoutine(coopPresetRoutine);
         }
 
         if (m_cur_routine != null) {

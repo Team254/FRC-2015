@@ -70,18 +70,18 @@ public class OperatorInterface {
             m_commands.top_jog = Optional.empty();
         }
 
-        m_commands.cancel_current_routine = buttonBoard.getX() < 0;
+        m_commands.cancel_current_routine = buttonBoard.getX() < 0; // Button 6
 
-        if (buttonBoard.getY() < 0) {
-            m_commands.preset_request = Commands.PresetRequest.HUMAN;
-        } else if (buttonBoard.getZ() < 0) {
+        if (buttonBoard.getY() < 0) { // Button 5
+            m_commands.preset_request = Commands.PresetRequest.COOP;
+        } else if (buttonBoard.getZ() < 0) { // Button 4
             m_commands.preset_request = Commands.PresetRequest.FLOOR;
-        } else if (buttonBoard.getRawButton(6)) {
-            m_commands.preset_request = Commands.PresetRequest.CAN;
-        } else if (buttonBoard.getRawButton(5)) {
-            m_commands.preset_request = Commands.PresetRequest.CAPPING;
-        } else if (buttonBoard.getRawButton(4)) {
-            m_commands.preset_request = Commands.PresetRequest.CARRY;
+        } else if (buttonBoard.getRawButton(6)) { // Button 3
+            m_commands.preset_request = Commands.PresetRequest.RAMMING;
+        } else if (buttonBoard.getRawButton(5)) { // Button 2
+            m_commands.preset_request = Commands.PresetRequest.SCORE;
+        } else if (buttonBoard.getRawButton(4)) { // Button 1
+            m_commands.preset_request = Commands.PresetRequest.CARRY_SQUEZE;
         } else {
             m_commands.preset_request = Commands.PresetRequest.NONE;
         }
