@@ -1,8 +1,6 @@
 package com.team254.frc2015.behavior.routines;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.ElevatorSafety;
-import com.team254.frc2015.Robot;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 
@@ -27,30 +25,30 @@ public class ManualRoutine extends Routine {
         setpoints.bottom_open_loop_jog = m_nullopt;
         setpoints.top_open_loop_jog = m_nullopt;
 
-        if (commands.preset_height == Commands.PresetHeight.CARRY) {
+        if (commands.preset_request == Commands.PresetRequest.CARRY) {
             // Carrying
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(18.0);
 
             // Figure out how to move this later
             top_carriage.setSqueezeSetpoint(.7);
-        } else if (commands.preset_height == Commands.PresetHeight.CAPPING) {
+        } else if (commands.preset_request == Commands.PresetRequest.CAPPING) {
             // Capping
             setpoints.m_elevator_setpoints.top_setpoint = Optional
                     .of(Constants.kTopCarriageMaxPositionInches);
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.25);
-        } else if (commands.preset_height == Commands.PresetHeight.CAN) {
+        } else if (commands.preset_request == Commands.PresetRequest.CAN) {
             // Can loading
             setpoints.m_elevator_setpoints.top_setpoint = Optional.of(5.5);
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(3.5);
-        } else if (commands.preset_height == Commands.PresetHeight.FLOOR) {
+        } else if (commands.preset_request == Commands.PresetRequest.FLOOR) {
             // Floor load
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.25);
             setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Math.max(30.0, top_carriage.getHeight()));
-        } else if (commands.preset_height == Commands.PresetHeight.HUMAN) {
+        } else if (commands.preset_request == Commands.PresetRequest.HUMAN) {
             // Human Loading
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(33.0);
             setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
-        } else if (commands.preset_height == Commands.PresetHeight.HOME) {
+        } else if (commands.preset_request == Commands.PresetRequest.HOME) {
             // Home
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional
                     .of(Constants.kBottomCarriageHomePositionInches);

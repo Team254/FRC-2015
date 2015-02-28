@@ -1,6 +1,5 @@
 package com.team254.frc2015;
 
-import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.behavior.Commands;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -74,17 +73,17 @@ public class OperatorInterface {
         m_commands.cancel_current_routine = buttonBoard.getX() < 0;
 
         if (buttonBoard.getY() < 0) {
-            m_commands.preset_height = Commands.PresetHeight.HUMAN;
+            m_commands.preset_request = Commands.PresetRequest.HUMAN;
         } else if (buttonBoard.getZ() < 0) {
-            m_commands.preset_height = Commands.PresetHeight.FLOOR;
+            m_commands.preset_request = Commands.PresetRequest.FLOOR;
         } else if (buttonBoard.getRawButton(6)) {
-            m_commands.preset_height = Commands.PresetHeight.CAN;
+            m_commands.preset_request = Commands.PresetRequest.CAN;
         } else if (buttonBoard.getRawButton(5)) {
-            m_commands.preset_height = Commands.PresetHeight.CAPPING;
+            m_commands.preset_request = Commands.PresetRequest.CAPPING;
         } else if (buttonBoard.getRawButton(4)) {
-            m_commands.preset_height = Commands.PresetHeight.CARRY;
+            m_commands.preset_request = Commands.PresetRequest.CARRY;
         } else {
-            m_commands.preset_height = Commands.PresetHeight.NONE;
+            m_commands.preset_request = Commands.PresetRequest.NONE;
         }
 
         m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.CLOSE;
@@ -97,6 +96,15 @@ public class OperatorInterface {
         } else {
             m_commands.can_grabber_request = Commands.CanGrabberRequests.NONE;
             //m_commands.top_carriage_pivot_request = Commands.TopCarriagePivotRequest.PIVOT_UP;
+        }
+
+        m_commands.human_player_mode = buttonBoard.getRawAxis(3) > 0.1;
+        if (m_commands.human_player_mode && buttonBoard.getRawButton(11)) {
+            m_commands.human_load_requests = Commands.HumanLoadRequests.LOAD_FIRST_BIN;
+        } else if (m_commands.human_player_mode && buttonBoard.getRawButton(12)) {
+            m_commands.human_load_requests = Commands.HumanLoadRequests.INDEX_BIN;
+        } else {
+            m_commands.human_load_requests = Commands.HumanLoadRequests.NONE;
         }
         return m_commands;
     }

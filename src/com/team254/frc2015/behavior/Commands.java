@@ -10,7 +10,7 @@ public class Commands {
         BOTTOM_CARRIAGE_MODE, TOP_CARRIAGE_MODE
     }
 
-    public enum PresetHeight {
+    public enum PresetRequest {
         NONE, MANUAL, CARRY, CAPPING, CAN, FLOOR, HUMAN, HOME
     }
 
@@ -47,8 +47,12 @@ public class Commands {
         NONE, STAGE_FOR_GRAB, DO_GRAB
     }
 
+    public enum HumanLoadRequests {
+        NONE, LOAD_FIRST_BIN, INDEX_BIN
+    }
+
     public ElevatorMode elevator_mode;
-    public PresetHeight preset_height;
+    public PresetRequest preset_request;
     public Optional<Double> top_jog = Optional.empty();
     public Optional<Double> bottom_jog = Optional.empty();
     public IntakeRequest intake_request;
@@ -59,5 +63,7 @@ public class Commands {
     public BottomCarriageFlapperRequest bottom_carriage_flapper_request;
     public BottomCarriagePusherRequest bottom_carriage_pusher_request;
     public CanGrabberRequests can_grabber_request;
+    public boolean human_player_mode = false;
     public boolean cancel_current_routine = false;
+    public HumanLoadRequests human_load_requests;
 }

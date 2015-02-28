@@ -4,6 +4,7 @@ import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.behavior.routines.CanGrabRoutine;
+import com.team254.frc2015.behavior.routines.HumanLoadRoutine;
 import com.team254.frc2015.behavior.routines.ManualRoutine;
 import com.team254.frc2015.behavior.routines.Routine;
 import com.team254.frc2015.subsystems.BottomCarriage;
@@ -62,6 +63,10 @@ public class BehaviorManager {
             setNewRoutine(null);
         } else if (commands.can_grabber_request == Commands.CanGrabberRequests.STAGE_FOR_GRAB && !(m_cur_routine instanceof CanGrabRoutine)) {
             setNewRoutine(new CanGrabRoutine());
+        } else if (commands.human_player_mode && !(m_cur_routine instanceof HumanLoadRoutine)) {
+            setNewRoutine(new HumanLoadRoutine());
+        } else if (!commands.human_player_mode && m_cur_routine instanceof HumanLoadRoutine) {
+            setNewRoutine(null);
         }
 
         if (m_cur_routine != null) {
