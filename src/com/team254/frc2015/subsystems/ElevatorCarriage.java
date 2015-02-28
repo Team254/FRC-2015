@@ -237,11 +237,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             if (position_controller.isOnTarget()) {
                 // No need to brake at bottom of travel.
                 setBrake(m_brake_on_target && getHeight() > 1.0);
+                position_controller.update(getHeight(), getVelocity());
                 if (!m_brake_on_target) {
-                    position_controller.update(getHeight(), getVelocity());
                     setSpeedIfValid(position_controller.get());
-                } else {
-                    m_controller = null;
                 }
             } else {
                 position_controller.update(getHeight(), getVelocity());

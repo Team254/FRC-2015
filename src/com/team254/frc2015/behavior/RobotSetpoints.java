@@ -10,7 +10,7 @@ import java.util.Optional;
 public class RobotSetpoints {
 
     public enum IntakeAction {
-        NONE, OPEN, CLOSE, NEUTRAL
+        NONE, OPEN, CLOSE, PREFER_OPEN, PREFER_CLOSE, NEUTRAL
     }
 
     public enum RollerAction {
@@ -48,7 +48,7 @@ public class RobotSetpoints {
         m_elevator_setpoints.bottom_setpoint = Optional.empty();
         m_elevator_setpoints.top_setpoint = Optional.empty();
         claw_action = TopCarriageClawAction.NONE;
-        pivot_action = TopCarriagePivotAction.NONE;
+        pivot_action = TopCarriagePivotAction.PIVOT_UP;
         flapper_action =  BottomCarriageFlapperAction.NONE;
         intake_action = IntakeAction.NONE;
         roller_action = RollerAction.NONE;

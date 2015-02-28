@@ -47,10 +47,6 @@ public class Commands {
         NONE, STAGE_FOR_GRAB, DO_GRAB
     }
 
-    public enum RoutineToRun {
-        NO_CARE, CAN_GRAB, CANCEL
-    }
-
     public ElevatorMode elevator_mode;
     public PresetHeight preset_height;
     public Optional<Double> top_jog = Optional.empty();
@@ -62,6 +58,6 @@ public class Commands {
     public TopCarriagePivotRequest top_carriage_pivot_request;
     public BottomCarriageFlapperRequest bottom_carriage_flapper_request;
     public BottomCarriagePusherRequest bottom_carriage_pusher_request;
-    public RoutineToRun routine_to_run;
     public CanGrabberRequests can_grabber_request;
+    public boolean cancel_current_routine = false;
 }

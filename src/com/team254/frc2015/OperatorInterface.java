@@ -71,9 +71,9 @@ public class OperatorInterface {
             m_commands.top_jog = Optional.empty();
         }
 
-        if (buttonBoard.getX() < 0) {
-            m_commands.preset_height = Commands.PresetHeight.HOME;
-        } else if (buttonBoard.getY() < 0) {
+        m_commands.cancel_current_routine = buttonBoard.getX() < 0;
+
+        if (buttonBoard.getY() < 0) {
             m_commands.preset_height = Commands.PresetHeight.HUMAN;
         } else if (buttonBoard.getZ() < 0) {
             m_commands.preset_height = Commands.PresetHeight.FLOOR;
@@ -87,10 +87,16 @@ public class OperatorInterface {
             m_commands.preset_height = Commands.PresetHeight.NONE;
         }
 
+        m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.CLOSE;
         if (buttonBoard.getRawButton(1)) {
+            m_commands.can_grabber_request = Commands.CanGrabberRequests.DO_GRAB;
             m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.OPEN;
+        } else if (buttonBoard.getRawButton(2)) {
+            m_commands.can_grabber_request = Commands.CanGrabberRequests.STAGE_FOR_GRAB;
+            //m_commands.top_carriage_pivot_request = Commands.TopCarriagePivotRequest.PIVOT_DOWN;
         } else {
-            m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.CLOSE;
+            m_commands.can_grabber_request = Commands.CanGrabberRequests.NONE;
+            //m_commands.top_carriage_pivot_request = Commands.TopCarriagePivotRequest.PIVOT_UP;
         }
         return m_commands;
     }

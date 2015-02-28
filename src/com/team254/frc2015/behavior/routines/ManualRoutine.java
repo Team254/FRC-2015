@@ -2,6 +2,7 @@ package com.team254.frc2015.behavior.routines;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
+import com.team254.frc2015.Robot;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 
@@ -62,45 +63,53 @@ public class ManualRoutine extends Routine {
         setpoints.top_open_loop_jog = commands.top_jog;
 
         // Top carriage actions.
-        if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.OPEN) {
-            setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.OPEN;
-        } else if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.CLOSE) {
-            setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
+        if (setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.NONE) {
+            if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.OPEN) {
+                setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.OPEN;
+            } else if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.CLOSE) {
+                setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
+            }
         }
 
         // Top carriage actions.
-        if (commands.top_carriage_pivot_request == Commands.TopCarriagePivotRequest.PIVOT_UP) {
-            setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
-        } else if (commands.top_carriage_pivot_request == Commands.TopCarriagePivotRequest.PIVOT_DOWN) {
-            setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
+        if (setpoints.pivot_action == RobotSetpoints.TopCarriagePivotAction.NONE) {
+            if (commands.top_carriage_pivot_request == Commands.TopCarriagePivotRequest.PIVOT_UP) {
+                setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
+            } else if (commands.top_carriage_pivot_request == Commands.TopCarriagePivotRequest.PIVOT_DOWN) {
+                setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
+            }
         }
 
-        // Bottom carriage actions.
-        if (commands.bottom_carriage_flapper_request == Commands.BottomCarriageFlapperRequest.OPEN) {
-            setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.OPEN;
-        } else if (commands.bottom_carriage_flapper_request == Commands.BottomCarriageFlapperRequest.CLOSE) {
-            setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.CLOSE;
-        }
 
+        if (setpoints.flapper_action == RobotSetpoints.BottomCarriageFlapperAction.NONE) {
+            // Bottom carriage actions.
+            if (commands.bottom_carriage_flapper_request == Commands.BottomCarriageFlapperRequest.OPEN) {
+                setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.OPEN;
+            } else if (commands.bottom_carriage_flapper_request == Commands.BottomCarriageFlapperRequest.CLOSE) {
+                setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.CLOSE;
+            }
+        }
         // Intake actions.
-        if (commands.intake_request == Commands.IntakeRequest.OPEN) {
+        if (commands.intake_request == Commands.IntakeRequest.OPEN && (setpoints.intake_action == RobotSetpoints.IntakeAction.NONE || setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_CLOSE)) {
             // Open intake
             setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-        } else if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
+        } else if (commands.intake_request == Commands.IntakeRequest.CLOSE && (setpoints.intake_action == RobotSetpoints.IntakeAction.NONE || setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_OPEN)) {
             // Close intake
             setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
-        }  else if (commands.intake_request == Commands.IntakeRequest.NEUTRAL) {
+        } else if (commands.intake_request == Commands.IntakeRequest.NEUTRAL && setpoints.intake_action == RobotSetpoints.IntakeAction.NONE) {
             // Neutral intake
             setpoints.intake_action = RobotSetpoints.IntakeAction.NEUTRAL;
         }
 
         // Roller actions.
-        if (commands.roller_request == Commands.RollerRequest.INTAKE) {
-            // Run intake inwards.
-            setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
-        } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
-            // Run intake outwards.
-            setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
+        if (setpoints.roller_action == RobotSetpoints.RollerAction.NONE) {
+            if (commands.roller_request == Commands.RollerRequest.INTAKE) {
+                // Run intake inwards.
+                setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
+            } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
+                // Run intake outwards.
+                setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
+            }
         }
 
         return setpoints;
@@ -109,5 +118,10 @@ public class ManualRoutine extends Routine {
     @Override
     public void cancel() {
 
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }

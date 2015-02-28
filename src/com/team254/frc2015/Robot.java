@@ -91,6 +91,9 @@ public class Robot extends IterativeRobot {
         // Stop auto mode
         autoModeRunner.stop();
 
+        // Stop routines
+        //behavior_manager.reset();
+
         // Stop control loops
         looper.stop();
         slowLooper.stop();

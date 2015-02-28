@@ -3,6 +3,7 @@ package com.team254.frc2015.behavior;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.HardwareAdaptor;
+import com.team254.frc2015.behavior.routines.CanGrabRoutine;
 import com.team254.frc2015.behavior.routines.ManualRoutine;
 import com.team254.frc2015.behavior.routines.Routine;
 import com.team254.frc2015.subsystems.BottomCarriage;
@@ -41,6 +42,10 @@ public class BehaviorManager {
         }
     }
 
+    public void reset() {
+        setNewRoutine(null);
+    }
+
     public BehaviorManager() {
         m_setpoints = new RobotSetpoints();
         m_setpoints.reset();
@@ -48,17 +53,20 @@ public class BehaviorManager {
     public void update(Commands commands) {
         m_setpoints.reset();
 
-        /*
-        if (m_setpoints.routine_to_run == Commands.RoutineToRun.CANCEL) {
+
+        if (m_cur_routine != null && m_cur_routine.isFinished()) {
             setNewRoutine(null);
-        } else if (m_setpoints.routine_to_run == Commands.RoutineToRun.CAN_GRAB) {
+        }
+
+        if (commands.cancel_current_routine) {
+            setNewRoutine(null);
+        } else if (commands.can_grabber_request == Commands.CanGrabberRequests.STAGE_FOR_GRAB && !(m_cur_routine instanceof CanGrabRoutine)) {
             setNewRoutine(new CanGrabRoutine());
         }
 
         if (m_cur_routine != null) {
-            m_cur_routine.update(m_setpoints);
+            m_setpoints = m_cur_routine.update(commands, m_setpoints);
         }
-        */
 
         // Get manual m_setpoints
         m_setpoints = m_manual_routine.update(commands, m_setpoints);
@@ -118,8 +126,6 @@ public class BehaviorManager {
             top_carriage.setGrabberOpen(false);
         }
 
-
-
         if (can_control_top_carriage_pivot
                 && m_setpoints.pivot_action == RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN) {
             top_carriage.setPivotDown(true);
@@ -148,10 +154,10 @@ public class BehaviorManager {
         */
 
         // Intake actions.
-        if (!can_close_intake || m_setpoints.intake_action == RobotSetpoints.IntakeAction.OPEN) {
+        if (!can_close_intake || m_setpoints.intake_action == RobotSetpoints.IntakeAction.OPEN || m_setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_OPEN) {
             // Open intake
             intake.open();
-        } else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.CLOSE) {
+        } else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.CLOSE || m_setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_CLOSE) {
             // Close intake
             intake.close();
         }  else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.NEUTRAL) {
