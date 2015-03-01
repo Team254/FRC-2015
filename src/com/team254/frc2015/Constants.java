@@ -7,7 +7,9 @@ public class Constants extends ConstantsBase {
     public static double kNegativeInertiaScalar = 5.0;
 
     // Operator controls
-    public static double kElevatorJogPwm = 0.75;
+    public static double kElevatorJogFastPwm = 1.0;
+    public static double kElevatorJogMediumPwm = .7;
+    public static double kElevatorJogSlowPwm = .35;
     public static double kManualIntakeSpeed = .75;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
@@ -20,27 +22,27 @@ public class Constants extends ConstantsBase {
 
     // DriveStraightController gains
     public static double kDriveMaxSpeedInchesPerSec = 120.0;
-    public static double kDriveMaxAccelInchesPerSec2 = 95.0;
+    public static double kDriveMaxAccelInchesPerSec2 = 107.0;
     public static double kDrivePositionKp = 0.7;
     public static double kDrivePositionKi = 0;
     public static double kDrivePositionKd = 0;
-    public static double kDriveStraightKp = 2.0;
+    public static double kDriveStraightKp = 3.0;
     public static double kDriveStraightKi = 0;
     public static double kDriveStraightKd = 0;
     public static double kDrivePositionKv = 0.0075;
     public static double kDrivePositionKa = 0.0017;
-    public static double kDriveOnTargetError = 0.5;
+    public static double kDriveOnTargetError = 1.0;
     public static double kDrivePathHeadingFollowKp = 0.01;
 
     // TurnInPlaceController gains
-    public static double kTurnMaxSpeedRadsPerSec = 3.14;
+    public static double kTurnMaxSpeedRadsPerSec = 3.2;
     public static double kTurnMaxAccelRadsPerSec2 = 4.5;
     public static double kTurnKp = 1.5;
     public static double kTurnKi = 0.13;
     public static double kTurnKd = 0.0;
     public static double kTurnKv = 0.11;
     public static double kTurnKa = 0.05;
-    public static double kTurnOnTargetError = 0.02;
+    public static double kTurnOnTargetError = 0.03;
 
     // Height presets
     public static double kPresetOneHeight = 0.25;

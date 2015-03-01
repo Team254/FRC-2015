@@ -240,6 +240,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 position_controller.update(getHeight(), getVelocity());
                 if (!m_brake_on_target) {
                     setSpeedIfValid(position_controller.get());
+                } else {
+                    m_controller = null;
                 }
             } else {
                 position_controller.update(getHeight(), getVelocity());
@@ -269,6 +271,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public boolean isOnTarget() {
-        return m_initialized && (m_controller != null ? m_controller.isOnTarget() : false);
+        return m_initialized && (m_controller != null ? m_controller.isOnTarget() : true);
     }
 }

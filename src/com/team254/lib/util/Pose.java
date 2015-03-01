@@ -11,12 +11,12 @@ public class Pose {
         this.m_heading_velocity = headingVelocity;
     }
 
-    private double m_left_distance;
-    private double m_right_distance;
-    private double m_left_velocity;
-    private double m_right_velocity;
-    private double m_heading;
-    private double m_heading_velocity;
+    public double m_left_distance;
+    public double m_right_distance;
+    public double m_left_velocity;
+    public double m_right_velocity;
+    public double m_heading;
+    public double m_heading_velocity;
 
     public void reset(double leftDistance, double rightDistance, double leftVelocity,
                       double rightVelocity, double heading, double headingVelocity) {

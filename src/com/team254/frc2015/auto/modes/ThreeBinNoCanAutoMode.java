@@ -1,0 +1,99 @@
+package com.team254.frc2015.auto.modes;
+
+import com.team254.frc2015.Constants;
+import com.team254.frc2015.auto.AutoMode;
+import com.team254.frc2015.auto.AutoModeEndedException;
+
+/**
+ * Created by tombot on 2/28/15.
+ */
+public class ThreeBinNoCanAutoMode extends AutoMode {
+
+    @Override
+    protected void routine() throws AutoModeEndedException {
+        intake.open();
+
+
+        top_carriage.setPositionSetpoint(Constants.kTopCarriageMaxPositionInches, true);
+        drive.setDistanceSetpoint(70, 30);
+        waitTime(.7);
+        bottom_carriage.setPositionSetpoint(18, true);
+
+        waitForDrive(5.0);
+
+        // Intake 2nd tote
+        intake.close();
+        intake.setSpeed(1.0);
+        waitTime(.5);
+        intake.setSpeed(0);
+
+        // Index 2nd tote
+        bottom_carriage.setPositionSetpoint(1, false);
+        waitForCarriage(bottom_carriage, 2.0);
+        intake.open();
+        bottom_carriage.setPositionSetpoint(24, true);
+
+        intake.setSpeed(.6);
+
+        // Knock can
+        drive.setDistanceSetpoint(115, 30);
+        waitTime(1.1);
+
+        intake.close();
+        intake.setSpeed(0);
+        waitForDrive(2.0);
+
+        drive.setTurnSetPoint(Math.PI/3.0);
+        waitTime(.5);
+        intake.open();
+
+        waitForDrive(.25);
+
+
+        drive.setTurnSetPoint(0);
+        waitForDrive(1.5);
+
+        drive.reset();
+        drive.setDistanceSetpoint(40);
+        bottom_carriage.setPositionSetpoint(18, true);
+        intake.open();
+
+
+        waitForDrive(2.0);
+        intake.setSpeed(1.0);
+        intake.close();
+        drive.setTurnSetPoint(Math.PI / 3.0);
+
+        waitForDrive(1.2);
+
+        drive.reset();
+        drive.setDistanceSetpoint(137);
+        intake.close();
+        intake.setSpeed(0.0);
+        // Index 3rd tote
+        bottom_carriage.setPositionSetpoint(1, false);
+        waitForCarriage(bottom_carriage, 2.0);
+
+
+        bottom_carriage.setPositionSetpoint(10, true);
+
+        waitForDrive(3.0);
+
+        drive.setTurnSetPoint(0);
+        bottom_carriage.setPositionSetpoint(1, true);
+        waitForCarriage(bottom_carriage, 2.0);
+        waitForDrive(1.0);
+
+        bottom_carriage.setFlapperOpen(true);
+
+        drive.reset();
+        drive.setDistanceSetpoint(-60);
+        intake.open();
+
+
+        waitForDrive(3.0);
+        bottom_carriage.setFlapperOpen(false);
+
+
+    }
+}

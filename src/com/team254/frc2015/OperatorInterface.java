@@ -1,6 +1,7 @@
 package com.team254.frc2015;
 
 import com.team254.frc2015.behavior.Commands;
+import com.team254.lib.util.Latch;
 import edu.wpi.first.wpilibj.Joystick;
 
 import java.util.Optional;
@@ -11,6 +12,7 @@ public class OperatorInterface {
     Joystick leftStick = HardwareAdaptor.kLeftStick;
     Joystick rightStick = HardwareAdaptor.kRightStick;
     Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
+    Latch canToggleLatch = new Latch();
 
     public void reset() {
         m_commands = new Commands();
@@ -29,10 +31,8 @@ public class OperatorInterface {
         // Right stick
         if (rightStick.getRawButton(2)) {
             m_commands.intake_request = Commands.IntakeRequest.CLOSE;
-        } else if (leftStick.getRawButton(2)) {
-            m_commands.intake_request = Commands.IntakeRequest.OPEN;
         } else {
-            m_commands.intake_request = Commands.IntakeRequest.NEUTRAL;
+            m_commands.intake_request = Commands.IntakeRequest.OPEN;
         }
 
         // Button board
@@ -54,18 +54,42 @@ public class OperatorInterface {
             m_commands.bottom_carriage_pusher_request = BehaviorManager.BottomCarriagePusherAction.RETRACT;
         }*/
 
-        if (buttonBoard.getRawButton(8)) {
-            m_commands.bottom_jog = Optional.of(Constants.kElevatorJogPwm);
-        } else if (buttonBoard.getRawButton(10)) {
-            m_commands.bottom_jog = Optional.of(-Constants.kElevatorJogPwm);
+        if (buttonBoard.getRawButton(8)) { // Bottom carriage jog up
+            if (buttonBoard.getRawButton(11)) { // Slow
+                m_commands.bottom_jog = Optional.of(Constants.kElevatorJogSlowPwm);
+            } else if (buttonBoard.getRawButton(12)) { // Fast
+                m_commands.bottom_jog = Optional.of(Constants.kElevatorJogFastPwm);
+            } else { // Medium
+                m_commands.bottom_jog = Optional.of(Constants.kElevatorJogMediumPwm);
+            }
+        } else if (buttonBoard.getRawButton(10)) { // Bottom carriage jog down
+            if (buttonBoard.getRawButton(11)) { // Slow
+                m_commands.bottom_jog = Optional.of(-Constants.kElevatorJogSlowPwm);
+            } else if (buttonBoard.getRawButton(12)) { // Fast
+                m_commands.bottom_jog = Optional.of(-Constants.kElevatorJogFastPwm);
+            } else { // Medium
+                m_commands.bottom_jog = Optional.of(-Constants.kElevatorJogMediumPwm);
+            }
         } else {
             m_commands.bottom_jog = Optional.empty();
         }
 
         if (buttonBoard.getRawButton(7)) {
-            m_commands.top_jog = Optional.of(Constants.kElevatorJogPwm);
+            if (buttonBoard.getRawButton(11)) { // Slow
+                m_commands.top_jog = Optional.of(Constants.kElevatorJogSlowPwm);
+            } else if (buttonBoard.getRawButton(12)) { // Fast
+                m_commands.top_jog = Optional.of(Constants.kElevatorJogFastPwm);
+            } else { // Medium
+                m_commands.top_jog = Optional.of(Constants.kElevatorJogMediumPwm);
+            }
         } else if (buttonBoard.getRawButton(9)) {
-            m_commands.top_jog = Optional.of(-Constants.kElevatorJogPwm);
+            if (buttonBoard.getRawButton(11)) { // Slow
+                m_commands.top_jog = Optional.of(-Constants.kElevatorJogSlowPwm);
+            } else if (buttonBoard.getRawButton(12)) { // Fast
+                m_commands.top_jog = Optional.of(-Constants.kElevatorJogFastPwm);
+            } else { // Medium
+                m_commands.top_jog = Optional.of(-Constants.kElevatorJogMediumPwm);
+            }
         } else {
             m_commands.top_jog = Optional.empty();
         }
@@ -88,14 +112,15 @@ public class OperatorInterface {
 
         m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.CLOSE;
         if (buttonBoard.getRawButton(1)) {
-            m_commands.can_grabber_request = Commands.CanGrabberRequests.DO_GRAB;
             m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.OPEN;
+        }
+
+        if (canToggleLatch.update(buttonBoard.getRawButton(1))) {
+            m_commands.can_grabber_request = Commands.CanGrabberRequests.TOGGLE_GRAB;
         } else if (buttonBoard.getRawButton(2)) {
-            m_commands.can_grabber_request = Commands.CanGrabberRequests.STAGE_FOR_GRAB;
-            //m_commands.top_carriage_pivot_request = Commands.TopCarriagePivotRequest.PIVOT_DOWN;
+            m_commands.can_grabber_request = Commands.CanGrabberRequests.DO_STAGE;
         } else {
             m_commands.can_grabber_request = Commands.CanGrabberRequests.NONE;
-            //m_commands.top_carriage_pivot_request = Commands.TopCarriagePivotRequest.PIVOT_UP;
         }
 
         m_commands.human_player_mode = buttonBoard.getRawAxis(3) > 0.1;

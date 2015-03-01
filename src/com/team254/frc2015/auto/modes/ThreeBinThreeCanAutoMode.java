@@ -5,12 +5,14 @@ import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
 import com.team254.frc2015.paths.ThreeBinPath;
 
-public class Test3BinAutoMode extends AutoMode {
+public class ThreeBinThreeCanAutoMode extends AutoMode {
 
     @Override
     protected void routine() throws AutoModeEndedException {
 
         // THIS IS STILL IN DEVELOPMENT!
+
+        intake.open();
 
         // Wait for homing of top carriage to clear ground
         top_carriage.setPositionSetpoint(Constants.kTopCarriageReZeroPositionInches, true);

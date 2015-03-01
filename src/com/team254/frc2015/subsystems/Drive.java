@@ -17,6 +17,7 @@ public class Drive extends Subsystem implements Loopable {
         Pose getCurrentSetpoint();
 
         public boolean onTarget();
+
     }
 
     public CheesySpeedController m_left_motor;
@@ -75,7 +76,6 @@ public class Drive extends Subsystem implements Loopable {
     public void reset() {
         m_left_encoder.reset();
         m_right_encoder.reset();
-        m_controller = null;
     }
 
     public void setPathSetpoint(Path path) {
@@ -116,7 +116,12 @@ public class Drive extends Subsystem implements Loopable {
     }
 
     private Pose getPoseToContinueFrom(boolean for_turn_controller) {
-        if (m_controller == null || (m_controller instanceof DriveStraightController && for_turn_controller)) {
+        if (!for_turn_controller && m_controller instanceof TurnInPlaceController) {
+            Pose pose_to_use = getPhysicalPose();
+            pose_to_use.m_heading = ((TurnInPlaceController) m_controller).getHeadingGoal();
+            pose_to_use.m_heading_velocity = 0;
+            return pose_to_use;
+        } else if (m_controller == null || (m_controller instanceof DriveStraightController && for_turn_controller)) {
             return getPhysicalPose();
         } else {
             return m_controller.getCurrentSetpoint();

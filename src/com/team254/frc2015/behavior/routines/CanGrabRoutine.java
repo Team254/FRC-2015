@@ -73,7 +73,7 @@ public class CanGrabRoutine extends Routine {
             case OPEN_GRABBER:
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.OPEN;
-                if (commands.can_grabber_request == Commands.CanGrabberRequests.DO_GRAB) {
+                if (commands.can_grabber_request == Commands.CanGrabberRequests.TOGGLE_GRAB) {
                     new_state = States.CLOSE_GRABBER;
                 }
                 break;
@@ -81,11 +81,15 @@ public class CanGrabRoutine extends Routine {
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-                if (m_state_timer.get() > .25) {
+                if (commands.can_grabber_request == Commands.CanGrabberRequests.DO_STAGE) {
                     new_state = States.CENTER_DOWN;
+                }
+                if (commands.can_grabber_request == Commands.CanGrabberRequests.TOGGLE_GRAB) {
+                    new_state = States.OPEN_GRABBER;
                 }
                 break;
             case CENTER_DOWN:
+                setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
@@ -97,20 +101,21 @@ public class CanGrabRoutine extends Routine {
                 }
                 break;
             case DRIVE_UP:
+                setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_is_new_state) {
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(53.0);
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(55.0);
                 }
-                if (!m_is_new_state && top_carriage.isOnTarget()) {
+                if (!m_is_new_state && top_carriage.getHeight() > 40.0) {
                     new_state = States.ROTATE_UP;
                 }
                 break;
             case ROTATE_UP:
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
-                if (m_state_timer.get() > .125) {
+                if (m_state_timer.get() > .125 && top_carriage.isOnTarget()) {
                     new_state = States.DONE;
                 }
             default:

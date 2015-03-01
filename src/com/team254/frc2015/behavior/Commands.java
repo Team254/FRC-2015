@@ -44,7 +44,7 @@ public class Commands {
     }
 
     public enum CanGrabberRequests {
-        NONE, STAGE_FOR_GRAB, DO_GRAB
+        NONE, DO_STAGE, TOGGLE_GRAB
     }
 
     public enum HumanLoadRequests {

@@ -55,7 +55,7 @@ public class HumanLoadRoutine extends Routine {
                 setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.CLOSE;
                 if (m_is_new_state) {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(GROUND_LOCATION);
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(30.0);
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(47.5); // Noodle location
                 }
                 if (!m_is_new_state  && bottom_carriage.isOnTarget() && top_carriage.isOnTarget()) {
                     new_state = States.IDLE;
@@ -63,9 +63,10 @@ public class HumanLoadRoutine extends Routine {
                 break;
             case GRAB_BIN_FROM_BELOW:
                 setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.OPEN;
-                if (m_state_timer.get() > .25) {
+                if (m_state_timer.get() > .3) {
                     new_state = States.GRAB_BIN_FROM_BELOW_MOVE;
                 }
+                break;
             case GRAB_BIN_FROM_BELOW_MOVE:
                 setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.OPEN;
                 if (m_is_new_state) {

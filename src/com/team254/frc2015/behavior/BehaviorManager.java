@@ -35,7 +35,7 @@ public class BehaviorManager {
         @Override
         public void setPresets() {
             m_bottom_height_setpoint = Optional.of(0.0);
-            m_top_height_setpoint = Optional.of(20.0);
+            m_top_height_setpoint = Optional.of(6.0);
             m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
         }
     };
@@ -82,7 +82,7 @@ public class BehaviorManager {
 
         if (commands.cancel_current_routine) {
             setNewRoutine(null);
-        } else if (commands.can_grabber_request == Commands.CanGrabberRequests.STAGE_FOR_GRAB && !(m_cur_routine instanceof CanGrabRoutine)) {
+        } else if (commands.can_grabber_request == Commands.CanGrabberRequests.DO_STAGE && !(m_cur_routine instanceof CanGrabRoutine)) {
             setNewRoutine(new CanGrabRoutine());
         } else if (commands.human_player_mode && !(m_cur_routine instanceof HumanLoadRoutine)) {
             setNewRoutine(new HumanLoadRoutine());

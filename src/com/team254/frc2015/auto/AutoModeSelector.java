@@ -1,9 +1,6 @@
 package com.team254.frc2015.auto;
 
-import com.team254.frc2015.auto.modes.Test3BinAutoMode;
-import com.team254.frc2015.auto.modes.TestDriveAutoMode;
-import com.team254.frc2015.auto.modes.TestElevatorAutoMode;
-import com.team254.frc2015.auto.modes.TestTurnAutoMode;
+import com.team254.frc2015.auto.modes.*;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
@@ -25,7 +22,8 @@ public class AutoModeSelector {
 	}
 	
 	public AutoModeSelector() {
-		registerAutonomous(new Test3BinAutoMode());
+        registerAutonomous(new ThreeBinNoCanAutoMode());
+		registerAutonomous(new ThreeBinThreeCanAutoMode());
 		registerAutonomous(new TestDriveAutoMode());
 		registerAutonomous(new TestElevatorAutoMode());
 		registerAutonomous(new TestTurnAutoMode());
