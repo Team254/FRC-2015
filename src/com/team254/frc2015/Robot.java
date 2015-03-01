@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot {
         HardwareAdaptor.kRightDriveEncoder.reset();
         //autoModeRunner.setAutoMode(new Test3BinAutoMode());
         autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());
+        System.out.println("Starting auto mode of name" + AutoModeSelector.getInstance().getAutoMode().getClass().getName());
         autoModeRunner.start();
         looper.start();
         slowLooper.start();
