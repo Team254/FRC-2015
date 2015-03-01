@@ -28,11 +28,14 @@
 	</style>
 	<script src="jq.js"></script>
 	<script>
-		var url = "http://localhost:5800"
+		var url = "http://roborio-254.local:5800"
+		if (window.location.href.split("?")[1] != undefined){
+			url = "http://localhost:5800"
+		}
+
 		var modes = []
 		var currentID = 0;
 		$.getJSON(url + "/autoModes", function(data){
-			console.log(data)
 			modes = data
 			for (var i = 0; i < data.length; i++){
 				$("#mode").append("<option value=" + data[i] + ">" + data[i] + "</option>")
@@ -43,9 +46,7 @@
 		var FirstConnectLatch = false;
 		setInterval(function(){
 			$.getJSON(url + "/ping", function(data){
-				console.log("asd")
 		        if (data == "pong"){
-		        	console.log("good");
 		        	isConnected = true;
 		        	if (!FirstConnectLatch){
 		        		firstConnectFunction()
@@ -62,7 +63,6 @@
 		function bad(){
 			isConnected = false;
 		    FirstConnectLatch = false;
-			console.log("bad")
 			if (bada){
         		$("#top").attr("class", "top bada")
         	} else {
@@ -74,15 +74,12 @@
 		}
 
 		function firstConnectFunction(){
-			console.log("Connected")
 			$.getJSON(url + "/currentAutoMode", function(d){
-				console.log(d);
 				currentID = getIDFromAutoMode(d)
 				$("select").find(":nth-child("+(currentID+1)+")").attr("selected", "selected")
 				$("#mode").attr("style", "")
 				$("#mode").bind("change", function(){
 					$.get(url + "/setAutoMode?mode=" + getIDFromAutoMode($("#mode").val()), function(d){
-						console.log(d)
 					})
 				})
 			});
@@ -97,10 +94,9 @@
 		}
 	</script>
 	<body>
-		<div class="top" id="top">Robot Connected</div>
+		<div class="top bada" id="top">Robot Disonnected</div>
 		<div id="automode"></div>
 		<select id="mode" class="mode" style="display:none">
 		</select>
-		<p>Edit the url variable in the source of this page to change where it looks for a robot. Right now, it is looking for a robot at localhost:1254</p>
 	</body>
 </html>
