@@ -27,7 +27,7 @@ public class ElevatorHomingController extends Controller {
     private HomingStates m_state = HomingStates.UNINITIALIZED;
 
     public double update(double old_setpoint, double current_relative_position) {
-        double fast_move_speed = 15;
+        double fast_move_speed = 25;
         double slow_move_speed = 0.25;
 
         double new_setpoint = old_setpoint;
