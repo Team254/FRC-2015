@@ -80,6 +80,7 @@
 		function firstConnectFunction(){
 			$.getJSON(url + "/autoModes", function(data){
 				modes = data
+				$("#mode").html("")
 				for (var i = 0; i < data.length; i++){
 					$("#mode").append("<option value=" + data[i] + ">" + data[i] + "</option>")
 				}
