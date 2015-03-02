@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class CheesyDriveHelper {
 
     private Drive drive;
-    double oldWheel, quickStopAccumulator;
+    double oldWheel, quickStopAccumulator = 0;
     private double throttleDeadband = 0.02;
     private double wheelDeadband = 0.02;
     private DriveSignal signal = new DriveSignal(0, 0);
@@ -30,6 +30,7 @@ public class CheesyDriveHelper {
         double wheelNonLinearity;
 
         wheel = handleDeadband(wheel, wheelDeadband);
+
         throttle = handleDeadband(throttle, throttleDeadband);
 
         double negInertia = wheel - oldWheel;
@@ -63,7 +64,7 @@ public class CheesyDriveHelper {
         double negInertiaAccumulator = 0.0;
         double negInertiaScalar;
         if (isHighGear) {
-            negInertiaScalar = 5.0;
+            negInertiaScalar = 2.5;
             sensitivity = Constants.kDriveSensitivity;
         } else {
             if (wheel * negInertia > 0) {
@@ -92,11 +93,6 @@ public class CheesyDriveHelper {
 
         // Quickturn!
         if (isQuickTurn) {
-            if (Math.abs(linearPower) < 0.2) {
-                double alpha = 0.1;
-                quickStopAccumulator = (1 - alpha) * quickStopAccumulator
-                        + alpha * Util.limit(wheel, 1.0) * 5;
-            }
             overPower = 1.0;
             if (isHighGear) {
                 sensitivity = 1.0;

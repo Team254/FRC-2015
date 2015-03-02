@@ -18,9 +18,9 @@ public class HumanLoadRoutine extends Routine {
     private boolean m_is_new_state = false;
     Timer m_state_timer = new Timer();
 
-    final static double GROUND_LOCATION = 0;
-    final static double GRAB_SECOND_BIN_LOCATION = 13.5;
-    final static double OUT_OF_WAY_LOCATION = 33.5;
+    final static double GROUND_LOCATION = 0.5;
+    final static double GRAB_SECOND_BIN_LOCATION = 13.0;
+    final static double OUT_OF_WAY_LOCATION = 33.0;
 
     @Override
     public void reset() {
@@ -37,7 +37,7 @@ public class HumanLoadRoutine extends Routine {
 
         // Always run roller in and vent intake
         setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
-        setpoints.intake_action = RobotSetpoints.IntakeAction.NEUTRAL;
+        setpoints.intake_action = RobotSetpoints.IntakeAction.PREFER_NEUTRAL_HP;
 
         switch (m_state) {
             case IDLE:
@@ -55,7 +55,7 @@ public class HumanLoadRoutine extends Routine {
                 setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.CLOSE;
                 if (m_is_new_state) {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(GROUND_LOCATION);
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(47.5); // Noodle location
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(44.); // Noodle location
                 }
                 if (!m_is_new_state  && bottom_carriage.isOnTarget() && top_carriage.isOnTarget()) {
                     new_state = States.IDLE;

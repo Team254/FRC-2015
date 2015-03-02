@@ -1,6 +1,5 @@
 package com.team254.frc2015.behavior.routines;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 
@@ -35,10 +34,10 @@ public class ManualRoutine extends Routine {
             // Capping
             setpoints.m_elevator_setpoints.top_setpoint = Optional
                     .of(top_carriage.getHeight() + 2.0);
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.0);
+            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.5);
         }  else if (commands.preset_request == Commands.PresetRequest.FLOOR) {
             // Floor load
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.25);
+            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.5);
             setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Math.max(30.0, top_carriage.getHeight()));
         }
         // Set jogs
@@ -72,16 +71,30 @@ public class ManualRoutine extends Routine {
                 setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.CLOSE;
             }
         }
-        // Intake actions.
-        if (commands.intake_request == Commands.IntakeRequest.OPEN && (setpoints.intake_action == RobotSetpoints.IntakeAction.NONE || setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_CLOSE)) {
-            // Open intake
-            setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-        } else if (commands.intake_request == Commands.IntakeRequest.CLOSE && (setpoints.intake_action == RobotSetpoints.IntakeAction.NONE || setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_OPEN)) {
-            // Close intake
+
+        if (setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_CLOSE) {
             setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
-        } else if (commands.intake_request == Commands.IntakeRequest.NEUTRAL && setpoints.intake_action == RobotSetpoints.IntakeAction.NONE) {
-            // Neutral intake
+            if (commands.intake_request == Commands.IntakeRequest.OPEN) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+            }
+        } else if (setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_OPEN) {
+            setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+            if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+            }
+        } else if (setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_NEUTRAL_HP) {
             setpoints.intake_action = RobotSetpoints.IntakeAction.NEUTRAL;
+            if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+            }
+        } else if (setpoints.intake_action == RobotSetpoints.IntakeAction.NONE) {
+            if (commands.intake_request == Commands.IntakeRequest.OPEN) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+            } else if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+            } else if (commands.intake_request == Commands.IntakeRequest.NEUTRAL) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.NEUTRAL;
+            }
         }
 
         // Roller actions.

@@ -34,7 +34,7 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
 
         // Knock can
         intake.setSpeed(.6);
-        drive.setDistanceSetpoint(115, 30);
+        drive.setDistanceSetpoint(115, 40);
         waitTime(1.1);
 
         // Close intake on can
