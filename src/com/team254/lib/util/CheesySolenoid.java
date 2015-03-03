@@ -13,11 +13,11 @@ public class CheesySolenoid extends Solenoid {
 
     @Override
     public void set(boolean on) {
-        boolean is_enabled = Robot.getState() != Robot.RobotState.DISABLED;
-        if ((is_enabled && m_was_disabled) || on != m_on) {
+        boolean is_disabled = Robot.getState() == Robot.RobotState.DISABLED;
+        if ((!is_disabled && m_was_disabled) || on != m_on) {
             super.set(on);
         }
         m_on = on;
-        m_was_disabled = Robot.getState() == Robot.RobotState.DISABLED;
+        m_was_disabled = is_disabled;
     }
 }
