@@ -13,6 +13,20 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
+    public enum RobotState {
+        DISABLED, AUTONOMOUS, TELEOP
+    }
+
+    public static RobotState s_robot_state = RobotState.DISABLED;
+
+    public static RobotState getState() {
+        return s_robot_state;
+    }
+
+    public static void setState(RobotState state) {
+        s_robot_state = state;
+    }
+
     MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
     MultiLooper slowLooper = new MultiLooper("SlowControllers", 1 / 100.0);
     Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
@@ -56,6 +70,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+        setState(RobotState.AUTONOMOUS);
         System.out.println("Start autonomousInit()");
         HardwareAdaptor.kGyroThread.rezero();
         HardwareAdaptor.kGyroThread.reset();
@@ -75,6 +90,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
+        setState(RobotState.TELEOP);
         System.out.println("Start teleopInit()");
         looper.start();
     }
@@ -87,6 +103,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledInit() {
+        setState(RobotState.DISABLED);
+
         System.out.println("Start disabledInit()");
 
         // Stop auto mode
@@ -117,10 +135,6 @@ public class Robot extends IterativeRobot {
         if (disabledIterations % 50 == 0) {
             System.gc();
         }
-        // System.out.println("Gyro hasdata: " +
-        // HardwareAdaptor.kGyroThread.hasData() + ", Angle: " +
-        // HardwareAdaptor.kGyroThread.getAngle() + ", Rate: " +
-        // HardwareAdaptor.kGyroThread.getRate());
     }
 
 }
