@@ -76,7 +76,6 @@ public class HardwareAdaptor {
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
-    //public static SharpGP2Y0A60SZ kHumanLoadSensor = new SharpGP2Y0A60SZ(0);
     public static AnalogInput kBreakbeam = new AnalogInput(0);
 
     // Subsystems

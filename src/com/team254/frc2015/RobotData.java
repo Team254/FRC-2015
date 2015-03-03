@@ -15,6 +15,5 @@ public class RobotData implements Tappable {
     public void getState(StateHolder states) {
         states.put("voltage", HardwareAdaptor.kPDP.getVoltage());
         states.put("robotTime", Timer.getFPGATimestamp());
-        //states.put("sharp_sensor", HardwareAdaptor.kHumanLoadSensor.getDistance());
     }
 }
