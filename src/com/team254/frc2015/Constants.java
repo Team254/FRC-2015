@@ -52,6 +52,9 @@ public class Constants extends ConstantsBase {
     public static double kPresetFiveHeight = 60.0;
     public static double kPresetSixHeight = 67.0;
 
+    // Sensor calibration
+    public static double kBreambeamVoltage = 2.5;
+
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
 
@@ -92,6 +95,9 @@ public class Constants extends ConstantsBase {
     public static int kBottomCarriageHomeDIO = 8;
     public static int kTopCarriageHomeDIO = 1;
     public static int kPressureSwitchDIO = 0;
+
+    // Analog I/O
+    public static int kBreakbeamPort = 0;
 
     // Solenoids
     public static int kBottomCarriageBrakeSolenoidPort = 7;

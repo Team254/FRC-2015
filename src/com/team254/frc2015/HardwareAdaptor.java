@@ -85,7 +85,7 @@ public class HardwareAdaptor {
     public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
             kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
             kTopCarriageHome, kTopCarriagePivotSolenoid,
-            kTopCarriageGrabberSolenoid);
+            kTopCarriageGrabberSolenoid, new AnalogInput(Constants.kBreakbeamPort));
     public static BottomCarriage kBottomCarriage = new BottomCarriage(
             "bottom_carriage", kBottomCarriageMotor,
             kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
