@@ -1,13 +1,15 @@
 package com.team254.frc2015;
 
+import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.trajectory.TrajectoryFollower.TrajectorySetpoint;
 
 import java.util.Optional;
 
 public class ElevatorSafety {
-    static ElevatorCarriage kTopCarriage = HardwareAdaptor.kTopCarriage;
-    static ElevatorCarriage kBottomCarriage = HardwareAdaptor.kBottomCarriage;
+    static TopCarriage kTopCarriage = HardwareAdaptor.kTopCarriage;
+    static BottomCarriage kBottomCarriage = HardwareAdaptor.kBottomCarriage;
 
     public ElevatorSafety() {
     }
@@ -18,12 +20,13 @@ public class ElevatorSafety {
     }
 
     public static boolean isMoveLegal(ElevatorCarriage carriage,
-                                      TrajectorySetpoint setpoint) {
+            TrajectorySetpoint setpoint) {
         // Don't allow upwards moves if the top carriage is already near its
         // limit
         return !(carriage == kBottomCarriage
-                && setpoint.vel > 0 && kTopCarriage.getHeight()
-                + Constants.kElevatorCarriageSafetyMarginInches > Constants.kTopCarriageMaxPositionInches);
+                && setpoint.vel > 0
+                && kTopCarriage.getHeight() >= Constants.kTopCarriageMaxPositionInches && kTopCarriage
+                    .getBreakbeamTriggered());
     }
 
     public static Setpoints generateSafeSetpoints(Setpoints setpoints) {
@@ -49,7 +52,7 @@ public class ElevatorSafety {
             }
             if (result.top_setpoint.isPresent()
                     && result.top_setpoint.get() < Constants.kBottomCarriageHeight
-                    + result.bottom_setpoint.get()) {
+                            + result.bottom_setpoint.get()) {
                 result.bottom_setpoint = Optional.of(result.top_setpoint.get()
                         - Constants.kBottomCarriageHeight);
             }

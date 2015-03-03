@@ -2,7 +2,7 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
-import com.team254.frc2015.subsystems.controllers.ElevatorCarriageForceController;
+import com.team254.frc2015.subsystems.controllers.ElevatorSqueezeController;
 import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
@@ -63,7 +63,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         return m_controller;
     }
 
-    private double getRelativeHeight() {
+    protected double getRelativeHeight() {
         return m_encoder.get() * 2.0 * Constants.kElevatorPulleyRadiusInches
                 * Math.PI / Constants.kElevatorEncoderCountsPerRev;
     }
@@ -190,12 +190,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         setSpeedSafe(speed);
     }
 
-    public synchronized void setSqueezeSetpoint(double squeeze_power) {
-        if (!(m_controller instanceof ElevatorCarriageForceController)) {
-            m_controller = new ElevatorCarriageForceController(this);
+    public synchronized void squeeze() {
+        if (!(m_controller instanceof ElevatorSqueezeController)) {
+            m_controller = new ElevatorSqueezeController();
         }
-        ((ElevatorCarriageForceController) m_controller)
-                .setSqueezePower(squeeze_power);
     }
 
     private void setSpeedIfValid(double speed) {
@@ -248,8 +246,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 position_controller.update(getHeight(), getVelocity());
                 setSpeedIfValid(position_controller.get());
             }
-        } else if (m_controller instanceof ElevatorCarriageForceController) {
-            double power = ((ElevatorCarriageForceController) m_controller)
+        } else if (m_controller instanceof ElevatorSqueezeController) {
+            double power = ((ElevatorSqueezeController) m_controller)
                     .update();
             setBrake(false);
             setSpeedSafe(power);

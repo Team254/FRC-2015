@@ -60,6 +60,7 @@ public class TopCarriage extends ElevatorCarriage {
     public void getState(StateHolder states) {
         super.getState(states);
         states.put("breakbeam_voltage", m_breakbeam.getAverageVoltage());
+        states.put("breakbeam_state", getBreakbeamTriggered());
     }
 
 }

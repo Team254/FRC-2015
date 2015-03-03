@@ -53,7 +53,7 @@ public class Constants extends ConstantsBase {
     public static double kPresetSixHeight = 67.0;
 
     // Sensor calibration
-    public static double kBreambeamVoltage = 2.5;
+    public static double kBreambeamVoltage = 1.0;
 
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
@@ -136,12 +136,13 @@ public class Constants extends ConstantsBase {
     public static double kTopCarriageMaxPositionInches = 66;
     public static double kTopCarriageHomePositionInches = 15.5;
     public static double kTopCarriageReZeroPositionInches = 28.3;
+    public static double kTopCarriageSafePositionInches = 30.0;
 
     // Bottom carriage limits
-    public static double kBottomCarriageMinPositionInches = 0.0;
+    public static double kBottomCarriageMinPositionInches = 1.75;
     public static double kBottomCarriageMaxPositionInches = 65.0;
-    public static double kBottomCarriageHomePositionInches = 0.0;
-    public static double kBottomCarriageReZeroPositionInches = 0.0;
+    public static double kBottomCarriageHomePositionInches = 1.75;
+    public static double kBottomCarriageReZeroPositionInches = 1.75;
 
     // Drive parameters
     public static double kDriveEncoderCountsPerRev = 250.0;

@@ -76,7 +76,8 @@ public class HardwareAdaptor {
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
-    public static SharpGP2Y0A60SZ kHumanLoadSensor = new SharpGP2Y0A60SZ(0);
+    //public static SharpGP2Y0A60SZ kHumanLoadSensor = new SharpGP2Y0A60SZ(0);
+    public static AnalogInput kBreakbeam = new AnalogInput(0);
 
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,
@@ -85,7 +86,7 @@ public class HardwareAdaptor {
     public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
             kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
             kTopCarriageHome, kTopCarriagePivotSolenoid,
-            kTopCarriageGrabberSolenoid, new AnalogInput(Constants.kBreakbeamPort));
+            kTopCarriageGrabberSolenoid, kBreakbeam);
     public static BottomCarriage kBottomCarriage = new BottomCarriage(
             "bottom_carriage", kBottomCarriageMotor,
             kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
