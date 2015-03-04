@@ -13,6 +13,7 @@ public class OperatorInterface {
     Joystick rightStick = HardwareAdaptor.kRightStick;
     Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
     Latch canToggleLatch = new Latch();
+    Latch coopLatch = new Latch();
 
     public void reset() {
         m_commands = new Commands();
@@ -23,7 +24,7 @@ public class OperatorInterface {
         if (leftStick.getRawButton(1)) {
             m_commands.roller_request = Commands.RollerRequest.INTAKE;
         } else if (leftStick.getRawButton(2)) {
-            //m_commands.roller_request = Commands.RollerAction.EXHAUST;
+            m_commands.roller_request = Commands.RollerRequest.EXHAUST;
         } else {
             m_commands.roller_request = Commands.RollerRequest.NONE;
         }
@@ -96,7 +97,7 @@ public class OperatorInterface {
 
         m_commands.cancel_current_routine = buttonBoard.getX() < 0; // Button 6
 
-        if (buttonBoard.getY() < 0) { // Button 5
+        if (coopLatch.update(buttonBoard.getY() < 0)) { // Button 5
             m_commands.preset_request = Commands.PresetRequest.COOP;
         } else if (buttonBoard.getZ() < 0) { // Button 4
             m_commands.preset_request = Commands.PresetRequest.FLOOR;

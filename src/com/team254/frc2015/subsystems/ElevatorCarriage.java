@@ -146,7 +146,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public boolean getBrake() {
-        return !m_brake.get();
+        return m_brake.get();
     }
 
     public synchronized void setPositionSetpointUnsafe(double setpoint,
@@ -253,6 +253,11 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             setSpeedSafe(power);
         } else {
             // do nothing.
+        }
+
+        // Failsafe
+        if (getBrake()) {
+            setSpeedUnsafe(0);
         }
     }
 

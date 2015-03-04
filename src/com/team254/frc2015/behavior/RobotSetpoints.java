@@ -14,7 +14,7 @@ public class RobotSetpoints {
     }
 
     public enum RollerAction {
-        NONE, INTAKE, EXHAUST
+        NONE, INTAKE, EXHAUST, EXHAUST_COOP, EXHAUST_COOP_SLOW, STOP
     }
 
     public enum TopCarriagePivotAction {

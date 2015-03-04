@@ -148,4 +148,9 @@ public class CanGrabRoutine extends Routine {
     public boolean isFinished() {
         return m_state == States.DONE;
     }
+
+    @Override
+    public String getName() {
+        return "Can Grab";
+    }
 }

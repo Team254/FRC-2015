@@ -11,6 +11,8 @@ public class Constants extends ConstantsBase {
     public static double kElevatorJogMediumPwm = .7;
     public static double kElevatorJogSlowPwm = .35;
     public static double kManualIntakeSpeed = .75;
+    public static double kCoopIntakeSpeed = .25;
+    public static double kCoopSlowIntakeSpeed = .12;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -51,7 +53,8 @@ public class Constants extends ConstantsBase {
     public static double kPresetFourHeight = 20.0;
     public static double kPresetFiveHeight = 60.0;
     public static double kPresetSixHeight = 67.0;
-
+    public static double kCoopTopHeight = 49.0;
+    public static double kCoopBottomHeight = 23.25;
     // Sensor calibration
     public static double kBreambeamVoltage = 1.0;
 

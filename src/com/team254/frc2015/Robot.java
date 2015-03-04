@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
         logUpdater.start();
-
+        SystemManager.getInstance().add(behavior_manager);
     }
 
     @Override

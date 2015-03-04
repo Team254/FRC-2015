@@ -126,4 +126,9 @@ public class HumanLoadRoutine extends Routine {
     public boolean isFinished() {
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "HP Load";
+    }
 }

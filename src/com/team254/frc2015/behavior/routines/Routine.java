@@ -24,4 +24,5 @@ public abstract class Routine {
     public abstract RobotSetpoints update(Commands commands, RobotSetpoints existing_setpoints);
     public abstract void cancel();
     public abstract boolean isFinished();
+    public abstract String getName();
 }

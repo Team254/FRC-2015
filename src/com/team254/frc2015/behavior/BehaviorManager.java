@@ -8,10 +8,12 @@ import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
+import com.team254.lib.util.StateHolder;
+import com.team254.lib.util.Tappable;
 
 import java.util.Optional;
 
-public class BehaviorManager {
+public class BehaviorManager implements Tappable {
 
     public boolean isZero(double val) {
         return val < 0.0001 && val > -0.0001;
@@ -33,6 +35,11 @@ public class BehaviorManager {
 
     public static SimplePresetRoutine rammingModePresetRoutine = new SimplePresetRoutine() {
         @Override
+        public String getName() {
+            return "Ramming";
+        }
+
+        @Override
         public void setPresets() {
             m_bottom_height_setpoint = Optional.of(0.0);
             m_top_height_setpoint = Optional.of(6.0);
@@ -41,7 +48,7 @@ public class BehaviorManager {
     };
 
 
-    public static SimplePresetRoutine coopPresetRoutine = new SimplePresetRoutine() {
+    /*public static SimplePresetRoutine coopPresetRoutine = new SimplePresetRoutine() {
         @Override
         public void setPresets() {
             m_bottom_height_setpoint = Optional.of(40.0);
@@ -49,7 +56,7 @@ public class BehaviorManager {
             m_preset_setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
             m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
         }
-    };
+    };*/
 
     private void setNewRoutine(Routine new_routine) {
         boolean needs_cancel = new_routine != m_cur_routine && m_cur_routine != null;
@@ -90,8 +97,8 @@ public class BehaviorManager {
             setNewRoutine(null);
         } else if (commands.preset_request == Commands.PresetRequest.RAMMING) {
             setNewRoutine(rammingModePresetRoutine);
-        } else if (commands.preset_request == Commands.PresetRequest.COOP) {
-            setNewRoutine(coopPresetRoutine);
+        } else if (commands.preset_request == Commands.PresetRequest.COOP && !(m_cur_routine instanceof CoopRoutine)) {
+            setNewRoutine(new CoopRoutine());
         }
 
         if (m_cur_routine != null) {
@@ -202,9 +209,25 @@ public class BehaviorManager {
         } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST) {
             // Run intake outwards.
             intake.setSpeed(-Constants.kManualIntakeSpeed);
+        } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST_COOP) {
+            // Run intake outwards.
+            intake.setSpeed(-Constants.kCoopIntakeSpeed);
+        } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST_COOP_SLOW) {
+            // Run intake outwards.
+            intake.setSpeed(-Constants.kCoopSlowIntakeSpeed);
         } else {
             // Stop intake.
             intake.setSpeed(0.0);
         }
+    }
+
+    @Override
+    public void getState(StateHolder states) {
+        states.put("mode", m_cur_routine != null ? m_cur_routine.getName() : "---" );
+    }
+
+    @Override
+    public String getName() {
+        return "behaviors";
     }
 }

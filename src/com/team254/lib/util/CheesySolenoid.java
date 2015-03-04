@@ -20,4 +20,9 @@ public class CheesySolenoid extends Solenoid {
         m_on = on;
         m_was_disabled = is_disabled;
     }
+
+    @Override
+    public boolean get() {
+        return m_on;
+    }
 }

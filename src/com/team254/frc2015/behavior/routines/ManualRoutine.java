@@ -120,4 +120,9 @@ public class ManualRoutine extends Routine {
     public boolean isFinished() {
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "Manual";
+    }
 }
