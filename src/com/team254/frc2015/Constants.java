@@ -10,13 +10,13 @@ public class Constants extends ConstantsBase {
     public static double kElevatorJogFastPwm = 1.0;
     public static double kElevatorJogMediumPwm = .7;
     public static double kElevatorJogSlowPwm = .35;
-    public static double kManualIntakeSpeed = .75;
+    public static double kManualIntakeSpeed = .6;
     public static double kCoopIntakeSpeed = .25;
     public static double kCoopSlowIntakeSpeed = .12;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
-    public static double kElevatorCarriagePositionKi = 1.0;
+    public static double kElevatorCarriagePositionKi = 1.5;
     public static double kElevatorCarriagePositionKd = 0.0;
     public static double kElevatorCarriagePositionKv = 0.02;
     public static double kElevatorCarriagePositionKa = 6.0E-4;
