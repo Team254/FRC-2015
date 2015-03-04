@@ -12,11 +12,12 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
     @Override
     protected void routine() throws AutoModeEndedException {
         intake.open();
+        bottom_carriage.setFlapperOpen(false);
 
         // Get first can out of way, drive slowly to 2nd tote
         top_carriage.setPositionSetpoint(Constants.kTopCarriageMaxPositionInches, true);
         drive.setDistanceSetpoint(70, 30);
-        waitTime(.7);
+        waitTime(1.0);
         bottom_carriage.setPositionSetpoint(18, true);
         waitForDrive(5.0);
 
@@ -27,7 +28,7 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
         intake.setSpeed(0);
 
         // Index 2nd tote
-        bottom_carriage.setPositionSetpoint(1, false);
+        bottom_carriage.setPositionSetpoint(2, false);
         waitForCarriage(bottom_carriage, 2.0);
         intake.open();
         bottom_carriage.setPositionSetpoint(24, true);
@@ -64,29 +65,25 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
         intake.close();
 
         // Turn to face auto zone
-        drive.setTurnSetPoint(Math.PI / 3.0);
+        drive.setTurnSetPoint(Math.PI / 3.4);
         waitForDrive(1.2);
 
         // Drive to auto zone
         drive.reset();
-        drive.setDistanceSetpoint(137);
+        drive.setDistanceSetpoint(145);
         intake.close();
         intake.setSpeed(0.0);
 
         // Index 3rd tote while driving
-        bottom_carriage.setPositionSetpoint(1, false);
-        waitForCarriage(bottom_carriage, 2.0);
-        bottom_carriage.setPositionSetpoint(10, true);
+        bottom_carriage.setPositionSetpoint(2, true);
+        bottom_carriage.setFlapperOpen(true);
         waitForDrive(3.0);
 
         // Turn back to horizontal
         drive.setTurnSetPoint(0);
-        bottom_carriage.setPositionSetpoint(1, true);
-        waitForCarriage(bottom_carriage, 2.0);
-        waitForDrive(1.0);
+        waitForDrive(1.4);
 
         // Let go of stack and drive away
-        bottom_carriage.setFlapperOpen(true);
         drive.reset();
         drive.setDistanceSetpoint(-60);
         intake.open();

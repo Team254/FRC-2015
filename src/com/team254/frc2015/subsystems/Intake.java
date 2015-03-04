@@ -22,17 +22,17 @@ public class Intake extends Subsystem {
     }
 
     public void open() {
-        m_open_solenoid.set(true);
+        m_open_solenoid.set(false);  // open default
         m_close_solenoid.set(false);
     }
 
     public void close() {
-        m_open_solenoid.set(false);
+        m_open_solenoid.set(true);  // open default
         m_close_solenoid.set(true);
     }
 
     public void neutral() {
-        m_open_solenoid.set(false);
+        m_open_solenoid.set(true); // open default
         m_close_solenoid.set(false);
     }
 

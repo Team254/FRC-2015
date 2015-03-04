@@ -41,7 +41,7 @@ public class BottomCarriage extends ElevatorCarriage {
     }
 
     public void setFlapperOpen(boolean open) {
-        m_flapper.set(open);
+        m_flapper.set(!open);
     }
 
     public boolean getFlapperOpen() {

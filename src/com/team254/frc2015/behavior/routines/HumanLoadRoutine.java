@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public class HumanLoadRoutine extends Routine {
     public enum States {
-        IDLE, FIRST_BIN_LOCATION, GRAB_BIN_FROM_BELOW, GRAB_BIN_FROM_BELOW_MOVE, GRAB_BIN_FROM_ABOVE, CLOSE_THEN_RAISE_BIN_OUT_OF_WAY, RAISE_BIN_OUT_OF_WAY
+        IDLE, FIRST_BIN_LOCATION, GRAB_BIN_FROM_BELOW, GRAB_BIN_FROM_BELOW_MOVE, GRAB_BIN_FROM_ABOVE, CLOSE_THEN_RAISE_BIN_OUT_OF_WAY, RAISE_BIN_OUT_OF_WAY, PUSH_STACK_UP
     }
     States m_state = States.IDLE;
     private boolean m_is_new_state = false;
@@ -99,11 +99,22 @@ public class HumanLoadRoutine extends Routine {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(OUT_OF_WAY_LOCATION);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
                 }
+                if (top_carriage.getBreakbeamTriggered()) {
+                    new_state = States.PUSH_STACK_UP;
+                }
                 if (!m_is_new_state  && bottom_carriage.isOnTarget()) {
                     new_state = States.IDLE;
                 }
                 break;
-
+            case PUSH_STACK_UP:
+                setpoints.bottom_open_loop_jog  = Optional.of(.8);
+                setpoints.top_open_loop_jog  = Optional.of(.5);
+                if (m_state_timer.get() > .5) {
+                    setpoints.bottom_open_loop_jog  = Optional.empty();
+                    setpoints.top_open_loop_jog  = Optional.empty();
+                    new_state = States.IDLE;
+                }
+                break;
             default:
                 break;
         }
