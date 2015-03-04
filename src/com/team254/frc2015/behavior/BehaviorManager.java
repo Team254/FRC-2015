@@ -114,11 +114,12 @@ public class BehaviorManager implements Tappable {
         boolean can_control_bottom_carriage = true;
 
 
+        double bottom_jog_speed = 0.0;
+        double top_jog_speed = 0.0;
         // Set elevator m_setpoints and jog
         if (bottom_carriage.isInitialized()) {
             if (m_setpoints.bottom_open_loop_jog.isPresent()) {
-                double jog = m_setpoints.bottom_open_loop_jog.get();
-                bottom_carriage.setOpenLoop(jog, isZero(jog));
+                bottom_jog_speed = m_setpoints.bottom_open_loop_jog.get();
                 m_bottom_jogging = true;
             } else if (m_setpoints.m_elevator_setpoints.bottom_setpoint.isPresent()) {
                 bottom_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.bottom_setpoint.get(), true);
@@ -130,8 +131,7 @@ public class BehaviorManager implements Tappable {
         }
         if (top_carriage.isInitialized()) {
             if (m_setpoints.top_open_loop_jog.isPresent()) {
-                double jog = m_setpoints.top_open_loop_jog.get();
-                top_carriage.setOpenLoop(jog, isZero(jog));
+                top_jog_speed = m_setpoints.top_open_loop_jog.get();
                 m_top_jogging = true;
             } else if (m_setpoints.m_elevator_setpoints.top_setpoint.isPresent()) {
                 top_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.top_setpoint.get(), true);
@@ -141,6 +141,11 @@ public class BehaviorManager implements Tappable {
                 m_top_jogging = false;
             }
             
+        }
+
+        if (m_bottom_jogging || m_top_jogging) {
+            bottom_carriage.setOpenLoop(bottom_jog_speed, isZero(bottom_jog_speed));
+            top_carriage.setOpenLoop(top_jog_speed, isZero(top_jog_speed));
         }
 
         m_elevator_setpoints = ElevatorSafety.generateSafeSetpoints(m_setpoints.m_elevator_setpoints);
