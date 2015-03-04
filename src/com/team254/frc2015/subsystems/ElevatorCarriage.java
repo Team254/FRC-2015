@@ -219,15 +219,19 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             if (m_homing_controller.needsControllerNullOut()) {
                 m_controller = null;
             }
-            setPositionSetpointUnsafe(new_setpoint, false);
-            if (m_homing_controller.isReady()) {
-                m_initialized = true;
-                m_controller = null;
-                if (cached_setpoint != null) {
-                    setPositionSetpointUnsafe(cached_setpoint, true);
-                } else {
-                    setPositionSetpointUnsafe(getHeight(), true);
+            if (!m_homing_controller.isTimedOut()) {
+                setPositionSetpointUnsafe(new_setpoint, false);
+                if (m_homing_controller.isReady()) {
+                    m_initialized = true;
+                    m_controller = null;
+                    if (cached_setpoint != null) {
+                        setPositionSetpointUnsafe(cached_setpoint, true);
+                    } else {
+                        setPositionSetpointUnsafe(getHeight(), true);
+                    }
                 }
+            } else {
+                setSpeedUnsafe(0);
             }
         }
         if (m_controller instanceof TrajectoryFollowingPositionController) {

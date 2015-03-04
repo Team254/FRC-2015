@@ -102,9 +102,6 @@ public class ManualRoutine extends Routine {
             if (commands.roller_request == Commands.RollerRequest.INTAKE) {
                 // Run intake inwards.
                 setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
-            } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
-                // Run intake outwards.
-                setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
             }
         }
 

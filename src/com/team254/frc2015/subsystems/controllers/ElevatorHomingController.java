@@ -3,6 +3,7 @@ package com.team254.frc2015.subsystems.controllers;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
 import com.team254.lib.util.Controller;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorHomingController extends Controller {
     private ElevatorCarriage m_carriage;
@@ -10,6 +11,7 @@ public class ElevatorHomingController extends Controller {
     private double m_dt;
     private double m_zero_point;
     private boolean m_null_controller = false;
+    private Timer m_timeout_timer = new Timer();
 
     public ElevatorHomingController(ElevatorCarriage carriage,
                                     boolean move_off_positive, double dt) {
@@ -19,7 +21,7 @@ public class ElevatorHomingController extends Controller {
     }
 
     enum HomingStates {
-        UNINITIALIZED, MOVING_ON, MOVING_OFF, READY
+        UNINITIALIZED, MOVING_ON, MOVING_OFF, READY, TIMED_OUT
     }
 
     ;
@@ -73,7 +75,17 @@ public class ElevatorHomingController extends Controller {
             case READY:
                 break;
             default:
+                // Something broke
+                m_null_controller = true;
                 break;
+        }
+        if (next_state != HomingStates.UNINITIALIZED && m_state == HomingStates.UNINITIALIZED) {
+            m_timeout_timer.reset();
+            m_timeout_timer.start();
+        }
+        if (m_timeout_timer.get() > 3.0 && m_state != HomingStates.READY) {
+            next_state = HomingStates.TIMED_OUT;
+            new_setpoint = old_setpoint;
         }
         m_state = next_state;
         return new_setpoint;
@@ -89,6 +101,10 @@ public class ElevatorHomingController extends Controller {
 
     @Override
     public void reset() {
+    }
+
+    public boolean isTimedOut() {
+        return m_state == HomingStates.TIMED_OUT;
     }
 
     @Override
