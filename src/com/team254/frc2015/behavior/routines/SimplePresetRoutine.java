@@ -20,7 +20,6 @@ public abstract class SimplePresetRoutine extends Routine {
     public void reset() {
         setPresets();
         m_first_run = true;
-
     }
 
     public SimplePresetRoutine() {
@@ -46,7 +45,7 @@ public abstract class SimplePresetRoutine extends Routine {
 
     @Override
     public void cancel() {
-
+        reset();
     }
 
     @Override
