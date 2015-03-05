@@ -107,11 +107,13 @@ public class HumanLoadRoutine extends Routine {
                 }
                 break;
             case PUSH_STACK_UP:
-                setpoints.bottom_open_loop_jog  = Optional.of(.8);
-                setpoints.top_open_loop_jog  = Optional.of(.5);
-                if (m_state_timer.get() > .5) {
-                    setpoints.bottom_open_loop_jog  = Optional.empty();
-                    setpoints.top_open_loop_jog  = Optional.empty();
+                if (m_is_new_state) {
+                    setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(bottom_carriage.getHeight() + .5);
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
+                }
+                if (m_state_timer.get() > .3) {
+                    setpoints.bottom_open_loop_jog  = Optional.of(0.0); // Do brake
+                    setpoints.bottom_open_loop_jog  = Optional.of(0.0);
                     new_state = States.IDLE;
                 }
                 break;
