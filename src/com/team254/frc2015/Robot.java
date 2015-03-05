@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 
     MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
     MultiLooper slowLooper = new MultiLooper("SlowControllers", 1 / 100.0);
-    Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
+    //Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
 
     AutoModeExecuter autoModeRunner = new AutoModeExecuter();
 
@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot {
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
-        logUpdater.start();
+        //logUpdater.start();
         SystemManager.getInstance().add(behavior_manager);
     }
 

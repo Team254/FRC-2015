@@ -23,10 +23,7 @@ public class AutoModeSelector {
 	
 	public AutoModeSelector() {
         registerAutonomous(new ThreeBinNoCanAutoMode());
-		registerAutonomous(new ThreeBinThreeCanAutoMode());
-		registerAutonomous(new TestDriveAutoMode());
-		registerAutonomous(new TestElevatorAutoMode());
-		registerAutonomous(new TestTurnAutoMode());
+        registerAutonomous(new DoNothingAutoMode());
 	}
 	
 	public AutoMode getAutoMode() {

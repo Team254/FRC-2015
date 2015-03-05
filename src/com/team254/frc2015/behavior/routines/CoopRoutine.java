@@ -51,6 +51,9 @@ public class CoopRoutine extends Routine {
                 if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
                     setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST_COOP;
                 }
+                if (commands.roller_request == Commands.RollerRequest.INTAKE) {
+                    setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
+                }
                 if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
                     setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN; // use close button to open
                 }
