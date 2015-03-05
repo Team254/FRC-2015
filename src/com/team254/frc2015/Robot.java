@@ -126,15 +126,15 @@ public class Robot extends IterativeRobot {
         drive.reloadConstants();
         top_carriage.reloadConstants();
         bottom_carriage.reloadConstants();
+
+        System.gc();
+
         System.out.println("end disable init!");
     }
 
     @Override
     public void disabledPeriodic() {
-        disabledIterations++;
-        if (disabledIterations % 50 == 0) {
-            System.gc();
-        }
+
     }
 
 }
