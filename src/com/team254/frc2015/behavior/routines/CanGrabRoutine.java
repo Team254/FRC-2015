@@ -55,7 +55,7 @@ public class CanGrabRoutine extends Routine {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_is_new_state) {
-                    setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.5);
+                    setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(2.0);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(6.0);
                 }
                 if (!m_is_new_state  && bottom_carriage.isOnTarget() && top_carriage.isOnTarget()) {

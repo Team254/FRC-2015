@@ -34,10 +34,10 @@ public class ManualRoutine extends Routine {
             // Capping
             setpoints.m_elevator_setpoints.top_setpoint = Optional
                     .of(top_carriage.getHeight() + 2.0);
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.5);
+            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(2.0);
         }  else if (commands.preset_request == Commands.PresetRequest.FLOOR) {
             // Floor load
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.5);
+            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(2.0);
             setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Math.max(30.0, top_carriage.getHeight()));
         }
         // Set jogs

@@ -5,7 +5,6 @@ import com.team254.frc2015.auto.AutoModeSelector;
 import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
-import com.team254.frc2015.web.WebServer;
 import com.team254.lib.util.*;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -60,7 +59,7 @@ public class Robot extends IterativeRobot {
         System.out.println("Start robotInit()");
         //mLidarLiteSensor.start();
         HardwareAdaptor.kGyroThread.start();
-        WebServer.startServer();
+        //WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
@@ -76,7 +75,6 @@ public class Robot extends IterativeRobot {
         HardwareAdaptor.kGyroThread.reset();
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
-        //autoModeRunner.setAutoMode(new Test3BinAutoMode());
         autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());
         System.out.println("Starting auto mode of name" + AutoModeSelector.getInstance().getAutoMode().getClass().getName());
         autoModeRunner.start();

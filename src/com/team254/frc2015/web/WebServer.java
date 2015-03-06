@@ -79,6 +79,19 @@ public class WebServer {
         updateStreams.remove(s);
     }
 
+    public static Runnable updateRunner = new Runnable() {
+        public void run() {
+            for (int i = 0; i < updateStreams.size(); ++i) {
+                StateStreamSocket s = updateStreams.get(i);
+                if (s != null && s.isConnected() && !s.canBeUpdated()) {
+                    ;
+                } else if ((s == null || !s.isConnected() || !s.update()) && i < updateStreams.size()) {
+                    updateStreams.remove(i);
+                }
+            }
+        }
+    };
+
     public static void updateAllStateStreams() {
         boolean runUpdate = false;
         for (StateStreamSocket s : updateStreams) {
@@ -88,22 +101,7 @@ public class WebServer {
             }
         }
         if (runUpdate) {
-            streamUpdate.addTask(new Runnable() {
-                public void run() {
-                    ArrayList<Integer> toRemove = new ArrayList<Integer>(updateStreams.size());
-                    for (int i = 0; i < updateStreams.size(); ++i) {
-                        StateStreamSocket s = updateStreams.get(i);
-                        if (s != null && s.isConnected() && !s.canBeUpdated()) {
-                            ;
-                        } else if (s == null || !s.isConnected() || !s.update()) {
-                            toRemove.add(i);
-                        }
-                    }
-                    for (int i : toRemove) {
-                        updateStreams.remove(i);
-                    }
-                }
-            });
+            streamUpdate.addTask(updateRunner);
         }
     }
 }
