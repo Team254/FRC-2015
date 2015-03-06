@@ -70,6 +70,7 @@ public class GyroThread {
                     synchronized (mTimer) {
                         mTimer.schedule(new InitTask(), 500);
                     }
+                    return;
                 }
             }
             System.out.println("gyo initialized, part ID: 0x" + Integer.toHexString(mGyroInterface.readPartId()));
