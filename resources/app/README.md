@@ -1,1 +1,0 @@
-in app.js there is a place to specify the url of the robot.

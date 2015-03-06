@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 
 public class CheesyCompressor {
-    public static int UPDATE_HZ = 25;
+    public static int UPDATE_HZ = 10;
     protected Relay m_compressor_relay;
     protected DigitalInput m_pressure_switch;
 

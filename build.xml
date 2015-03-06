@@ -47,7 +47,6 @@
       </manifest>
 
       <fileset dir="${build.dir}" includes="**/*.class"/>
-      <fileset dir="${resources.dir}"/>
     <zipgroupfileset dir="${build.jars}">
       <include name="**/*.jar" />
     </zipgroupfileset>

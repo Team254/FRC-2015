@@ -7,7 +7,6 @@ import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesyCompressor;
 import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
-import com.team254.lib.util.SharpGP2Y0A60SZ;
 import com.team254.lib.util.gyro.GyroThread;
 import edu.wpi.first.wpilibj.*;
 

@@ -1,7 +1,6 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.subsystems.controllers.DrivePathController;
 import com.team254.frc2015.subsystems.controllers.DriveStraightController;
 import com.team254.frc2015.subsystems.controllers.TurnInPlaceController;
 import com.team254.lib.trajectory.Path;
@@ -76,11 +75,6 @@ public class Drive extends Subsystem implements Loopable {
     public void reset() {
         m_left_encoder.reset();
         m_right_encoder.reset();
-    }
-
-    public void setPathSetpoint(Path path) {
-        reset();
-        m_controller = new DrivePathController(path);
     }
 
     @Override

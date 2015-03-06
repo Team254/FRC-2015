@@ -5,11 +5,10 @@ import com.team254.frc2015.auto.AutoModeSelector;
 import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
-import com.team254.lib.util.*;
-import edu.wpi.first.wpilibj.I2C;
+import com.team254.lib.util.DriveSignal;
+import com.team254.lib.util.MultiLooper;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
     public enum RobotState {
@@ -28,14 +27,12 @@ public class Robot extends IterativeRobot {
 
     MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
     MultiLooper slowLooper = new MultiLooper("SlowControllers", 1 / 100.0);
-    //Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
 
     AutoModeExecuter autoModeRunner = new AutoModeExecuter();
 
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     ElevatorCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
-    PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
     BehaviorManager behavior_manager = new BehaviorManager();
     OperatorInterface operator_interface = new OperatorInterface();
@@ -44,27 +41,16 @@ public class Robot extends IterativeRobot {
 
     Joystick leftStick = HardwareAdaptor.kLeftStick;
     Joystick rightStick = HardwareAdaptor.kRightStick;
-    Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
-
-    LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
 
     private int disabledIterations = 0;
-
-    static {
-        SystemManager.getInstance().add(new RobotData());
-    }
 
     @Override
     public void robotInit() {
         System.out.println("Start robotInit()");
-        //mLidarLiteSensor.start();
         HardwareAdaptor.kGyroThread.start();
-        //WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
-        //logUpdater.start();
-        SystemManager.getInstance().add(behavior_manager);
     }
 
     @Override
@@ -88,6 +74,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
+        autoModeRunner.stop();
         setState(RobotState.TELEOP);
         System.out.println("Start teleopInit()");
         looper.start();
@@ -107,9 +94,6 @@ public class Robot extends IterativeRobot {
 
         // Stop auto mode
         autoModeRunner.stop();
-
-        // Stop routines
-        //behavior_manager.reset();
 
         // Stop control loops
         looper.stop();
