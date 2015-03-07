@@ -16,7 +16,7 @@ public class GyroThread {
     private static final int K_STARTUP_SAMPLES = 2 * K_READING_RATE;
 
     // synchronized access object
-    private final Timer mTimer = new Timer("Gyro", true);
+    private final Timer mTimer = new Timer("Gyro");
     // owned by the background thread
     private final GyroInterface mGyroInterface = new GyroInterface();
 
@@ -61,21 +61,25 @@ public class GyroThread {
     private class InitTask extends TimerTask {
         @Override
         public void run() {
-            while (true) {
+            boolean initialized = false;
+            while (!initialized) {
                 try {
                     mGyroInterface.initializeGyro();
-                    break;
+                    initialized = true;
                 } catch (GyroInterface.GyroException e) {
                     System.out.println("Gyro failed to initialize: " + e.getMessage());
-                    synchronized (mTimer) {
-                        mTimer.schedule(new InitTask(), 500);
+                }
+                if (!initialized) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    return;
                 }
             }
             System.out.println("gyo initialized, part ID: 0x" + Integer.toHexString(mGyroInterface.readPartId()));
             synchronized (mTimer) {
-                mTimer.scheduleAtFixedRate(new UpdateTask(), 0, (int) (1000.0 / K_READING_RATE));
+                mTimer.schedule(new UpdateTask(), 0, (int) (1000.0 / K_READING_RATE));
             }
         }
     }
