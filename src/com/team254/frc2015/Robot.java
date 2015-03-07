@@ -5,8 +5,8 @@ import com.team254.frc2015.auto.AutoModeSelector;
 import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.web.WebServer;
 import com.team254.lib.util.*;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot {
 
     MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
     MultiLooper slowLooper = new MultiLooper("SlowControllers", 1 / 100.0);
-    //Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
+    Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
 
     AutoModeExecuter autoModeRunner = new AutoModeExecuter();
 
@@ -46,8 +46,6 @@ public class Robot extends IterativeRobot {
     Joystick rightStick = HardwareAdaptor.kRightStick;
     Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
 
-    LidarLiteSensor mLidarLiteSensor = new LidarLiteSensor(I2C.Port.kMXP);
-
     private int disabledIterations = 0;
 
     static {
@@ -57,13 +55,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         System.out.println("Start robotInit()");
-        //mLidarLiteSensor.start();
         HardwareAdaptor.kGyroThread.start();
-        //WebServer.startServer();
+        WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
-        //logUpdater.start();
+        logUpdater.start();
         SystemManager.getInstance().add(behavior_manager);
     }
 

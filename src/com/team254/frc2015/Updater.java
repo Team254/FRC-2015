@@ -7,7 +7,7 @@ public class Updater implements Loopable {
 
     @Override
     public void update() {
-        //WebServer.updateAllStateStreams();
+        WebServer.updateAllStateStreams();
     }
 
 }

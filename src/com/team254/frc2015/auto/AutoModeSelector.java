@@ -22,8 +22,8 @@ public class AutoModeSelector {
 	}
 	
 	public AutoModeSelector() {
+        registerAutonomous(new ThreeBinNoCanAutoMode());
         registerAutonomous(new DoNothingAutoMode());
-        //registerAutonomous(new ThreeBinNoCanAutoMode());
 	}
 	
 	public AutoMode getAutoMode() {
