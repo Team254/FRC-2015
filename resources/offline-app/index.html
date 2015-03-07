@@ -1,0 +1,115 @@
+<html>
+	<head>
+		<title>Autonomous Selector</title>
+	</head>
+	<style>
+		.top{
+			height: 50px;
+			width: 100%;
+			text-align: center;
+			font-size: 36px;
+			padding-top: 10px;
+			color: #FFF;
+			font-family:sans-serif;
+		}
+		.top.good{
+			background-color: #26A65B;
+		}
+		.top.bada{
+			background-color: #F00;
+		}
+		.top.badb{
+			background-color: #F00;
+		}
+		body{
+			margin: 0px;
+			padding: 0px;
+		}
+		.automode{
+			padding:20px;
+		}
+	</style>
+	<script src="jq.js"></script>
+	<script>
+		var dots = "."
+		var url = "http://roborio-254.local:5800"
+		if (window.location.href.split("?")[1] != undefined){
+			url = "http://localhost:5800"
+		}
+
+		var modes = []
+		var currentID = 0;
+		var bada = true
+		var isConnected = false;
+		var FirstConnectLatch = false;
+		setInterval(function(){
+			if (dots.length > 3) {
+				dots = ""
+			}
+			$("#dots").html(dots)
+			dots = dots + "."
+
+			$.getJSON(url + "/ping", function(data){
+		        if (data == "pong"){
+		        	isConnected = true;
+		        	if (!FirstConnectLatch){
+		        		firstConnectFunction()
+		        	}
+		        	FirstConnectLatch = true
+		        	$("#top").attr("class", "top good")
+		        	$("#toptext").html("Robot Connected")
+		        } else {
+		        	bad()
+		        }
+		    }).error(function() {bad()})
+		}, 1000)
+
+		function bad(){
+			isConnected = false;
+		    FirstConnectLatch = false;
+			if (bada){
+        		$("#top").attr("class", "top bada")
+        	} else {
+				$("#top").attr("class", "top badb")
+        	}
+        	bada = !bada
+        	$("#automode").attr("style", "display:none")
+        	$("#toptext").html("Robot Disconnected")
+		}
+
+		function firstConnectFunction(){
+			$.getJSON(url + "/autoModes", function(data){
+				modes = data
+				$("#mode").html("")
+				for (var i = 0; i < data.length; i++){
+					$("#mode").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+				}
+				$.getJSON(url + "/currentAutoMode", function(d){
+					currentID = getIDFromAutoMode(d)
+					$("select").find(":nth-child("+(currentID+1)+")").attr("selected", "selected")
+					$("#automode").attr("style", "")
+					$("#mode").bind("change", function(){
+						$.get(url + "/setAutoMode?mode=" + getIDFromAutoMode($("#mode").val()), function(d){
+						})
+					})
+				});
+		    }).error(function() {bad()})
+		}
+
+		function getIDFromAutoMode(mode){
+			for (var i = 0; i < modes.length; i++){
+				if (modes[i] == mode){
+					return i
+				}
+			}
+		}
+	</script>
+	<body>
+		<div class="top bada" id="top"><div id="toptext" style="display:inline-block">Robot Disonnected</div><div id="dots" style="width:100px; display:inline-block; text-align:left"></div></div>
+		<div class="automode" id="automode" style="display:none">
+		Auto Mode:
+		<select id="mode" class="mode" >
+		</select>
+		</div>
+	</body>
+</html>

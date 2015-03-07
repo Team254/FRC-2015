@@ -7,6 +7,7 @@ public abstract class Subsystem implements Tappable {
 
     public Subsystem(String name) {
         this.name = name;
+        SystemManager.getInstance().add(this);
     }
 
     public String getName() {
