@@ -136,7 +136,7 @@ public class Constants extends ConstantsBase {
 
     // Top carriage limits
     public static double kTopCarriageMinPositionInches = 5;
-    public static double kTopCarriageMaxPositionInches = 66;
+    public static double kTopCarriageMaxPositionInches = 67;
     public static double kTopCarriageHomePositionInches = 15.5;
     public static double kTopCarriageReZeroPositionInches = 28.3;
     public static double kTopCarriageSafePositionInches = 30.0;
