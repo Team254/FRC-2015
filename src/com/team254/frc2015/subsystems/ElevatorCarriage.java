@@ -121,6 +121,14 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
     }
 
+    protected void setSpeedOpenLoopSafe(double desired_speed) {
+        double height = getHeight();
+        if (desired_speed > 1E-3 || desired_speed < -1E-3) {
+            setBrake(false);
+        }
+        setSpeedUnsafe(desired_speed);
+    }
+
     protected void setSpeedSafe(double desired_speed) {
         double height = getHeight();
         if (desired_speed > 1E-3 || desired_speed < -1E-3) {
@@ -187,7 +195,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public synchronized void setOpenLoop(double speed, boolean brake) {
         m_controller = null;
         setBrake(brake);
-        setSpeedSafe(speed);
+        setSpeedOpenLoopSafe(speed);
     }
 
     public synchronized void squeeze() {
