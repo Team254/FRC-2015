@@ -37,6 +37,7 @@ public class CoopRoutine extends Routine {
                 new_state = States.RAISE_TO_HEIGHT;
                 break;
             case RAISE_TO_HEIGHT:
+                setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
                 if (m_is_new_state) {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(Constants.kCoopBottomHeight);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kCoopTopHeight);

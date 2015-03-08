@@ -11,7 +11,7 @@ public class Constants extends ConstantsBase {
     public static double kElevatorJogMediumPwm = .7;
     public static double kElevatorJogSlowPwm = .35;
     public static double kManualIntakeSpeed = .6;
-    public static double kCoopIntakeSpeed = .25;
+    public static double kCoopIntakeSpeed = .17;
     public static double kCoopSlowIntakeSpeed = .12;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
@@ -28,7 +28,7 @@ public class Constants extends ConstantsBase {
     public static double kDrivePositionKp = 0.7;
     public static double kDrivePositionKi = 0;
     public static double kDrivePositionKd = 0;
-    public static double kDriveStraightKp = 3.0;
+    public static double kDriveStraightKp = 1.9;
     public static double kDriveStraightKi = 0;
     public static double kDriveStraightKd = 0;
     public static double kDrivePositionKv = 0.0075;
@@ -53,10 +53,14 @@ public class Constants extends ConstantsBase {
     public static double kPresetFourHeight = 20.0;
     public static double kPresetFiveHeight = 60.0;
     public static double kPresetSixHeight = 67.0;
-    public static double kCoopTopHeight = 49.0;
-    public static double kCoopBottomHeight = 23.25;
+    public static double kCoopTopHeight = 49.75;
+    public static double kCoopBottomHeight = 24;
     // Sensor calibration
     public static double kBreambeamVoltage = 1.0;
+
+    // Common carriage parameters
+    public static double kElevatorMaxSpeedInchesPerSec = 70.0;
+    public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
 
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
@@ -129,9 +133,7 @@ public class Constants extends ConstantsBase {
     public static double kControlLoopsDt = 0.005;
 
     // !!! Control loop constants
-    // Common carriage parameters
-    public static double kElevatorMaxSpeedInchesPerSec = 70.0;
-    public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
+
     public static double kElevatorCarriageSafetyMarginInches = -0.5;
 
     // Top carriage limits

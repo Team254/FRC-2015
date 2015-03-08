@@ -51,7 +51,7 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
 
         // Turn back to center line
         drive.setTurnSetPoint(0);
-        waitForDrive(1.5);
+        waitForDrive(1.8);
 
         // Drive to last tote
         drive.reset();

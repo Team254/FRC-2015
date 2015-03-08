@@ -98,7 +98,7 @@ public class BehaviorManager implements Tappable {
         } else if (commands.preset_request == Commands.PresetRequest.RAMMING) {
             rammingModePresetRoutine.reset();
             setNewRoutine(rammingModePresetRoutine);
-        } else if (commands.preset_request == Commands.PresetRequest.COOP && !(m_cur_routine instanceof CoopRoutine)) {
+        } else if (commands.preset_request == Commands.PresetRequest.COOP) {
             setNewRoutine(new CoopRoutine());
         } else if ((m_cur_routine instanceof CoopRoutine) && commands.preset_request != Commands.PresetRequest.NONE && commands.preset_request != Commands.PresetRequest.COOP) {
             setNewRoutine(null);
