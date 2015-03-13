@@ -1,10 +1,8 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.StateHolder;
-
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -22,9 +20,6 @@ public class TopCarriage extends ElevatorCarriage {
         m_pivot = pivot;
         m_grabber = grabber;
         m_breakbeam = breakbeam;
-
-        m_homing_controller = new ElevatorHomingController(this, false,
-                Constants.kControlLoopsDt);
     }
 
     @Override

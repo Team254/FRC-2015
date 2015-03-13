@@ -1,7 +1,6 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.lib.util.CheesySpeedController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -18,9 +17,6 @@ public class BottomCarriage extends ElevatorCarriage {
         super(name, motor, brake, encoder, home);
         m_pusher = pusher;
         m_flapper = flapper;
-
-        m_homing_controller = new ElevatorHomingController(this, true,
-                Constants.kControlLoopsDt);
     }
 
     @Override

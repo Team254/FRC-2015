@@ -61,6 +61,8 @@ public class Robot extends IterativeRobot {
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
         logUpdater.start();
+        HardwareAdaptor.kTopCarriage.findHome(false);
+        HardwareAdaptor.kTopCarriage.setPositionSetpoint(45, true);
         SystemManager.getInstance().add(behavior_manager);
     }
 
@@ -74,6 +76,11 @@ public class Robot extends IterativeRobot {
         HardwareAdaptor.kRightDriveEncoder.reset();
         autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());
         System.out.println("Starting auto mode of name" + AutoModeSelector.getInstance().getAutoMode().getClass().getName());
+
+        // Start homing
+        HardwareAdaptor.kTopCarriage.enable();
+
+        // Start control loops
         autoModeRunner.start();
         looper.start();
         slowLooper.start();
@@ -87,6 +94,10 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         setState(RobotState.TELEOP);
         System.out.println("Start teleopInit()");
+
+        // Start homing
+        HardwareAdaptor.kTopCarriage.enable();
+
         looper.start();
     }
 
@@ -101,6 +112,10 @@ public class Robot extends IterativeRobot {
         setState(RobotState.DISABLED);
 
         System.out.println("Start disabledInit()");
+
+        // Kill elevator homing
+        HardwareAdaptor.kTopCarriage.disable();
+
 
         // Stop auto mode
         autoModeRunner.stop();

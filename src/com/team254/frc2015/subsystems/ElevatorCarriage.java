@@ -2,15 +2,12 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
+import com.team254.frc2015.Robot;
 import com.team254.frc2015.subsystems.controllers.ElevatorSqueezeController;
-import com.team254.frc2015.subsystems.controllers.ElevatorHomingController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.*;
-import edu.wpi.first.wpilibj.ChezyInterruptHandlerFunction;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.*;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
     public CheesySpeedController m_motor;
@@ -19,16 +16,28 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public DigitalInput m_home;
 
     protected Controller m_controller = null;
-    protected ElevatorHomingController m_homing_controller;
 
-    protected boolean m_initialized = true; // Change this later for homing
+    protected boolean m_initialized = true;
+    private double m_zero_offset = 0;
     private Double cached_setpoint = null;
+    private double m_homing_direction = 1.0;
+    private Timer m_homing_timer = new Timer();
+    private boolean m_just_enabled = false;
 
     protected ChezyInterruptHandlerFunction<ElevatorCarriage> isr = new ChezyInterruptHandlerFunction<ElevatorCarriage>() {
         @Override
         public void interruptFired(int interruptAssertedMask,
                                    ElevatorCarriage param) {
-            System.out.println("Interrupt fired on " + param.getName() + "!");
+            if (!m_initialized) {
+                m_zero_offset = getRelativeHeight();
+                m_initialized = true;
+                if (cached_setpoint != null) {
+                    setPositionSetpoint(cached_setpoint, true);
+                } else {
+                    setOpenLoop(0.0, true);
+                }
+                disableInterrupts();
+            }
         }
 
         @Override
@@ -36,6 +45,20 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             return ElevatorCarriage.this;
         }
     };
+
+    public void findHome(boolean reverse) {
+        m_homing_direction = reverse ? -1.0 : 1.0;
+        m_initialized = false;
+        m_home.requestInterrupts(isr);
+        m_home.setUpSourceEdge(false, true); // Pulled high be default, need falling edge
+        m_home.enableInterrupts();
+        m_homing_timer.reset();
+        m_homing_timer.stop();
+    }
+
+    public void disableInterrupts() {
+        m_home.disableInterrupts();
+    }
 
     protected Limits m_limits = new Limits();
     boolean m_brake_on_target = false;
@@ -55,8 +78,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         m_encoder = encoder;
         m_home = home;
         reloadConstants();
-        m_home.requestInterrupts(isr);
-        m_home.setUpSourceEdge(false, true);
     }
 
     public Controller getCurrentController() {
@@ -71,7 +92,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public double getHeight() {
         if (m_initialized) {
             return m_limits.m_rezero_position
-                    + (getRelativeHeight() - m_homing_controller.getZeroOffset());
+                    + (getRelativeHeight() - m_zero_offset);
         } else {
             return getRelativeHeight() + m_limits.m_home_position;
         }
@@ -218,31 +239,29 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
     }
 
+    public void disable() {
+        m_just_enabled = false;
+        m_homing_timer.reset();
+        m_homing_timer.stop();
+    }
+
+    public void enable() {
+        m_just_enabled = true;
+        m_homing_timer.reset();
+        m_homing_timer.stop();
+    }
+
     @Override
     public synchronized void update() {
+
         if (!m_initialized) {
-            double old_goal = getGoalHeight() == -1 ? getSetpoint().pos : getGoalHeight();
-            double new_setpoint = m_homing_controller.update(old_goal,
-                    getRelativeHeight());
-            if (m_homing_controller.needsControllerNullOut()) {
-                m_controller = null;
+            if (m_just_enabled) {
+                m_homing_timer.start();
+                m_just_enabled = false;
             }
-            if (!m_homing_controller.isTimedOut()) {
-                setPositionSetpointUnsafe(new_setpoint, false);
-                if (m_homing_controller.isReady()) {
-                    m_initialized = true;
-                    m_controller = null;
-                    if (cached_setpoint != null) {
-                        setPositionSetpointUnsafe(cached_setpoint, true);
-                    } else {
-                        setPositionSetpointUnsafe(getHeight(), true);
-                    }
-                }
-            } else {
-                setSpeedUnsafe(0);
-            }
-        }
-        if (m_controller instanceof TrajectoryFollowingPositionController) {
+            double speed = m_homing_timer.get() < 1.5 ? Constants.kHomingPwm * m_homing_direction : 0;
+            setSpeedSafe(speed);
+        }  else if (m_controller instanceof TrajectoryFollowingPositionController) {
             TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
             if (position_controller.isOnTarget()) {
                 // No need to brake at bottom of travel.
@@ -264,7 +283,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             setBrake(false);
             setSpeedSafe(power);
         } else {
-            // do nothing.
+            // Do nothing
         }
 
         // Failsafe

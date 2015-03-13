@@ -5,6 +5,7 @@ import com.team254.lib.util.ConstantsBase;
 public class Constants extends ConstantsBase {
     public static double kDriveSensitivity = .75;
     public static double kNegativeInertiaScalar = 5.0;
+    public static double kHomingPwm = .75;
 
     // Operator controls
     public static double kElevatorJogFastPwm = 1.0;
