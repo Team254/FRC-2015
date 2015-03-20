@@ -62,7 +62,6 @@ public class Robot extends IterativeRobot {
         slowLooper.addLoopable(drive);
         logUpdater.start();
         HardwareAdaptor.kTopCarriage.findHome(false);
-        HardwareAdaptor.kTopCarriage.setPositionSetpoint(45, true);
         SystemManager.getInstance().add(behavior_manager);
     }
 
