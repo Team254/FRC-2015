@@ -29,6 +29,14 @@ public class ElevatorSafety {
                     .getBreakbeamTriggered());
     }
 
+    public static boolean isMoveLegal(ElevatorCarriage carriage,
+            double position_setpoint) {
+        return !(carriage == kBottomCarriage
+                && kTopCarriage.getHeight() >= Constants.kTopCarriageMaxPositionInches
+                && kTopCarriage.getBreakbeamTriggered() && position_setpoint > carriage
+                .getHeight());
+    }
+
     public static Setpoints generateSafeSetpoints(Setpoints setpoints) {
         // Sanity check the setpoints to ensure they are within limits and
         // the bottom is not above the top.

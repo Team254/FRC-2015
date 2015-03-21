@@ -3,10 +3,12 @@ package com.team254.frc2015.subsystems;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.Robot;
+import com.team254.frc2015.subsystems.controllers.BangBangFinishLineController;
 import com.team254.frc2015.subsystems.controllers.ElevatorSqueezeController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.*;
+
 import edu.wpi.first.wpilibj.*;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
@@ -123,6 +125,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         if (m_controller instanceof TrajectoryFollowingPositionController) {
             return ((TrajectoryFollowingPositionController) m_controller)
                     .getGoal();
+        } else if (m_controller instanceof BangBangFinishLineController) {
+            return ((BangBangFinishLineController) m_controller).getGoal();
         } else {
             return -1;
         }
@@ -208,6 +212,14 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
 
     }
+    
+    public synchronized void setFastPositionSetpoint(double setpoint) {
+        if (!(m_controller instanceof BangBangFinishLineController)) {
+            m_controller = new BangBangFinishLineController(0.5);
+        }
+        m_controller.reset();
+        ((BangBangFinishLineController) m_controller).setGoal(setpoint);
+    }
 
     public boolean isInitialized() {
         return m_initialized;
@@ -226,16 +238,27 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     private void setSpeedIfValid(double speed) {
-        TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
-        if (!ElevatorSafety
-                .isMoveLegal(this, position_controller.getSetpoint())) {
-            // If this move is illegal, stop immediately.
-            TrajectoryFollower.TrajectorySetpoint setpoint = new TrajectoryFollower.TrajectorySetpoint();
-            setpoint.pos = getHeight();
-            position_controller.setGoal(setpoint, getHeight());
-            setSpeedSafe(0.0);
-        } else {
-            setSpeedSafe(position_controller.get());
+        if (m_controller instanceof TrajectoryFollowingPositionController) {
+            TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
+            if (!ElevatorSafety
+                    .isMoveLegal(this, position_controller.getSetpoint())) {
+                // If this move is illegal, stop immediately.
+                TrajectoryFollower.TrajectorySetpoint setpoint = new TrajectoryFollower.TrajectorySetpoint();
+                setpoint.pos = getHeight();
+                position_controller.setGoal(setpoint, getHeight());
+                setSpeedSafe(0.0);
+            } else {
+                setSpeedSafe(speed);
+            }
+        } else if(m_controller instanceof BangBangFinishLineController) {
+            BangBangFinishLineController bangbang = (BangBangFinishLineController) m_controller;
+            if (!ElevatorSafety.isMoveLegal(this, bangbang.getGoal())) {
+                // Stop immediately.
+                setSpeedSafe(0.0);
+                m_controller = null;
+            } else {
+                setSpeedSafe(speed);
+            }
         }
     }
 
@@ -276,6 +299,14 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             } else {
                 position_controller.update(getHeight(), getVelocity());
                 setSpeedIfValid(position_controller.get());
+            }
+        } else if (m_controller instanceof BangBangFinishLineController) {
+            double power = ((BangBangFinishLineController) m_controller).update(getHeight());
+            if (power != 0.0) {
+                setBrake(false);
+                setSpeedIfValid(power);
+            } else {
+                setBrake(true);
             }
         } else if (m_controller instanceof ElevatorSqueezeController) {
             double power = ((ElevatorSqueezeController) m_controller)
