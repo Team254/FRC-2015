@@ -28,6 +28,9 @@ public class BangBangFinishLineController extends Controller {
 
     @Override
     public boolean isOnTarget() {
+        if (m_direction == 0.0) {
+            return false;
+        }
         return (m_direction > 0 ? m_position > (m_goal - m_tolerance)
                 : m_position < (m_goal + m_tolerance));
     }
