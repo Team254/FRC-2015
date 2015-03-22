@@ -94,7 +94,7 @@ public class CanGrabRoutine extends Routine {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (commands.can_grabber_request == Commands.CanGrabberRequests.DO_STAGE) {
-                    new_state = States.CENTER_DOWN;
+                    new_state = States.DRIVE_UP;
                 }
                 if (commands.can_grabber_request == Commands.CanGrabberRequests.TOGGLE_GRAB) {
                     new_state = States.OPEN_GRABBER;
@@ -118,9 +118,9 @@ public class CanGrabRoutine extends Routine {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_is_new_state) {
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(55.0);
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(35.0);
                 }
-                if (!m_is_new_state && top_carriage.getHeight() > 40.0) {
+                if (!m_is_new_state && top_carriage.getHeight() > 25.0) {
                     new_state = States.ROTATE_UP;
                 }
                 break;
@@ -133,6 +133,7 @@ public class CanGrabRoutine extends Routine {
             default:
                 break;
         }
+
         m_is_new_state = false;
         if (new_state != m_state) {
             m_state = new_state;
