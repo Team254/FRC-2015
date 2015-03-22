@@ -43,6 +43,7 @@ public class RobotSetpoints {
     public RollerAction roller_action;
     public Optional<Double> top_open_loop_jog;
     public Optional<Double> bottom_open_loop_jog;
+    public boolean top_carriage_squeeze;
 
     public void reset() {
         m_elevator_setpoints.bottom_setpoint = Optional.empty();
@@ -54,5 +55,6 @@ public class RobotSetpoints {
         roller_action = RollerAction.NONE;
         top_open_loop_jog = m_nullopt;
         bottom_open_loop_jog = m_nullopt;
+        top_carriage_squeeze = false;
     }
 }

@@ -1,6 +1,7 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
+import com.team254.frc2015.subsystems.controllers.ElevatorSqueezeController;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.StateHolder;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -47,6 +48,10 @@ public class TopCarriage extends ElevatorCarriage {
         return m_grabber.get();
     }
 
+    public boolean hasSquezeEnabled() {
+        return m_controller instanceof ElevatorSqueezeController;
+    }
+
     public boolean getBreakbeamTriggered() {
         return m_breakbeam.getAverageVoltage() > Constants.kBreambeamVoltage;
     }
@@ -57,5 +62,4 @@ public class TopCarriage extends ElevatorCarriage {
         states.put("breakbeam_voltage", m_breakbeam.getAverageVoltage());
         states.put("breakbeam_state", getBreakbeamTriggered());
     }
-
 }

@@ -95,6 +95,10 @@ public class BehaviorManager implements Tappable {
             setNewRoutine(new HumanLoadRoutine());
         } else if (!commands.human_player_mode && m_cur_routine instanceof HumanLoadRoutine) {
             setNewRoutine(null);
+        } else if (commands.floor_load_mode && !(m_cur_routine instanceof FloorLoadRoutine)) {
+            setNewRoutine(new FloorLoadRoutine());
+        } else if (!commands.floor_load_mode && m_cur_routine instanceof FloorLoadRoutine) {
+            setNewRoutine(null);
         } else if (commands.preset_request == Commands.PresetRequest.RAMMING) {
             rammingModePresetRoutine.reset();
             setNewRoutine(rammingModePresetRoutine);
@@ -133,6 +137,14 @@ public class BehaviorManager implements Tappable {
             }
         }
         if (top_carriage.isInitialized()) {
+            if (m_setpoints.top_carriage_squeeze) {
+                top_carriage.squeeze();
+            } else {
+                if (top_carriage.hasSquezeEnabled()) {
+                    top_carriage.setOpenLoop(0, true);
+                }
+            }
+
             if (m_setpoints.top_open_loop_jog.isPresent()) {
                 top_jog_speed = m_setpoints.top_open_loop_jog.get();
                 m_top_jogging = true;

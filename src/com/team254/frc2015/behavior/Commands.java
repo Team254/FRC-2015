@@ -64,6 +64,7 @@ public class Commands {
     public BottomCarriagePusherRequest bottom_carriage_pusher_request;
     public CanGrabberRequests can_grabber_request;
     public boolean human_player_mode = false;
+    public boolean floor_load_mode = false;
     public boolean cancel_current_routine = false;
     public HumanLoadRequests human_load_requests;
 }

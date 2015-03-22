@@ -7,7 +7,6 @@ import com.team254.frc2015.subsystems.TopCarriage;
 import com.team254.lib.util.CheesyCompressor;
 import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
-import com.team254.lib.util.SharpGP2Y0A60SZ;
 import com.team254.lib.util.gyro.GyroThread;
 import edu.wpi.first.wpilibj.*;
 
@@ -76,7 +75,8 @@ public class HardwareAdaptor {
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
-    public static AnalogInput kBreakbeam = new AnalogInput(0);
+    public static AnalogInput kBreakbeamTopCarriage = new AnalogInput(0);
+    public static AnalogInput kBreakbeamIntake = new AnalogInput(4);
 
     // Subsystems
     public static Drive kDrive = new Drive("drive", kLeftDriveMotor,
@@ -85,14 +85,14 @@ public class HardwareAdaptor {
     public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
             kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
             kTopCarriageHome, kTopCarriagePivotSolenoid,
-            kTopCarriageGrabberSolenoid, kBreakbeam);
+            kTopCarriageGrabberSolenoid, kBreakbeamTopCarriage);
     public static BottomCarriage kBottomCarriage = new BottomCarriage(
             "bottom_carriage", kBottomCarriageMotor,
             kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
             kBottomCarriageHome, kBottomCarriagePusherSolenoid,
             kBottomCarriageFlapperSolenoid);
     public static Intake kIntake = new Intake("intake", kOpenIntakeSolenoid,
-            kCloseIntakeSolenoid, kLeftIntakeMotor, kRightIntakeMotor);
+            kCloseIntakeSolenoid, kLeftIntakeMotor, kRightIntakeMotor, kBreakbeamIntake);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     // Compressor

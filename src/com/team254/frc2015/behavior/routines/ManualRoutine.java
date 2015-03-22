@@ -29,7 +29,7 @@ public class ManualRoutine extends Routine {
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(18.0);
 
             // Figure out how to move this later
-            top_carriage.squeeze();
+            setpoints.top_carriage_squeeze = true;
         } else if (commands.preset_request == Commands.PresetRequest.SCORE) {
             // Capping
             setpoints.m_elevator_setpoints.top_setpoint = Optional

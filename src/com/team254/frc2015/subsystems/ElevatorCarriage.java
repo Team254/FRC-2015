@@ -25,6 +25,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     private double m_homing_direction = 1.0;
     private Timer m_homing_timer = new Timer();
     private boolean m_just_enabled = false;
+    private boolean m_fast_hit_top = false;
 
     protected ChezyInterruptHandlerFunction<ElevatorCarriage> isr = new ChezyInterruptHandlerFunction<ElevatorCarriage>() {
         @Override
@@ -218,6 +219,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             m_controller = new BangBangFinishLineController(0.5);
         }
         m_controller.reset();
+        m_fast_hit_top = false;
         ((BangBangFinishLineController) m_controller).setGoal(setpoint);
     }
 
@@ -235,6 +237,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         if (!(m_controller instanceof ElevatorSqueezeController)) {
             m_controller = new ElevatorSqueezeController();
         }
+    }
+
+    public boolean fastHitTop() {
+        return m_fast_hit_top;
     }
 
     private void setSpeedIfValid(double speed) {
@@ -255,6 +261,9 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             if (!ElevatorSafety.isMoveLegal(this, bangbang.getGoal())) {
                 // Stop immediately.
                 setSpeedSafe(0.0);
+                setBrake(true);
+                m_fast_hit_top = true;
+                System.out.println("Hit top!!!!");
                 m_controller = null;
             } else {
                 setSpeedSafe(speed);

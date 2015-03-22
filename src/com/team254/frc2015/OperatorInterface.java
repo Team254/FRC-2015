@@ -124,6 +124,8 @@ public class OperatorInterface {
             m_commands.can_grabber_request = Commands.CanGrabberRequests.NONE;
         }
 
+        m_commands.floor_load_mode = buttonBoard.getRawAxis(3) > 0.1;
+        /*
         m_commands.human_player_mode = buttonBoard.getRawAxis(3) > 0.1;
         if (m_commands.human_player_mode && buttonBoard.getRawButton(11)) {
             m_commands.human_load_requests = Commands.HumanLoadRequests.LOAD_FIRST_BIN;
@@ -132,6 +134,7 @@ public class OperatorInterface {
         } else {
             m_commands.human_load_requests = Commands.HumanLoadRequests.NONE;
         }
+        */
         return m_commands;
     }
 }
