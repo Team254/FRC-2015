@@ -22,7 +22,7 @@ public class AutoModeSelector {
 	}
 	
 	public AutoModeSelector() {
-        registerAutonomous(new TestBangBangAutoMode());
+        registerAutonomous(new TestDriveAutoMode());
         registerAutonomous(new ThreeBinNoCanAutoMode());
         registerAutonomous(new DoNothingAutoMode());
 	}

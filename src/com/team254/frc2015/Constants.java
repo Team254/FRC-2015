@@ -32,15 +32,15 @@ public class Constants extends ConstantsBase {
     public static double kDriveStraightKp = 1.9;
     public static double kDriveStraightKi = 0;
     public static double kDriveStraightKd = 0;
-    public static double kDrivePositionKv = 0.0075;
+    public static double kDrivePositionKv = 0.008;
     public static double kDrivePositionKa = 0.0017;
     public static double kDriveOnTargetError = 1.0;
     public static double kDrivePathHeadingFollowKp = 0.01;
 
     // TurnInPlaceController gains
-    public static double kTurnMaxSpeedRadsPerSec = 3.2;
-    public static double kTurnMaxAccelRadsPerSec2 = 4.5;
-    public static double kTurnKp = 1.5;
+    public static double kTurnMaxSpeedRadsPerSec = 5.25;
+    public static double kTurnMaxAccelRadsPerSec2 = 5.25;
+    public static double kTurnKp = 4.0;
     public static double kTurnKi = 0.13;
     public static double kTurnKd = 0.0;
     public static double kTurnKv = 0.11;
