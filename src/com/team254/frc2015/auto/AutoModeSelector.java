@@ -22,6 +22,8 @@ public class AutoModeSelector {
 	}
 	
 	public AutoModeSelector() {
+        //registerAutonomous(new TestDriveAutoMode());
+        registerAutonomous(new ThreeToteAutoMode());
         registerAutonomous(new TestDriveAutoMode());
         registerAutonomous(new ThreeBinNoCanAutoMode());
         registerAutonomous(new DoNothingAutoMode());

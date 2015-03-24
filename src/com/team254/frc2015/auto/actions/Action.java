@@ -3,6 +3,7 @@ package com.team254.frc2015.auto.actions;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.subsystems.BottomCarriage;
 import com.team254.frc2015.subsystems.Drive;
+import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
@@ -12,6 +13,7 @@ public abstract class Action {
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
     protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
+    protected Intake intake = HardwareAdaptor.kIntake;
 
     public abstract boolean isFinished();
 

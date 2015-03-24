@@ -1,10 +1,7 @@
 package com.team254.frc2015.auto;
 
 import com.team254.frc2015.HardwareAdaptor;
-import com.team254.frc2015.auto.actions.TimeoutAction;
-import com.team254.frc2015.auto.actions.WaitForCarriageAction;
-import com.team254.frc2015.auto.actions.WaitForDriveAction;
-import com.team254.frc2015.auto.actions.WaitForPathSegmentAction;
+import com.team254.frc2015.auto.actions.*;
 import com.team254.frc2015.subsystems.*;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
@@ -26,6 +23,18 @@ public abstract class AutoMode extends AutoModeBase {
 
     public void waitForCarriage(ElevatorCarriage carriage, double timeout) throws AutoModeEndedException {
         runAction(new WaitForCarriageAction(carriage, timeout));
+    }
+
+    public void waitForCarriageHeight(ElevatorCarriage carriage, double height, boolean greater_than, double timeout) throws AutoModeEndedException {
+        runAction(new WaitForCarriageHeightAction(carriage, height, greater_than, timeout));
+    }
+
+    public void waitForTote(double timeout) throws AutoModeEndedException {
+        runAction(new WaitForToteAction(timeout));
+    }
+
+    public void waitForDriveDistance(double distance, boolean positive, double timeout) throws AutoModeEndedException {
+        runAction(new WaitForDriveDistanceAction(distance, positive, timeout));
     }
 
     public void waitForPathSegment(int segNum, double timeout) throws AutoModeEndedException {

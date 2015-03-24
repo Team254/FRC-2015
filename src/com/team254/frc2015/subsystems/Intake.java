@@ -35,8 +35,8 @@ public class Intake extends Subsystem {
     }
 
     public void setLeftRight(double left_speed, double right_speed) {
-        m_left_motor.set(left_speed);
-        m_right_motor.set(right_speed);
+        m_left_motor.set(-left_speed);
+        m_right_motor.set(-right_speed);
     }
 
     public boolean getBreakbeamTriggered() {

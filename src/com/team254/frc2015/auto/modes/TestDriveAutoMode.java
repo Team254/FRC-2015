@@ -1,7 +1,9 @@
 package com.team254.frc2015.auto.modes;
 
+import com.team254.frc2015.Constants;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
+import com.team254.frc2015.subsystems.TopCarriage;
 
 /**
  * Created by tombot on 3/21/15.
@@ -9,14 +11,16 @@ import com.team254.frc2015.auto.AutoModeEndedException;
 public class TestDriveAutoMode extends AutoMode {
     @Override
     protected void routine() throws AutoModeEndedException {
+        top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.CLOSED);
+        top_carriage.setPositionSetpoint(30, true);
+        waitTime(5.0);
         drive.reset();
-        drive.setDistanceSetpoint(8.0);
-        waitForDrive(3.0);
+        intake.close();
+        intake.setSpeed(Constants.kManualIntakeSpeed);
         drive.setTurnSetPoint(-Math.PI);
         waitForDrive(4.0);
         drive.reset();
-        drive.setDistanceSetpoint(80.0);
-        waitForDrive(3.0);
+
 
     }
 }

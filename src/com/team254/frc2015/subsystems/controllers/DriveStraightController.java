@@ -48,6 +48,8 @@ public class DriveStraightController implements Drive.DriveController {
                 0,
                 priorSetpoint.getHeading(),
                 priorSetpoint.getHeadingVelocity());
+
+        System.out.println("Making new drive controller : " + priorSetpoint.getHeading() + " : " + Constants.kDriveStraightKp);
     }
 
     @Override
@@ -71,8 +73,8 @@ public class DriveStraightController implements Drive.DriveController {
                 mSetpointRelativePose.getRightDistance() + dist,
                 mSetpointRelativePose.getLeftVelocity() + velocity,
                 mSetpointRelativePose.getRightVelocity() + velocity,
-                0,
-                0);
+                mSetpointRelativePose.getHeading(),
+                mSetpointRelativePose.getHeadingVelocity());
     }
 
     public static double encoderVelocity(Pose pose) {
