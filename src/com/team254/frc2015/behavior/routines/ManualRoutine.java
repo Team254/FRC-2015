@@ -82,18 +82,11 @@ public class ManualRoutine extends Routine {
             if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
                 setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
             }
-        } else if (setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_NEUTRAL_HP) {
-            setpoints.intake_action = RobotSetpoints.IntakeAction.NEUTRAL;
-            if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
-                setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
-            }
         } else if (setpoints.intake_action == RobotSetpoints.IntakeAction.NONE) {
             if (commands.intake_request == Commands.IntakeRequest.OPEN) {
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
             } else if (commands.intake_request == Commands.IntakeRequest.CLOSE) {
                 setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
-            } else if (commands.intake_request == Commands.IntakeRequest.NEUTRAL) {
-                setpoints.intake_action = RobotSetpoints.IntakeAction.NEUTRAL;
             }
         }
 

@@ -10,7 +10,7 @@ import java.util.Optional;
 public class RobotSetpoints {
 
     public enum IntakeAction {
-        NONE, OPEN, CLOSE, NEUTRAL, PREFER_OPEN, PREFER_CLOSE, PREFER_NEUTRAL_HP
+        NONE, OPEN, CLOSE, PREFER_OPEN, PREFER_CLOSE
     }
 
     public enum RollerAction {
@@ -22,7 +22,7 @@ public class RobotSetpoints {
     }
 
     public enum TopCarriageClawAction {
-        NONE, OPEN, CLOSE
+        NONE, OPEN, CLOSE, NEUTRAL
     }
 
     public enum BottomCarriageFlapperAction {

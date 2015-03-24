@@ -11,16 +11,21 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class TopCarriage extends ElevatorCarriage {
     Solenoid m_pivot;
-    Solenoid m_grabber;
+    Solenoid m_grabber_open;
+    Solenoid m_grabber_close;
     AnalogInput m_breakbeam;
 
     public TopCarriage(String name, CheesySpeedController motor,
             Solenoid brake, Encoder encoder, DigitalInput home, Solenoid pivot,
-            Solenoid grabber, AnalogInput breakbeam) {
+            Solenoid grabber_open, Solenoid grabber_close, AnalogInput breakbeam) {
         super(name, motor, brake, encoder, home);
         m_pivot = pivot;
-        m_grabber = grabber;
+        m_grabber_open = grabber_open;
+        m_grabber_close = grabber_close;
         m_breakbeam = breakbeam;
+    }
+    public enum GrabberPositions {
+        OPEN, CLOSED, VENTED, BOTH
     }
 
     @Override
@@ -40,12 +45,13 @@ public class TopCarriage extends ElevatorCarriage {
         return m_pivot.get();
     }
 
-    public void setGrabberOpen(boolean open) {
-        m_grabber.set(open);
+    public void setGrabberPosition(GrabberPositions pos) {
+        m_grabber_open.set(pos == GrabberPositions.BOTH || pos == GrabberPositions.OPEN);
+        m_grabber_close.set(pos == GrabberPositions.BOTH || pos == GrabberPositions.CLOSED);
     }
 
     public boolean getGrabberOpen() {
-        return m_grabber.get();
+        return m_grabber_open.get();
     }
 
     public boolean hasSquezeEnabled() {

@@ -62,16 +62,16 @@ public class HardwareAdaptor {
             Constants.kTopCarriageBrakeSolenoidPort);
     static CheesySolenoid kTopCarriagePivotSolenoid = new CheesySolenoid(
             Constants.kTopCarriagePivotSolenoidPort);
-    static CheesySolenoid kTopCarriageGrabberSolenoid = new CheesySolenoid(
-            Constants.kTopCarriageGrabberSolenoidPort);
+    static CheesySolenoid kTopCarriageGrabberCloseSolenoid = new CheesySolenoid(
+            Constants.kTopCarriageGrabberCloseSolenoidPort);
+    static CheesySolenoid kTopCarriageGrabberOpenSolenoid = new CheesySolenoid(
+            Constants.kTopCarriageGrabberOpenSolenoidPort);
     static CheesySolenoid kBottomCarriagePusherSolenoid = new CheesySolenoid(
             Constants.kBottomCarriagePusherSolenoidPort);
     static CheesySolenoid kBottomCarriageFlapperSolenoid = new CheesySolenoid(
             Constants.kBottomCarriageFlapperSolenoidPort);
-    static CheesySolenoid kOpenIntakeSolenoid = new CheesySolenoid(
-            Constants.kOpenIntakeSolenoidPort);
-    static CheesySolenoid kCloseIntakeSolenoid = new CheesySolenoid(
-            Constants.kCloseIntakeSolenoidPort);
+    static CheesySolenoid kIntakeSolenoid = new CheesySolenoid(
+            Constants.kIntakeSolenoidPort);
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
@@ -85,14 +85,14 @@ public class HardwareAdaptor {
     public static TopCarriage kTopCarriage = new TopCarriage("top_carriage",
             kTopCarriageMotor, kTopCarriageBrakeSolenoid, kTopCarriageEncoder,
             kTopCarriageHome, kTopCarriagePivotSolenoid,
-            kTopCarriageGrabberSolenoid, kBreakbeamTopCarriage);
+            kTopCarriageGrabberOpenSolenoid, kTopCarriageGrabberCloseSolenoid, kBreakbeamTopCarriage);
     public static BottomCarriage kBottomCarriage = new BottomCarriage(
             "bottom_carriage", kBottomCarriageMotor,
             kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
             kBottomCarriageHome, kBottomCarriagePusherSolenoid,
             kBottomCarriageFlapperSolenoid);
-    public static Intake kIntake = new Intake("intake", kOpenIntakeSolenoid,
-            kCloseIntakeSolenoid, kLeftIntakeMotor, kRightIntakeMotor, kBreakbeamIntake);
+    public static Intake kIntake = new Intake("intake", kIntakeSolenoid,
+            kLeftIntakeMotor, kRightIntakeMotor, kBreakbeamIntake);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     // Compressor

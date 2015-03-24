@@ -93,10 +93,6 @@ public class BehaviorManager implements Tappable {
             setNewRoutine(null);
         } else if (commands.can_grabber_request == Commands.CanGrabberRequests.DO_STAGE && !(m_cur_routine instanceof CanGrabRoutine)) {
             setNewRoutine(new CanGrabRoutine());
-        } else if (commands.human_player_mode && !(m_cur_routine instanceof HumanLoadRoutine)) {
-            setNewRoutine(new HumanLoadRoutine());
-        } else if (!commands.human_player_mode && m_cur_routine instanceof HumanLoadRoutine) {
-            setNewRoutine(null);
         } else if (commands.floor_load_mode && !(m_cur_routine instanceof FloorLoadRoutine)) {
             setNewRoutine(new FloorLoadRoutine());
         } else if (!commands.floor_load_mode && m_cur_routine instanceof FloorLoadRoutine) {
@@ -175,11 +171,14 @@ public class BehaviorManager implements Tappable {
         // Top carriage actions.
         if (can_control_top_carriage_grabber
                 && m_setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.OPEN) {
-            top_carriage.setGrabberOpen(true);
+            top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.OPEN);
             can_control_top_carriage_pivot = false;
         } else if (can_control_top_carriage_grabber
                 && m_setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.CLOSE) {
-            top_carriage.setGrabberOpen(false);
+            top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.CLOSED);
+        } else if (can_control_top_carriage_grabber
+                && m_setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.NEUTRAL) {
+            top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.VENTED);
         }
 
         if (can_control_top_carriage_pivot
@@ -216,9 +215,6 @@ public class BehaviorManager implements Tappable {
         } else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.CLOSE || m_setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_CLOSE) {
             // Close intake
             intake.close();
-        } else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.NEUTRAL) {
-            // Neutral intake
-            intake.neutral();
         }
 
         // Roller actions.
