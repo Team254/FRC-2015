@@ -108,6 +108,5 @@ public class HardwareAdaptor {
     static {
         kBottomCarriageMotor.setInverted(true);
         kLeftIntakeMotor.setInverted(true);
-        kTopCarriage.setNeedsHoming(true);
     }
 }

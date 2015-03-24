@@ -18,6 +18,7 @@ public class BehaviorManager implements Tappable {
     public boolean isZero(double val) {
         return val < 0.0001 && val > -0.0001;
     }
+
     protected Drive drive = HardwareAdaptor.kDrive;
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
@@ -79,6 +80,7 @@ public class BehaviorManager implements Tappable {
         m_setpoints = new RobotSetpoints();
         m_setpoints.reset();
     }
+
     public void update(Commands commands) {
         m_setpoints.reset();
 
@@ -114,7 +116,7 @@ public class BehaviorManager implements Tappable {
 
         // Get manual m_setpoints
         m_setpoints = m_manual_routine.update(commands, m_setpoints);
-        
+
         boolean can_close_intake = true;
         boolean can_control_top_carriage_pivot = true;
         boolean can_control_top_carriage_grabber = true;
@@ -124,39 +126,36 @@ public class BehaviorManager implements Tappable {
         double bottom_jog_speed = 0.0;
         double top_jog_speed = 0.0;
         // Set elevator m_setpoints and jog
-        if (bottom_carriage.isInitialized()) {
-            if (m_setpoints.bottom_open_loop_jog.isPresent()) {
-                bottom_jog_speed = m_setpoints.bottom_open_loop_jog.get();
-                m_bottom_jogging = true;
-            } else if (m_setpoints.m_elevator_setpoints.bottom_setpoint.isPresent()) {
-                bottom_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.bottom_setpoint.get(), true);
-                m_bottom_jogging = false;
-            } else if (m_bottom_jogging && !m_setpoints.bottom_open_loop_jog.isPresent()) {
-                bottom_carriage.setOpenLoop(0, true);
-                m_bottom_jogging = false;
-            }
+        if (m_setpoints.bottom_open_loop_jog.isPresent()) {
+            bottom_jog_speed = m_setpoints.bottom_open_loop_jog.get();
+            m_bottom_jogging = true;
+        } else if (m_setpoints.m_elevator_setpoints.bottom_setpoint.isPresent()) {
+            bottom_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.bottom_setpoint.get(), true);
+            m_bottom_jogging = false;
+        } else if (m_bottom_jogging && !m_setpoints.bottom_open_loop_jog.isPresent()) {
+            bottom_carriage.setOpenLoop(0, true);
+            m_bottom_jogging = false;
         }
-        if (top_carriage.isInitialized()) {
-            if (m_setpoints.top_carriage_squeeze) {
-                top_carriage.squeeze();
-            } else {
-                if (top_carriage.hasSquezeEnabled()) {
-                    top_carriage.setOpenLoop(0, true);
-                }
-            }
 
-            if (m_setpoints.top_open_loop_jog.isPresent()) {
-                top_jog_speed = m_setpoints.top_open_loop_jog.get();
-                m_top_jogging = true;
-            } else if (m_setpoints.m_elevator_setpoints.top_setpoint.isPresent()) {
-                top_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.top_setpoint.get(), true);
-                m_top_jogging = false;
-            } else if (m_top_jogging && !m_setpoints.top_open_loop_jog.isPresent()) {
+        if (m_setpoints.top_carriage_squeeze) {
+            top_carriage.squeeze();
+        } else {
+            if (top_carriage.hasSquezeEnabled()) {
                 top_carriage.setOpenLoop(0, true);
-                m_top_jogging = false;
             }
-            
         }
+
+        if (m_setpoints.top_open_loop_jog.isPresent()) {
+            top_jog_speed = m_setpoints.top_open_loop_jog.get();
+            m_top_jogging = true;
+        } else if (m_setpoints.m_elevator_setpoints.top_setpoint.isPresent()) {
+            top_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.top_setpoint.get(), true);
+            m_top_jogging = false;
+        } else if (m_top_jogging && !m_setpoints.top_open_loop_jog.isPresent()) {
+            top_carriage.setOpenLoop(0, true);
+            m_top_jogging = false;
+        }
+
 
         if (m_bottom_jogging || m_top_jogging) {
             bottom_carriage.setOpenLoop(bottom_jog_speed, isZero(bottom_jog_speed));
@@ -217,7 +216,7 @@ public class BehaviorManager implements Tappable {
         } else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.CLOSE || m_setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_CLOSE) {
             // Close intake
             intake.close();
-        }  else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.NEUTRAL) {
+        } else if (m_setpoints.intake_action == RobotSetpoints.IntakeAction.NEUTRAL) {
             // Neutral intake
             intake.neutral();
         }
@@ -243,7 +242,7 @@ public class BehaviorManager implements Tappable {
 
     @Override
     public void getState(StateHolder states) {
-        states.put("mode", m_cur_routine != null ? m_cur_routine.getName() : "---" );
+        states.put("mode", m_cur_routine != null ? m_cur_routine.getName() : "---");
     }
 
     @Override

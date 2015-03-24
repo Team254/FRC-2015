@@ -18,13 +18,8 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     public DigitalInput m_home;
 
     protected Controller m_controller = null;
-
     protected boolean m_initialized = true;
-    private double m_zero_offset = 0;
-    private Double cached_setpoint = null;
-    private double m_homing_direction = 1.0;
-    private Timer m_homing_timer = new Timer();
-    private boolean m_just_enabled = false;
+    protected double m_zero_offset = 0;
     private boolean m_fast_hit_top = false;
 
     protected ChezyInterruptHandlerFunction<ElevatorCarriage> isr = new ChezyInterruptHandlerFunction<ElevatorCarriage>() {
@@ -34,11 +29,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             if (!m_initialized) {
                 m_zero_offset = getRelativeHeight();
                 m_initialized = true;
-                if (cached_setpoint != null) {
-                    setPositionSetpoint(cached_setpoint, true);
-                } else {
-                    setOpenLoop(0.0, true);
-                }
                 disableInterrupts();
             }
         }
@@ -49,14 +39,11 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
     };
 
-    public void findHome(boolean reverse) {
-        m_homing_direction = reverse ? -1.0 : 1.0;
+    public void findHome() {
         m_initialized = false;
         m_home.requestInterrupts(isr);
         m_home.setUpSourceEdge(false, true); // Pulled high be default, need falling edge
         m_home.enableInterrupts();
-        m_homing_timer.reset();
-        m_homing_timer.stop();
     }
 
     public void disableInterrupts() {
@@ -168,10 +155,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         setSpeedUnsafe(desired_speed);
     }
 
-    public void setNeedsHoming(boolean needs_homing) {
-        m_initialized = !needs_homing;
-    }
-
     protected void setBrake(boolean on) {
         m_brake.set(on); // brake is normally applied
         if (on) {
@@ -206,12 +189,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
     public synchronized void setPositionSetpoint(double setpoint,
                                                  boolean brake_on_target) {
-        if (!m_initialized) {
-            cached_setpoint = setpoint;
-        } else {
-            setPositionSetpointUnsafe(setpoint, brake_on_target);
-        }
-
+        setPositionSetpointUnsafe(setpoint, brake_on_target);
     }
     
     public synchronized void setFastPositionSetpoint(double setpoint) {
@@ -271,29 +249,10 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
     }
 
-    public void disable() {
-        m_just_enabled = false;
-        m_homing_timer.reset();
-        m_homing_timer.stop();
-    }
-
-    public void enable() {
-        m_just_enabled = true;
-        m_homing_timer.reset();
-        m_homing_timer.stop();
-    }
-
     @Override
     public synchronized void update() {
 
-        if (!m_initialized) {
-            if (m_just_enabled) {
-                m_homing_timer.start();
-                m_just_enabled = false;
-            }
-            double speed = m_homing_timer.get() < 1.5 ? Constants.kHomingPwm * m_homing_direction : 0;
-            setSpeedSafe(speed);
-        }  else if (m_controller instanceof TrajectoryFollowingPositionController) {
+       if (m_controller instanceof TrajectoryFollowingPositionController) {
             TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
             if (position_controller.isOnTarget()) {
                 // No need to brake at bottom of travel.
