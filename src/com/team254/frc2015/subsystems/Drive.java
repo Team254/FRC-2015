@@ -117,16 +117,13 @@ public class Drive extends Subsystem implements Loopable {
 
     private Pose getPoseToContinueFrom(boolean for_turn_controller) {
         if (!for_turn_controller && m_controller instanceof TurnInPlaceController) {
-            System.out.println("Continue from turn to drive");
             Pose pose_to_use = getPhysicalPose();
             pose_to_use.m_heading = ((TurnInPlaceController) m_controller).getHeadingGoal();
             pose_to_use.m_heading_velocity = 0;
             return pose_to_use;
         } else if (m_controller == null || (m_controller instanceof DriveStraightController && for_turn_controller)) {
-            System.out.println("Use current post");
             return getPhysicalPose();
         } else {
-            System.out.println("Use current setpoint");
             return m_controller.getCurrentSetpoint();
         }
     }
