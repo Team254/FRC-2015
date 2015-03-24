@@ -81,28 +81,34 @@ public class ThreeToteAutoMode extends AutoMode {
         drive.setTurnSetPoint(heading_cache - (Math.PI / 17.0), 1.1);
         intake.open();
 
-        waitForDrive(2.0);
+        waitForDrive(.7);
 
 
         drive.reset();
         drive.setDistanceSetpoint(53);
-        waitForDrive(2.0);
+        waitForDriveDistance(40, true, 1.5);
         intake.setSpeed(Constants.kAutoIntakeSpeed);
+
+        waitForDrive(1.5);
         intake.close();
 
 
         drive.setTurnSetPoint(heading_cache - (Math.PI / 1.75));
 
         waitForDrive(2.0);
-        bottom_carriage.setFastPositionSetpoint(2.0);
+
         drive.reset();
 
         drive.setDistanceSetpoint(-140);
 
+        waitForDriveDistance(-105, false, 3.0);
+        top_carriage.setPositionSetpoint(55, true);
+
+
         waitForDriveDistance(-115, false, 3.0);
+        bottom_carriage.setFastPositionSetpoint(2.0);
         intake.open();
         bottom_carriage.setFlapperOpen(true);
-        intake.setSpeed(-Constants.kEjectCanSpeed);
         top_carriage.setPositionSetpoint(55, true);
 
 
