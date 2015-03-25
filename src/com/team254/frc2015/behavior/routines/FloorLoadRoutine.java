@@ -18,7 +18,7 @@ public class FloorLoadRoutine extends Routine {
     private States m_state = States.START;
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();
-    private static final double TOTE_CLEAR_POS = 19.25;
+    private static final double TOTE_CLEAR_POS = 17.75;
     private static final double TOTE_GRAB_POS = 2.5;
     private boolean m_moved_down_once = false;
 
@@ -36,7 +36,13 @@ public class FloorLoadRoutine extends Routine {
         States new_state = m_state;
         boolean do_squeeze = true;
         setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
-        setpoints.roller_action = commands.roller_request == Commands.RollerRequest.INTAKE ? RobotSetpoints.RollerAction.STOP : RobotSetpoints.RollerAction.INTAKE;
+        if (commands.roller_request == Commands.RollerRequest.INTAKE) {
+            setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
+        } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
+            setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
+        } else {
+            setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
+        }
 
         switch(m_state) {
             case START:

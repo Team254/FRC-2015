@@ -1,5 +1,6 @@
 package com.team254.frc2015.behavior.routines;
 
+import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 
@@ -34,7 +35,7 @@ public class ManualRoutine extends Routine {
             // Capping
             setpoints.m_elevator_setpoints.top_setpoint = Optional
                     .of(top_carriage.getHeight() + 2.0);
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(2.0);
+            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(Constants.kBottomCarriageMinPositionInches);
         }  else if (commands.preset_request == Commands.PresetRequest.FLOOR) {
             // Floor load
             setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(2.0);
