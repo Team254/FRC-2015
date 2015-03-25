@@ -69,8 +69,10 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         setState(RobotState.AUTONOMOUS);
         System.out.println("Start autonomousInit()");
+
         HardwareAdaptor.kGyroThread.rezero();
         HardwareAdaptor.kGyroThread.reset();
+
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
         autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());

@@ -33,6 +33,10 @@ public abstract class AutoMode extends AutoModeBase {
         runAction(new WaitForToteAction(timeout));
     }
 
+    public void waitForTurnAngle(double angle, boolean positive, double timeout) throws AutoModeEndedException {
+        runAction(new WaitForTurnPastAngleAction(angle, positive, timeout));
+    }
+
     public void waitForTopCarriageSensor(double timeout) throws AutoModeEndedException {
         runAction(new WaitForTopCarriageSensorAction(timeout));
     }

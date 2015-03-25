@@ -1,6 +1,7 @@
 package com.team254.frc2015.auto.modes;
 
 import com.team254.frc2015.Constants;
+import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
 import com.team254.frc2015.subsystems.TopCarriage;
@@ -21,7 +22,8 @@ public class ThreeToteAutoMode extends AutoMode {
     protected void routine() throws AutoModeEndedException {
         t.reset();
         t.start();
-
+        waitTime(.1);
+        System.out.println(HardwareAdaptor.kGyroThread.getAngle());
 
         double heading_cache = 0;
         bottom_carriage.setFlapperOpen(true);
@@ -47,7 +49,7 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForCarriageHeight(bottom_carriage, CLEAR_TOTE_HEIGHT - 1, true, 1.0);
 
         // Turn 180
-        drive.setTurnSetPoint(-Math.PI, 3.4);
+        drive.setTurnSetPoint(-Math.PI, 2.2);
         heading_cache = -Math.PI;
         intake.open();
 
@@ -62,51 +64,52 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForDrive(.5);
 
         // Start turn
-        drive.setTurnSetPoint(heading_cache + .65);
+        drive.setTurnSetPoint(heading_cache - .3);
 
         // Grab 2nd tote
 
         bottom_carriage.setFastPositionSetpoint(2.0);
         waitForCarriage(bottom_carriage, 1.5);
         bottom_carriage.setPositionSetpoint(CLEAR_TOTE_HEIGHT, true);
-        waitForCarriageHeight(bottom_carriage, CLEAR_TOTE_HEIGHT - 1, true, 1.5);
-        intake.setSpeed(0);
-
+        waitForCarriageHeight(bottom_carriage, CLEAR_WHEELS_HEIGHT, true, 1.5);
+        intake.setSpeed(-Constants.kAutoIntakeSpeed);
         waitForDrive(1.0);
 
         drive.reset();
         drive.setDistanceSetpoint(33, 42);
-        intake.setSpeed(-Constants.kAutoIntakeSpeed);
+
         waitForDrive(3.0);
 
-        drive.setTurnSetPoint(heading_cache - 0.275);
+        drive.setTurnSetPoint(heading_cache + 0.175);
         intake.open();
         waitForDrive(1.0);
 
 
         drive.reset();
-        drive.setDistanceSetpoint(64);
+        drive.setDistanceSetpoint(54);
+
+        // Reverse wheels to intake
+        waitForDriveDistance(22, true, 1.5);
         intake.setSpeed(Constants.kAutoIntakeSpeed);
+
+        waitForDriveDistance(53, true, 1.5);
         intake.close();
-
-        waitForDriveDistance(55, true, 1.5);
-
         waitForDrive(3);
-        intake.close();
 
 
         // Turn towards auto zone
-        drive.setTurnSetPoint(heading_cache + (Math.PI/2.65));
+        double last_angle = heading_cache + (Math.PI/2.7);
+        drive.setTurnSetPoint(last_angle);
+        waitForTote(1.0);
         bottom_carriage.setFastPositionSetpoint(2.0);
         waitForCarriage(bottom_carriage, 1.5);
-        waitForTote(1.0);
         bottom_carriage.setPositionSetpoint(CLEAR_GROUND_HEIGHT, true);
         waitForCarriageHeight(bottom_carriage, CLEAR_GROUND_HEIGHT - 1, true, 1.5);
-        waitForDrive(2.0);
+        waitForTurnAngle(last_angle - .13, true, 1.0);
 
         //  drive forwards to auto zone
         drive.reset();
-        drive.setDistanceSetpoint(90);
+        drive.setDistanceSetpoint(105);
 
         waitForDrive(2.0);
 
@@ -122,7 +125,7 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForCarriageHeight(top_carriage, top_carriage_height_end + 4, true, 1.0);
 
         // Drive backwards
-        drive.setDistanceSetpoint(60);
+        drive.setDistanceSetpoint(70);
         waitForDrive(2.0);
 
         System.out.println("Auto time: " + t.get());
