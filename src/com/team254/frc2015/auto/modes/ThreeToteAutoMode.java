@@ -47,7 +47,7 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForCarriageHeight(bottom_carriage, CLEAR_TOTE_HEIGHT - 1, true, 1.0);
 
         // Turn 180
-        drive.setTurnSetPoint(-Math.PI, 3.3);
+        drive.setTurnSetPoint(-Math.PI, 3.4);
         heading_cache = -Math.PI;
         intake.open();
 
