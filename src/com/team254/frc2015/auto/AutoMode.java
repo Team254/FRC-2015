@@ -33,6 +33,10 @@ public abstract class AutoMode extends AutoModeBase {
         runAction(new WaitForToteAction(timeout));
     }
 
+    public void waitForTopCarriageSensor(double timeout) throws AutoModeEndedException {
+        runAction(new WaitForTopCarriageSensorAction(timeout));
+    }
+
     public void waitForDriveDistance(double distance, boolean positive, double timeout) throws AutoModeEndedException {
         runAction(new WaitForDriveDistanceAction(distance, positive, timeout));
     }

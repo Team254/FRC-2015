@@ -56,6 +56,10 @@ public class TrajectoryFollowingPositionController extends Controller {
         m_follower.setGoal(m_follower.getCurrentSetpoint(), m_goal);
     }
 
+    public boolean isFinishedTrajectory() {
+        return m_follower.isFinishedTrajectory();
+    }
+
     @Override
     public boolean isOnTarget() {
         return m_follower.isFinishedTrajectory()

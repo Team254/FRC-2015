@@ -100,6 +100,7 @@ public class Drive extends Subsystem implements Loopable {
         states.put("turn_set_point_pos", setPointPose.getHeading());
         states.put("left_signal", m_left_motor.get());
         states.put("right_signal", m_right_motor.get());
+        states.put("on_target", (m_controller != null ? m_controller.onTarget() : false) ? 1.0 : 0.0);
     }
 
     @Override

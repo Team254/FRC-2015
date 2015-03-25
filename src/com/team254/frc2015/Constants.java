@@ -31,7 +31,7 @@ public class Constants extends ConstantsBase {
     public static double kDrivePositionKp = 0.7;
     public static double kDrivePositionKi = 0;
     public static double kDrivePositionKd = 0;
-    public static double kDriveStraightKp = 1.9;
+    public static double kDriveStraightKp = 3.0;
     public static double kDriveStraightKi = 0;
     public static double kDriveStraightKd = 0;
     public static double kDrivePositionKv = 0.008;
@@ -47,15 +47,9 @@ public class Constants extends ConstantsBase {
     public static double kTurnKd = 0.0;
     public static double kTurnKv = 0.11;
     public static double kTurnKa = 0.05;
-    public static double kTurnOnTargetError = 0.02;
+    public static double kTurnOnTargetError = 0.025;
 
     // Height presets
-    public static double kPresetOneHeight = 0.25;
-    public static double kPresetTwoHeight = 15.0;
-    public static double kPresetThreeHeight = 8.0;
-    public static double kPresetFourHeight = 20.0;
-    public static double kPresetFiveHeight = 60.0;
-    public static double kPresetSixHeight = 67.0;
     public static double kCoopTopHeight = 49.75;
     public static double kCoopBottomHeight = 24;
     // Sensor calibration
