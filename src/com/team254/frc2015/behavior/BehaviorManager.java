@@ -48,17 +48,6 @@ public class BehaviorManager implements Tappable {
         }
     };
 
-
-    /*public static SimplePresetRoutine coopPresetRoutine = new SimplePresetRoutine() {
-        @Override
-        public void setPresets() {
-            m_bottom_height_setpoint = Optional.of(40.0);
-            m_top_height_setpoint = Optional.of(Constants.kTopCarriageMaxPositionInches);
-            m_preset_setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
-            m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-        }
-    };*/
-
     private void setNewRoutine(Routine new_routine) {
         boolean needs_cancel = new_routine != m_cur_routine && m_cur_routine != null;
 
@@ -147,11 +136,10 @@ public class BehaviorManager implements Tappable {
         } else if (m_setpoints.m_elevator_setpoints.top_setpoint.isPresent()) {
             top_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.top_setpoint.get(), true);
             m_top_jogging = false;
-        } else if (m_top_jogging && !m_setpoints.top_open_loop_jog.isPresent()) {
+        }  else if (m_top_jogging && !m_setpoints.top_open_loop_jog.isPresent()) {
             top_carriage.setOpenLoop(0, true);
             m_top_jogging = false;
         }
-
 
         if (m_bottom_jogging || m_top_jogging) {
             bottom_carriage.setOpenLoop(bottom_jog_speed, isZero(bottom_jog_speed));
@@ -223,7 +211,7 @@ public class BehaviorManager implements Tappable {
             intake.setSpeed(Constants.kManualIntakeSpeed);
         } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST) {
             // Run intake outwards.
-            intake.setSpeed(-Constants.kManualIntakeSpeed);
+            intake.setSpeed(-Constants.kManualExhaustSpeed);
         } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST_COOP) {
             // Run intake outwards.
             intake.setSpeed(-Constants.kCoopIntakeSpeed);

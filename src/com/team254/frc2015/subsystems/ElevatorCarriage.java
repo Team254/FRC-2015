@@ -251,7 +251,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
     @Override
     public synchronized void update() {
-
        if (m_controller instanceof TrajectoryFollowingPositionController) {
             TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
             if (position_controller.isOnTarget()) {

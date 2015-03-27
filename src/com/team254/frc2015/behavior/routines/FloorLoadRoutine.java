@@ -2,6 +2,7 @@ package com.team254.frc2015.behavior.routines;
 
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
+import com.team254.lib.util.Latch;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
@@ -19,8 +20,9 @@ public class FloorLoadRoutine extends Routine {
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();
     private static final double TOTE_CLEAR_POS = 17.75;
-    private static final double TOTE_GRAB_POS = 2.5;
+    private static final double TOTE_GRAB_POS = 1.0;
     private boolean m_moved_down_once = false;
+    private Latch m_top_carriage_init_latch = new Latch();
 
     @Override
     public void reset() {
@@ -55,10 +57,14 @@ public class FloorLoadRoutine extends Routine {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(TOTE_CLEAR_POS);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(TOTE_CLEAR_POS + 12.0);
                 }
-                if (bottom_carriage.isOnTarget() || m_state_timer.get() > 2.0) {
+                if (!m_is_new_state && bottom_carriage.isOnTarget() || m_state_timer.get() > 2.0) {
                     new_state = States.WAIT_FOR_TOTE;
                 }
-                do_squeeze = false;
+                if (m_top_carriage_init_latch.update(top_carriage.getBreakbeamTriggered())) {
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.empty();
+                    m_moved_down_once = true;
+                }
+                do_squeeze = m_moved_down_once;
                 break;
             case WAIT_FOR_TOTE:
                 do_squeeze = m_moved_down_once;
@@ -97,6 +103,10 @@ public class FloorLoadRoutine extends Routine {
                     new_state = States.MOVE_DOWN;
                 }
                 break;
+        }
+
+        if (m_state != States.MOVE_TO_STARTING_POS) {
+            m_top_carriage_init_latch.update(false);
         }
 
         if (m_state == States.MOVE_UP && bottom_carriage.fastHitTop()) {

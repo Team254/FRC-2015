@@ -11,7 +11,9 @@ public class Constants extends ConstantsBase {
     public static double kElevatorJogFastPwm = 1.0;
     public static double kElevatorJogMediumPwm = .7;
     public static double kElevatorJogSlowPwm = .35;
-    public static double kManualIntakeSpeed = .6;
+    public static double kManualIntakeSpeed = 1.0;
+    public static double kManualExhaustSpeed = .6;
+
     public static double kAutoIntakeSpeed = 1.0;
     public static double kCoopIntakeSpeed = .17;
     public static double kEjectCanSpeed = .65;
@@ -50,8 +52,8 @@ public class Constants extends ConstantsBase {
     public static double kTurnOnTargetError = 0.0225;
 
     // Height presets
-    public static double kCoopTopHeight = 49.75;
-    public static double kCoopBottomHeight = 24;
+    public static double kCoopTopHeight = 40;
+    public static double kCoopBottomHeight = 11.75;
     // Sensor calibration
     public static double kBreambeamVoltage = 1.0;
 

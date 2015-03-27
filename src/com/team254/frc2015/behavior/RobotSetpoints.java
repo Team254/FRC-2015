@@ -46,8 +46,8 @@ public class RobotSetpoints {
     public boolean top_carriage_squeeze;
 
     public void reset() {
-        m_elevator_setpoints.bottom_setpoint = Optional.empty();
-        m_elevator_setpoints.top_setpoint = Optional.empty();
+        m_elevator_setpoints.bottom_setpoint = m_nullopt;
+        m_elevator_setpoints.top_setpoint = m_nullopt;
         claw_action = TopCarriageClawAction.NONE;
         pivot_action = TopCarriagePivotAction.PIVOT_UP;
         flapper_action =  BottomCarriageFlapperAction.NONE;
