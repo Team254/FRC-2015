@@ -98,13 +98,6 @@ public class GyroThread {
         private double mLastAngle = 0;
         private double mLastTime = 0;
 
-        private void doRezero() {
-            mZeroBias = 0;
-            for (Double sample : mZeroRateSamples) {
-                mZeroBias += sample / K_ZEROING_SAMPLES;
-            }
-        }
-
         @Override
         public void run() {
             int reading;
@@ -126,9 +119,10 @@ public class GyroThread {
                 return;
             }
 
-            if (mVolatileShouldReZero && mHasEnoughZeroingSamples) {
-                doRezero();
+            if (mVolatileShouldReZero) {
                 mVolatileShouldReZero = false;
+                mVolatileHasData = false;
+                mIsZerod = false;
             }
 
             double unbiasedAngleRate = GyroInterface.extractAngleRate(reading);
@@ -138,12 +132,14 @@ public class GyroThread {
                 mZeroRateSampleIndex = 0;
                 mHasEnoughZeroingSamples = true;
             }
-
             if (!mIsZerod) {
                 if (!mHasEnoughZeroingSamples) {
                     return;
                 }
-                doRezero();
+                mZeroBias = 0;
+                for (Double sample : mZeroRateSamples) {
+                    mZeroBias += sample / K_ZEROING_SAMPLES;
+                }
                 mIsZerod = true;
                 return;
             }

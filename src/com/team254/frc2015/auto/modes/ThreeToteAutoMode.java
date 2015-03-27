@@ -22,83 +22,76 @@ public class ThreeToteAutoMode extends AutoMode {
     protected void routine() throws AutoModeEndedException {
         t.reset();
         t.start();
-        waitTime(.1);
-        System.out.println(HardwareAdaptor.kGyroThread.getAngle());
+        waitTime(.125); // Weird gyro init bug
 
         double heading_cache = 0;
         bottom_carriage.setFlapperOpen(true);
-        top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.CLOSED);
+
         waitTime(.1);
 
         // Move can
-        top_carriage.setFastPositionSetpoint(20);
+        top_carriage.setFastPositionSetpoint(top_carriage.getHeight() + 16.0);
         waitForCarriageHeight(top_carriage, 16.5, true, 1.0);
 
+        // Grab first tote
         intake.setSpeed(Constants.kAutoIntakeSpeed);
         drive.setDistanceSetpoint(24);
         waitForDriveDistance(10, true, 1.0);
         intake.close();
         waitForTote(1.0);
+
         // Turn on squeeze
         top_carriage.squeeze();
         waitForDrive(2);
+
         // Lift tote a bit off ground
         bottom_carriage.setFlapperOpen(false);
         waitTime(.1);
         bottom_carriage.setPositionSetpoint(CLEAR_TOTE_HEIGHT, true);
         waitForCarriageHeight(bottom_carriage, CLEAR_TOTE_HEIGHT - 1, true, 1.0);
 
+        top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.CLOSED);
+
         // Turn 180
         drive.setTurnSetPoint(-Math.PI, 2.2);
         heading_cache = -Math.PI;
         intake.open();
+        waitForDrive(3.0);
 
-        waitForDrive(5.0);
-
+        // Drive to second tote
         drive.reset();
-
-        drive.setDistanceSetpoint(25);
-        waitForDriveDistance(22.5, true, 1.5);
+        drive.setDistanceSetpoint(30);
+        waitForDriveDistance(28.5, true, 1.5);
         intake.close();
         waitForTote(1.0);
-        waitForDrive(.5);
 
-        // Start turn
-        drive.setTurnSetPoint(heading_cache - .3);
-
-        // Grab 2nd tote
-
+        // Get second tote
         bottom_carriage.setFastPositionSetpoint(2.0);
         waitForCarriage(bottom_carriage, 1.5);
         bottom_carriage.setPositionSetpoint(CLEAR_TOTE_HEIGHT, true);
         waitForCarriageHeight(bottom_carriage, CLEAR_WHEELS_HEIGHT, true, 1.5);
-        intake.setSpeed(-Constants.kAutoIntakeSpeed);
-        waitForDrive(1.0);
 
-        drive.reset();
-        drive.setDistanceSetpoint(33, 42);
+        // Spinny thing (TM)
+        intake.setLeftRight(-.65, .65);
+        waitForCarriageHeight(top_carriage, 30, true, 1.5);
 
-        waitForDrive(3.0);
+        // Drive through can
+        drive.setDistanceSetpoint(70, 18);
+        waitForDriveDistance(68, true, 5.0);
 
-        drive.setTurnSetPoint(heading_cache + 0.175);
+        // Drive to last tote
         intake.open();
-        waitForDrive(1.0);
-
-
-        drive.reset();
-        drive.setDistanceSetpoint(54);
-
-        // Reverse wheels to intake
-        waitForDriveDistance(22, true, 1.5);
+        drive.setDistanceSetpoint(110);
+        waitForDriveDistance(95, true, 2.0);
         intake.setSpeed(Constants.kAutoIntakeSpeed);
+        waitForDriveDistance(108, true, 2.0);
 
-        waitForDriveDistance(53, true, 1.5);
+        // grab last tote
         intake.close();
-        waitForDrive(3);
-
+        waitForDrive(1.0);
 
         // Turn towards auto zone
-        double last_angle = heading_cache + (Math.PI/2.7);
+        double last_angle = heading_cache + (Math.PI/2.9);
         drive.setTurnSetPoint(last_angle);
         waitForTote(1.0);
         bottom_carriage.setFastPositionSetpoint(2.0);
@@ -109,9 +102,9 @@ public class ThreeToteAutoMode extends AutoMode {
 
         //  drive forwards to auto zone
         drive.reset();
-        drive.setDistanceSetpoint(105);
+        drive.setDistanceSetpoint(112);
 
-        waitForDrive(2.0);
+        waitForDriveDistance(107, true, 2.0);
 
         // Drop
         double top_carriage_height_end = top_carriage.getHeight();
@@ -125,7 +118,7 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForCarriageHeight(top_carriage, top_carriage_height_end + 4, true, 1.0);
 
         // Drive backwards
-        drive.setDistanceSetpoint(70);
+        drive.setDistanceSetpoint(75);
         waitForDrive(2.0);
 
         System.out.println("Auto time: " + t.get());

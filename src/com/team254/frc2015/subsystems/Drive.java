@@ -124,8 +124,10 @@ public class Drive extends Subsystem implements Loopable {
             return pose_to_use;
         } else if (m_controller == null || (m_controller instanceof DriveStraightController && for_turn_controller)) {
             return getPhysicalPose();
-        } else {
+        } else if (m_controller.onTarget()) {
             return m_controller.getCurrentSetpoint();
+        } else {
+            return getPhysicalPose();
         }
     }
 
