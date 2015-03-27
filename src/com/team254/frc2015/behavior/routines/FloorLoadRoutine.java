@@ -43,6 +43,7 @@ public class FloorLoadRoutine extends Routine {
         } else {
             setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
         }
+        boolean should_vent = false;
 
         switch(m_state) {
             case START:
@@ -52,7 +53,7 @@ public class FloorLoadRoutine extends Routine {
             case MOVE_TO_STARTING_POS:
                 if (m_is_new_state) {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(TOTE_CLEAR_POS);
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(TOTE_CLEAR_POS + 5.0);
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(TOTE_CLEAR_POS + 12.0);
                 }
                 if (bottom_carriage.isOnTarget() || m_state_timer.get() > 2.0) {
                     new_state = States.WAIT_FOR_TOTE;
@@ -75,19 +76,25 @@ public class FloorLoadRoutine extends Routine {
                 if (!m_moved_down_once && bottom_carriage.isOnTarget() && (top_carriage.getHeight() < 5.25 || m_state_timer.get() > .8)) {
                     new_state = States.MOVE_UP;
                 }
+                should_vent = !m_moved_down_once;
                 break;
             case MOVE_UP:
-                m_moved_down_once = true;
                 if (m_is_new_state) {
                     bottom_carriage.setFastPositionSetpoint(TOTE_CLEAR_POS);
                 }
                 if (bottom_carriage.isOnTarget() || m_state_timer.get() > 2.0) {
+                    m_moved_down_once = true;
                     new_state = States.WAIT_FOR_TOTE;
                 }
+                should_vent = !m_moved_down_once;
                 break;
             case DONE:
                 if (m_is_new_state) {
                     setpoints.bottom_open_loop_jog = Optional.of(0.0);
+                }
+                // Just in case
+                if (bottom_carriage.getHeight() >= (TOTE_CLEAR_POS - .5) && intake.getBreakbeamTriggered()) {
+                    new_state = States.MOVE_DOWN;
                 }
                 break;
         }
@@ -97,6 +104,7 @@ public class FloorLoadRoutine extends Routine {
         }
 
         setpoints.top_carriage_squeeze = do_squeeze;
+        setpoints.claw_action = should_vent ? RobotSetpoints.TopCarriageClawAction.NEUTRAL : RobotSetpoints.TopCarriageClawAction.CLOSE;
 
         m_is_new_state = false;
         if (new_state != m_state) {
