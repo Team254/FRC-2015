@@ -3,6 +3,7 @@ package com.team254.frc2015.behavior.routines;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 import com.team254.lib.util.Latch;
+import com.team254.lib.util.TimeDelayedBoolean;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
@@ -20,9 +21,10 @@ public class FloorLoadRoutine extends Routine {
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();
     private static final double TOTE_CLEAR_POS = 17.75;
-    private static final double TOTE_GRAB_POS = 1.0;
+    private static final double TOTE_GRAB_POS = 1.5;
     private boolean m_moved_down_once = false;
     private Latch m_top_carriage_init_latch = new Latch();
+    private TimeDelayedBoolean m_stalled_motor = new TimeDelayedBoolean();
 
     @Override
     public void reset() {
@@ -92,6 +94,9 @@ public class FloorLoadRoutine extends Routine {
                     m_moved_down_once = true;
                     new_state = States.WAIT_FOR_TOTE;
                 }
+                if (top_carriage.getHeight() - bottom_carriage.getHeight() < 3) {
+                    new_state = States.MOVE_TO_STARTING_POS;
+                }
                 should_vent = !m_moved_down_once;
                 break;
             case DONE:
@@ -99,7 +104,7 @@ public class FloorLoadRoutine extends Routine {
                     setpoints.bottom_open_loop_jog = Optional.of(0.0);
                 }
                 // Just in case
-                if (bottom_carriage.getHeight() >= (TOTE_CLEAR_POS - .5) && intake.getBreakbeamTriggered()) {
+                if (bottom_carriage.getHeight() >= (TOTE_CLEAR_POS - 5.0) && intake.getBreakbeamTriggered()) {
                     new_state = States.MOVE_DOWN;
                 }
                 break;
@@ -110,8 +115,16 @@ public class FloorLoadRoutine extends Routine {
         }
 
         if (m_state == States.MOVE_UP && bottom_carriage.fastHitTop()) {
+            System.out.println("Hit top - floor load, moving to DONE");
             new_state = States.DONE;
         }
+
+        if (m_stalled_motor.update(m_state == States.MOVE_UP && bottom_carriage.getEncoderVelocity() < 8.0, 1.5)) {
+            System.out.println("Stalled motor!");
+            new_state = States.DONE;
+        }
+
+
 
         setpoints.top_carriage_squeeze = do_squeeze;
         setpoints.claw_action = should_vent ? RobotSetpoints.TopCarriageClawAction.NEUTRAL : RobotSetpoints.TopCarriageClawAction.CLOSE;

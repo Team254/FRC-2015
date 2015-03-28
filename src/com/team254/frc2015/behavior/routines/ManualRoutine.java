@@ -3,6 +3,7 @@ package com.team254.frc2015.behavior.routines;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
+import com.team254.lib.util.Latch;
 
 import java.util.Optional;
 
@@ -11,7 +12,6 @@ import java.util.Optional;
  */
 public class ManualRoutine extends Routine {
     private static Optional<Double> m_nullopt = Optional.empty();
-
     @Override
     public void reset() {
 
@@ -25,32 +25,22 @@ public class ManualRoutine extends Routine {
         setpoints.bottom_open_loop_jog = m_nullopt;
         setpoints.top_open_loop_jog = m_nullopt;
 
-        if (commands.preset_request == Commands.PresetRequest.CARRY_SQUEZE) {
-            // Carrying
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(18.0);
-
-            // Figure out how to move this later
-            setpoints.top_carriage_squeeze = true;
-        } else if (commands.preset_request == Commands.PresetRequest.SCORE) {
-            // Capping
-            setpoints.m_elevator_setpoints.top_setpoint = Optional
-                    .of(top_carriage.getHeight() + 2.0);
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(Constants.kBottomCarriageMinPositionInches);
-        }  else if (commands.preset_request == Commands.PresetRequest.FLOOR) {
-            // Floor load
-            setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(2.0);
-            setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Math.max(30.0, top_carriage.getHeight()));
-        }
         // Set jogs
         setpoints.bottom_open_loop_jog = commands.bottom_jog;
         setpoints.top_open_loop_jog = commands.top_jog;
 
         // Top carriage actions.
+
+
         if (setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.NONE) {
             if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.OPEN) {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.OPEN;
             } else if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.CLOSE) {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
+            }
+        } else if (setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.PREFER_CLOSE) {
+            if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.OPEN) {
+                setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.OPEN;
             }
         }
 

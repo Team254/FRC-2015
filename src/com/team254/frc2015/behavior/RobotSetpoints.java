@@ -22,7 +22,7 @@ public class RobotSetpoints {
     }
 
     public enum TopCarriageClawAction {
-        NONE, OPEN, CLOSE, NEUTRAL
+        NONE, OPEN, CLOSE, PREFER_CLOSE, NEUTRAL
     }
 
     public enum BottomCarriageFlapperAction {

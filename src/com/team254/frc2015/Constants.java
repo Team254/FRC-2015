@@ -136,14 +136,14 @@ public class Constants extends ConstantsBase {
     public static double kElevatorCarriageSafetyMarginInches = -0.5;
 
     // Top carriage limits
-    public static double kTopCarriageMinPositionInches = 5;
+    public static double kTopCarriageMinPositionInches = 3.5;
     public static double kTopCarriageMaxPositionInches = 67;
     public static double kTopCarriageHomePositionInches = 10.75;
     public static double kTopCarriageReZeroPositionInches = 28.3;
-    public static double kTopCarriageSafePositionInches = 5.0;
+    public static double kTopCarriageSafePositionInches = 7.5;
 
     // Bottom carriage limits
-    public static double kBottomCarriageMinPositionInches = 1.75;
+    public static double kBottomCarriageMinPositionInches = .75;
     public static double kBottomCarriageMaxPositionInches = 65.0;
     public static double kBottomCarriageHomePositionInches = 0.0;
     public static double kBottomCarriageReZeroPositionInches = 0.0;

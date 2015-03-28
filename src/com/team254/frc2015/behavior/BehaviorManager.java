@@ -16,7 +16,7 @@ import java.util.Optional;
 public class BehaviorManager implements Tappable {
 
     public boolean isZero(double val) {
-        return val < 0.0001 && val > -0.0001;
+        return val == 0 || (val < 0.001 && val > -0.001);
     }
 
     protected Drive drive = HardwareAdaptor.kDrive;
@@ -43,7 +43,7 @@ public class BehaviorManager implements Tappable {
         @Override
         public void setPresets() {
             m_bottom_height_setpoint = Optional.of(0.0);
-            m_top_height_setpoint = Optional.of(6.0);
+            m_top_height_setpoint = Optional.of(4.25);
             m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
         }
     };
@@ -73,7 +73,6 @@ public class BehaviorManager implements Tappable {
     public void update(Commands commands) {
         m_setpoints.reset();
 
-
         if (m_cur_routine != null && m_cur_routine.isFinished()) {
             setNewRoutine(null);
         }
@@ -86,9 +85,14 @@ public class BehaviorManager implements Tappable {
             setNewRoutine(new FloorLoadRoutine());
         } else if (!commands.floor_load_mode && m_cur_routine instanceof FloorLoadRoutine) {
             setNewRoutine(null);
-        } else if (commands.preset_request == Commands.PresetRequest.RAMMING) {
+            m_setpoints.bottom_open_loop_jog = Optional.of(0.0);
+        } else if (commands.preset_request == Commands.PresetRequest.SCORE && !(m_cur_routine instanceof ScoreRoutine)) {
+            setNewRoutine(new ScoreRoutine());
+        }  else if (commands.preset_request == Commands.PresetRequest.RAMMING && m_cur_routine != rammingModePresetRoutine) {
             rammingModePresetRoutine.reset();
             setNewRoutine(rammingModePresetRoutine);
+        } else if(commands.preset_request == Commands.PresetRequest.CARRY_SQUEZE) {
+            setNewRoutine(new RegraspRoutine());
         } else if (commands.preset_request == Commands.PresetRequest.COOP) {
             setNewRoutine(new CoopRoutine());
         } else if ((m_cur_routine instanceof CoopRoutine) && commands.preset_request != Commands.PresetRequest.NONE && commands.preset_request != Commands.PresetRequest.COOP) {
@@ -106,7 +110,6 @@ public class BehaviorManager implements Tappable {
         boolean can_control_top_carriage_pivot = true;
         boolean can_control_top_carriage_grabber = true;
         boolean can_control_bottom_carriage = true;
-
 
         double bottom_jog_speed = 0.0;
         double top_jog_speed = 0.0;
@@ -141,9 +144,20 @@ public class BehaviorManager implements Tappable {
             m_top_jogging = false;
         }
 
-        if (m_bottom_jogging || m_top_jogging) {
+        if (m_bottom_jogging) {
             bottom_carriage.setOpenLoop(bottom_jog_speed, isZero(bottom_jog_speed));
+        }
+
+        if (m_top_jogging) {
             top_carriage.setOpenLoop(top_jog_speed, isZero(top_jog_speed));
+            if (m_cur_routine instanceof  RegraspRoutine) {
+                setNewRoutine(null);
+            }
+        }
+
+        // Bail from scoring
+        if (m_cur_routine instanceof ScoreRoutine && (m_bottom_jogging || m_top_jogging)) {
+            setNewRoutine(null);
         }
 
         m_elevator_setpoints = ElevatorSafety.generateSafeSetpoints(m_setpoints.m_elevator_setpoints);
@@ -153,8 +167,6 @@ public class BehaviorManager implements Tappable {
         if (m_elevator_setpoints.bottom_setpoint.isPresent() && !m_bottom_jogging && !m_bottom_jogging) {
             bottom_carriage.setPositionSetpoint(m_elevator_setpoints.bottom_setpoint.get(), true);
         }
-
-        // can_close_intake = ElevatorSafety.canCloseIntake();
 
         // Top carriage actions.
         if (can_control_top_carriage_grabber
@@ -167,7 +179,11 @@ public class BehaviorManager implements Tappable {
         } else if (can_control_top_carriage_grabber
                 && m_setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.NEUTRAL) {
             top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.VENTED);
+        } else if (can_control_top_carriage_grabber
+                && m_setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.PREFER_CLOSE) {
+            top_carriage.setGrabberPosition(TopCarriage.GrabberPositions.CLOSED);
         }
+
 
         if (can_control_top_carriage_pivot
                 && m_setpoints.pivot_action == RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN) {
@@ -185,16 +201,6 @@ public class BehaviorManager implements Tappable {
                 && m_setpoints.flapper_action == RobotSetpoints.BottomCarriageFlapperAction.CLOSE) {
             bottom_carriage.setFlapperOpen(false);
         }
-
-        /*
-        if (can_control_bottom_carriage
-                && m_setpoints.bottom_carriage_pusher_action == Commands.BottomCarriagePusherRequest.EXTEND) {
-            bottom_carriage.setPusherExtended(true);
-        } else if (can_control_bottom_carriage
-                && m_setpoints.bottom_carriage_pusher_action == Commands.BottomCarriagePusherRequest.RETRACT) {
-            bottom_carriage.setPusherExtended(false);
-        }
-        */
 
         // Intake actions.
         if (!can_close_intake || m_setpoints.intake_action == RobotSetpoints.IntakeAction.OPEN || m_setpoints.intake_action == RobotSetpoints.IntakeAction.PREFER_OPEN) {

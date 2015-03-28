@@ -11,7 +11,7 @@ public class Commands {
     }
 
     public enum PresetRequest {
-        NONE, MANUAL, CARRY_SQUEZE, FLOOR, RAMMING, SCORE, COOP
+        NONE, MANUAL, CARRY_SQUEZE, RAMMING, SCORE, COOP
     }
 
     public enum IntakeRequest {

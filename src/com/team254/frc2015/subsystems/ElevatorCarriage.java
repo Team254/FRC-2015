@@ -74,6 +74,11 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         return m_controller;
     }
 
+    public double getEncoderVelocity() {
+        return m_encoder.getRate() * 2.0 * Constants.kElevatorPulleyRadiusInches
+                * Math.PI / Constants.kElevatorEncoderCountsPerRev;
+    }
+
     protected double getRelativeHeight() {
         return m_encoder.get() * 2.0 * Constants.kElevatorPulleyRadiusInches
                 * Math.PI / Constants.kElevatorEncoderCountsPerRev;
@@ -293,6 +298,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     @Override
     public void getState(StateHolder states) {
         states.put("height", getHeight());
+        states.put("velocity", getEncoderVelocity());
         states.put("setpoint", getSetpoint().pos);
         states.put("home_dio", getHomeSensorHovered());
         states.put("current", m_motor.getSignedCurrent());
