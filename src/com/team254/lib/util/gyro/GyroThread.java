@@ -140,6 +140,9 @@ public class GyroThread {
                 for (Double sample : mZeroRateSamples) {
                     mZeroBias += sample / K_ZEROING_SAMPLES;
                 }
+                mAngle = 0;
+                mVolatileAngle = 0;
+                GyroThread.this.reset();
                 mIsZerod = true;
                 return;
             }

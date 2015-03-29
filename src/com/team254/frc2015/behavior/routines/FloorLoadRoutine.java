@@ -21,6 +21,7 @@ public class FloorLoadRoutine extends Routine {
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();
     private static final double TOTE_CLEAR_POS = 17.75;
+    private static final double REGRASP_POS = 10;
     private static final double TOTE_GRAB_POS = 1.5;
     private boolean m_moved_down_once = false;
     private Latch m_top_carriage_init_latch = new Latch();
@@ -39,7 +40,9 @@ public class FloorLoadRoutine extends Routine {
     public RobotSetpoints update(Commands commands, RobotSetpoints setpoints) {
         States new_state = m_state;
         boolean do_squeeze = true;
-        setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+        if (m_state != States.START && m_state != States.MOVE_TO_STARTING_POS) {
+            setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+        }
         if (commands.roller_request == Commands.RollerRequest.INTAKE) {
             setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
         } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
@@ -63,7 +66,7 @@ public class FloorLoadRoutine extends Routine {
                     new_state = States.WAIT_FOR_TOTE;
                 }
                 if (m_top_carriage_init_latch.update(top_carriage.getBreakbeamTriggered())) {
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.empty();
+                    //setpoints.m_elevator_setpoints.top_setpoint = Optional.empty();
                     m_moved_down_once = true;
                 }
                 do_squeeze = m_moved_down_once;
@@ -84,7 +87,7 @@ public class FloorLoadRoutine extends Routine {
                 if (!m_moved_down_once && bottom_carriage.isOnTarget() && (top_carriage.getHeight() < 5.25 || m_state_timer.get() > .8)) {
                     new_state = States.MOVE_UP;
                 }
-                should_vent = !m_moved_down_once;
+                should_vent = (!m_moved_down_once && top_carriage.getHeight() < 10);
                 break;
             case MOVE_UP:
                 if (m_is_new_state) {
@@ -94,15 +97,16 @@ public class FloorLoadRoutine extends Routine {
                     m_moved_down_once = true;
                     new_state = States.WAIT_FOR_TOTE;
                 }
-                if (top_carriage.getHeight() - bottom_carriage.getHeight() < 3) {
+                if (top_carriage.getHeight() - bottom_carriage.getHeight() < 1.9 && !top_carriage.getBreakbeamTriggered()) {
                     new_state = States.MOVE_TO_STARTING_POS;
                 }
-                should_vent = !m_moved_down_once;
+                should_vent = !m_moved_down_once && (bottom_carriage.getHeight() < REGRASP_POS);
                 break;
             case DONE:
                 if (m_is_new_state) {
                     setpoints.bottom_open_loop_jog = Optional.of(0.0);
                 }
+
                 // Just in case
                 if (bottom_carriage.getHeight() >= (TOTE_CLEAR_POS - 5.0) && intake.getBreakbeamTriggered()) {
                     new_state = States.MOVE_DOWN;

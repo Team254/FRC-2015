@@ -37,6 +37,10 @@ public abstract class AutoMode extends AutoModeBase {
         runAction(new WaitForTurnPastAngleAction(angle, positive, timeout));
     }
 
+    public void waitForGyroData(double timeout) throws AutoModeEndedException {
+        runAction(new WaitForGyroDataAction(timeout));
+    }
+
     public void waitForTopCarriageSensor(double timeout) throws AutoModeEndedException {
         runAction(new WaitForTopCarriageSensorAction(timeout));
     }

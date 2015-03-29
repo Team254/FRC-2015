@@ -23,6 +23,7 @@ public class ThreeToteAutoMode extends AutoMode {
         t.reset();
         t.start();
         waitTime(.125); // Weird gyro init bug
+        waitForGyroData(.25); // Weird gyro init bug
 
         double heading_cache = 0;
         bottom_carriage.setFlapperOpen(true);
@@ -94,7 +95,7 @@ public class ThreeToteAutoMode extends AutoMode {
         double last_angle = heading_cache + (Math.PI/2.9);
         drive.setTurnSetPoint(last_angle);
         waitForTote(1.0);
-        bottom_carriage.setFastPositionSetpoint(2.0);
+        bottom_carriage.setFastPositionSetpoint(1.5);
         waitForCarriage(bottom_carriage, 1.5);
         bottom_carriage.setPositionSetpoint(CLEAR_GROUND_HEIGHT, true);
         waitForCarriageHeight(bottom_carriage, CLEAR_GROUND_HEIGHT - 1, true, 1.5);

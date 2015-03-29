@@ -123,7 +123,7 @@ public class Constants extends ConstantsBase {
     public static double kElevatorPulleyRadiusInches = 0.564;
     public static double kElevatorEncoderCountsPerRev = 250.0;
     public static double kTopCarriageHeight = 6.0;
-    public static double kBottomCarriageHeight = 0.0;
+    public static double kBottomCarriageHeight = 1.5;
     public static double kDriveWheelRadius = 2.0;
     public static double kWheelbaseWidth = 26.5;
     public static double kTurnSlipFactor = 1.2;
@@ -140,7 +140,7 @@ public class Constants extends ConstantsBase {
     public static double kTopCarriageMaxPositionInches = 67;
     public static double kTopCarriageHomePositionInches = 10.75;
     public static double kTopCarriageReZeroPositionInches = 28.3;
-    public static double kTopCarriageSafePositionInches = 7.5;
+    public static double kTopCarriageSafePositionInches = 4.75;
 
     // Bottom carriage limits
     public static double kBottomCarriageMinPositionInches = .75;
