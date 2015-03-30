@@ -5,7 +5,6 @@ import com.team254.lib.util.ConstantsBase;
 public class Constants extends ConstantsBase {
     public static double kDriveSensitivity = .75;
     public static double kNegativeInertiaScalar = 5.0;
-    public static double kHomingPwm = .75;
 
     // Operator controls
     public static double kElevatorJogFastPwm = 1.0;
@@ -15,9 +14,7 @@ public class Constants extends ConstantsBase {
     public static double kManualExhaustSpeed = .6;
 
     public static double kAutoIntakeSpeed = 1.0;
-    public static double kCoopIntakeSpeed = .17;
-    public static double kEjectCanSpeed = .65;
-    public static double kCoopSlowIntakeSpeed = .12;
+    public static double kCoopIntakeSpeed = .4;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -53,7 +50,7 @@ public class Constants extends ConstantsBase {
 
     // Height presets
     public static double kCoopTopHeight = 40;
-    public static double kCoopBottomHeight = 11.75;
+    public static double kCoopBottomHeight = 11.0;
     // Sensor calibration
     public static double kBreambeamVoltage = 1.0;
 
