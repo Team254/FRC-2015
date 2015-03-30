@@ -1,7 +1,5 @@
 package com.team254.frc2015.auto.actions;
 
-import com.team254.frc2015.subsystems.ElevatorCarriage;
-
 /**
  * Created by tombot on 3/23/15.
  */

@@ -1,11 +1,9 @@
 package com.team254.frc2015.auto.modes;
 
 import com.team254.frc2015.Constants;
-import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
 import com.team254.frc2015.subsystems.TopCarriage;
-import com.team254.lib.util.ConstantsBase;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -25,7 +23,6 @@ public class ThreeToteAutoMode extends AutoMode {
         waitTime(.125); // Weird gyro init bug
         waitForGyroData(.25); // Weird gyro init bug
 
-        double heading_cache = 0;
         bottom_carriage.setFlapperOpen(true);
 
         waitTime(.1);
@@ -55,7 +52,7 @@ public class ThreeToteAutoMode extends AutoMode {
 
         // Turn 180
         drive.setTurnSetPoint(-Math.PI, 2.2);
-        heading_cache = -Math.PI;
+        double heading_cache = -Math.PI;
         intake.open();
         waitForDrive(3.0);
 

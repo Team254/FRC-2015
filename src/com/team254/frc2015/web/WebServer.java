@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class WebServer {
     private static Server server;
-    private static Thread serverThread;
     private static ArrayList<StateStreamSocket> updateStreams = new ArrayList<StateStreamSocket>();
     private static TaskQueue streamUpdate = new TaskQueue(200);
 
@@ -49,13 +48,14 @@ public class WebServer {
         ServletHolder pingHolder = new ServletHolder("ping", new PingServlet());
         context.addServlet(pingHolder, "/ping");
 
+        //noinspection ConstantConditions
         String appDir = WebServer.class.getClassLoader().getResource("app/").toExternalForm();
         ServletHolder holderPwd = new ServletHolder("default", new DefaultServlet());
         holderPwd.setInitParameter("resourceBase", appDir);
         holderPwd.setInitParameter("dirAllowed", "true");
         context.addServlet(holderPwd, "/");
 
-        serverThread = new Thread(new Runnable() {
+        Thread serverThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -84,7 +84,6 @@ public class WebServer {
             for (int i = 0; i < updateStreams.size(); ++i) {
                 StateStreamSocket s = updateStreams.get(i);
                 if (s != null && s.isConnected() && !s.canBeUpdated()) {
-                    ;
                 } else if ((s == null || !s.isConnected() || !s.update()) && i < updateStreams.size()) {
                     updateStreams.remove(i);
                 }
@@ -95,7 +94,7 @@ public class WebServer {
     public static void updateAllStateStreams() {
         boolean runUpdate = false;
         for (StateStreamSocket s : updateStreams) {
-            runUpdate |= (s != null && s.canBeUpdated());
+            runUpdate = (s != null && s.canBeUpdated());
             if (runUpdate) {
                 break;
             }

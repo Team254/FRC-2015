@@ -154,8 +154,7 @@ public abstract class ConstantsBase {
         FileReader reader;
         reader = new FileReader(file);
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
-        return jsonObject;
+        return (JSONObject) jsonParser.parse(reader);
     }
 
     public void loadFromFile() {
@@ -171,9 +170,6 @@ public abstract class ConstantsBase {
                 }
                 setConstantRaw(key, value);
             }
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -201,10 +197,7 @@ public abstract class ConstantsBase {
             }
             writer.write(json.toJSONString());
             writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

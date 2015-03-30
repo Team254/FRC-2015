@@ -1,9 +1,7 @@
 package com.team254.frc2015.behavior.routines;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
-import com.team254.lib.util.Latch;
 
 import java.util.Optional;
 
@@ -18,9 +16,7 @@ public class ManualRoutine extends Routine {
     }
 
     @Override
-    public RobotSetpoints update(Commands commands, RobotSetpoints existing_setpoints) {
-        RobotSetpoints setpoints = existing_setpoints;
-
+    public RobotSetpoints update(Commands commands, RobotSetpoints setpoints) {
         // Turn off jog
         setpoints.bottom_open_loop_jog = m_nullopt;
         setpoints.top_open_loop_jog = m_nullopt;

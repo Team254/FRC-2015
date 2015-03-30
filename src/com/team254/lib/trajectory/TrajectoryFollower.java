@@ -1,6 +1,5 @@
 package com.team254.lib.trajectory;
 
-import com.team254.lib.util.SystemManager;
 import edu.wpi.first.wpilibj.Timer;
 
 /**

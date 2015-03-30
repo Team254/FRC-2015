@@ -96,13 +96,12 @@ public class Logger {
         if (baseDrive == null) {
             return null;
         }
-        File logDir = new File(baseDrive, "logs");
-        return logDir;
+        return new File(baseDrive, "logs");
     }
 
     public static File getLastBootLogFile() {
         List<String> fileNames = getAllLogFiles().stream()
-                .map(l -> l.getName()).collect(Collectors.toList());
+                .map(File::getName).collect(Collectors.toList());
         fileNames.sort(null);
         if (fileNames.size() <= 0)
             return null;

@@ -1,6 +1,5 @@
 package com.team254.frc2015.behavior.routines;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 

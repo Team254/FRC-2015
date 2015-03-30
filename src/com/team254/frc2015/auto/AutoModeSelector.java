@@ -30,14 +30,14 @@ public class AutoModeSelector {
 	}
 	
 	public AutoMode getAutoMode() {
-		return (AutoMode) autoModes.get(selectedIndex);
+		return autoModes.get(selectedIndex);
 	}
 	
 	public ArrayList<String> getAutoModeList() {
 		ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < autoModes.size(); i++){
-			list.add(autoModes.get(i).getClass().getSimpleName());
-		}
+        for (AutoMode autoMode : autoModes) {
+            list.add(autoMode.getClass().getSimpleName());
+        }
 		return list;
 	}
 	

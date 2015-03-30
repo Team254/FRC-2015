@@ -2,7 +2,6 @@ package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
-import com.team254.frc2015.Robot;
 import com.team254.frc2015.subsystems.controllers.BangBangFinishLineController;
 import com.team254.frc2015.subsystems.controllers.ElevatorSqueezeController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
@@ -140,7 +139,6 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     protected void setSpeedOpenLoopSafe(double desired_speed) {
-        double height = getHeight();
         if (desired_speed > 1E-3 || desired_speed < -1E-3) {
             setBrake(false);
         }

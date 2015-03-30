@@ -1,6 +1,5 @@
 package com.team254.frc2015.behavior.routines;
 
-import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;

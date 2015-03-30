@@ -24,7 +24,6 @@ public class BehaviorManager implements Tappable {
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
     protected Intake intake = HardwareAdaptor.kIntake;
 
-    private ElevatorSafety.Setpoints m_elevator_setpoints = new ElevatorSafety.Setpoints();
     private boolean m_top_jogging = false;
     private boolean m_bottom_jogging = false;
 
@@ -166,7 +165,7 @@ public class BehaviorManager implements Tappable {
             setNewRoutine(null);
         }
 
-        m_elevator_setpoints = ElevatorSafety.generateSafeSetpoints(m_setpoints.m_elevator_setpoints);
+        ElevatorSafety.Setpoints m_elevator_setpoints = ElevatorSafety.generateSafeSetpoints(m_setpoints.m_elevator_setpoints);
         if (m_elevator_setpoints.top_setpoint.isPresent() && !m_top_jogging && !m_bottom_jogging) {
             top_carriage.setPositionSetpoint(m_elevator_setpoints.top_setpoint.get(), true);
         }

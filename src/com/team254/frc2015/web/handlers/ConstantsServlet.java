@@ -49,7 +49,6 @@ public class ConstantsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Constants constants = new Constants();
-        boolean changed = false;
         for (String key : request.getParameterMap().keySet()) {
             String value = request.getParameter(key);
             Constant c = constants.getConstant(key);
@@ -57,14 +56,11 @@ public class ConstantsServlet extends HttpServlet {
                 if (double.class.equals(c.type) || Double.class.equals(c.type)) {
                     double v = Double.parseDouble(value);
                     constants.setConstant(key, v);
-                    changed = true;
                 } else if (int.class.equals(c.type) || Integer.class.equals(c.type)) {
                     int v = Integer.parseInt(value);
                     constants.setConstant(key, v);
-                    changed = true;
                 } else if (String.class.equals(c.type)) {
                     constants.setConstant(key, value);
-                    changed = true;
                 }
             }
 

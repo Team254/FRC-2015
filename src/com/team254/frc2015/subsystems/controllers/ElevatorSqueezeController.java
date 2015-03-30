@@ -26,7 +26,7 @@ public class ElevatorSqueezeController extends Controller {
         } else if (height < Constants.kTopCarriageSafePositionInches + 1.0) {
             min_output = 0.0;
         }
-        double command = 0.0;
+        double command;
 
         if (m_bottom_carriage_motor.get() > 0) {
             // Bottom carriage is rising, get out of the way!
