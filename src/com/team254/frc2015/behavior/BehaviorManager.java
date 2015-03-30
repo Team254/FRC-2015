@@ -110,6 +110,7 @@ public class BehaviorManager implements Tappable {
         boolean can_control_top_carriage_pivot = true;
         boolean can_control_top_carriage_grabber = true;
         boolean can_control_bottom_carriage = true;
+        boolean want_pusher_extend = m_setpoints.coop_pusher_action == RobotSetpoints.CoopPusherAction.EXTEND;
 
         double bottom_jog_speed = 0.0;
         double top_jog_speed = 0.0;
@@ -125,7 +126,7 @@ public class BehaviorManager implements Tappable {
             m_bottom_jogging = false;
         }
 
-        if (m_setpoints.top_carriage_squeeze) {
+        if (m_setpoints.top_carriage_squeeze && !want_pusher_extend) {
             top_carriage.squeeze();
         } else {
             if (top_carriage.hasSquezeEnabled()) {
@@ -144,15 +145,20 @@ public class BehaviorManager implements Tappable {
             m_top_jogging = false;
         }
 
-        if (m_bottom_jogging) {
-            bottom_carriage.setOpenLoop(bottom_jog_speed, isZero(bottom_jog_speed));
-        }
-
-        if (m_top_jogging) {
-            top_carriage.setOpenLoop(top_jog_speed, isZero(top_jog_speed));
-            if (m_cur_routine instanceof  RegraspRoutine) {
-                setNewRoutine(null);
+        if (!want_pusher_extend) {
+            if (m_bottom_jogging) {
+                bottom_carriage.setOpenLoop(bottom_jog_speed, isZero(bottom_jog_speed));
             }
+
+            if (m_top_jogging) {
+                top_carriage.setOpenLoop(top_jog_speed, isZero(top_jog_speed));
+                if (m_cur_routine instanceof RegraspRoutine) {
+                    setNewRoutine(null);
+                }
+            }
+        } else {
+            bottom_carriage.setOpenLoop(0, true);
+            top_carriage.setOpenLoop(0, true);
         }
 
         // Bail from scoring
@@ -221,13 +227,13 @@ public class BehaviorManager implements Tappable {
         } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST_COOP) {
             // Run intake outwards.
             intake.setSpeed(-Constants.kCoopIntakeSpeed);
-        } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST_COOP_SLOW) {
-            // Run intake outwards.
-            intake.setSpeed(-Constants.kCoopSlowIntakeSpeed);
         } else {
             // Stop intake.
             intake.setSpeed(0.0);
         }
+
+        // Pusher
+        intake.setCoopPusherOut(m_setpoints.coop_pusher_action == RobotSetpoints.CoopPusherAction.EXTEND);
     }
 
     @Override

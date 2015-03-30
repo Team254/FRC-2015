@@ -72,6 +72,8 @@ public class HardwareAdaptor {
             Constants.kBottomCarriageFlapperSolenoidPort);
     static CheesySolenoid kIntakeSolenoid = new CheesySolenoid(
             Constants.kIntakeSolenoidPort);
+    static CheesySolenoid kCoopSolenoid = new CheesySolenoid(
+            Constants.kCoopSolenoidPort);
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
@@ -91,7 +93,7 @@ public class HardwareAdaptor {
             kBottomCarriageBrakeSolenoid, kBottomCarriageEncoder,
             kBottomCarriageHome, kBottomCarriagePusherSolenoid,
             kBottomCarriageFlapperSolenoid);
-    public static Intake kIntake = new Intake("intake", kIntakeSolenoid,
+    public static Intake kIntake = new Intake("intake", kIntakeSolenoid, kCoopSolenoid,
             kLeftIntakeMotor, kRightIntakeMotor, kBreakbeamIntake);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 

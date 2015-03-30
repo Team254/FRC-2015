@@ -9,17 +9,19 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Intake extends Subsystem {
 
     Solenoid m_solenoid;
+    Solenoid m_coop_solenoid;
     AnalogInput m_breakbeam;
     CheesySpeedController m_left_motor;
     CheesySpeedController m_right_motor;
 
-    public Intake(String name, Solenoid solenoid,
+    public Intake(String name, Solenoid solenoid, Solenoid coop_solenoid,
                   CheesySpeedController left_motor, CheesySpeedController right_motor, AnalogInput breakbeam) {
         super(name);
         m_solenoid = solenoid;
         m_left_motor = left_motor;
         m_right_motor = right_motor;
         m_breakbeam = breakbeam;
+        m_coop_solenoid = coop_solenoid;
     }
 
     public void open() {
@@ -37,6 +39,10 @@ public class Intake extends Subsystem {
     public void setLeftRight(double left_speed, double right_speed) {
         m_left_motor.set(-left_speed);
         m_right_motor.set(-right_speed);
+    }
+
+    public void setCoopPusherOut(boolean out) {
+        m_coop_solenoid.set(out);
     }
 
     public boolean getBreakbeamTriggered() {

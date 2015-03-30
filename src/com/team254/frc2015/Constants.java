@@ -114,7 +114,7 @@ public class Constants extends ConstantsBase {
     public static int kBottomCarriagePusherSolenoidPort = 9;
     public static int kBottomCarriageFlapperSolenoidPort = 10;
     public static int kIntakeSolenoidPort = 2;
-    // bin flap auto thing 8
+    public static int kCoopSolenoidPort = 8;
 
     // Relays
     public static int kCompressorRelayPort = 0;

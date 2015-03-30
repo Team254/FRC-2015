@@ -14,7 +14,7 @@ public class RobotSetpoints {
     }
 
     public enum RollerAction {
-        NONE, INTAKE, EXHAUST, EXHAUST_COOP, EXHAUST_COOP_SLOW, STOP
+        NONE, INTAKE, EXHAUST, EXHAUST_COOP, STOP
     }
 
     public enum TopCarriagePivotAction {
@@ -29,8 +29,8 @@ public class RobotSetpoints {
         NONE, OPEN, CLOSE
     }
 
-    public enum BottomCarriagePusherAction {
-        NONE, EXTEND, RETRACT
+    public enum CoopPusherAction {
+        EXTEND, RETRACT
     }
 
     public static final Optional<Double> m_nullopt = Optional.empty();
@@ -41,6 +41,7 @@ public class RobotSetpoints {
     public TopCarriagePivotAction pivot_action;
     public IntakeAction intake_action;
     public RollerAction roller_action;
+    public CoopPusherAction coop_pusher_action;
     public Optional<Double> top_open_loop_jog;
     public Optional<Double> bottom_open_loop_jog;
     public boolean top_carriage_squeeze;
@@ -53,6 +54,7 @@ public class RobotSetpoints {
         flapper_action =  BottomCarriageFlapperAction.NONE;
         intake_action = IntakeAction.NONE;
         roller_action = RollerAction.NONE;
+        coop_pusher_action = CoopPusherAction.RETRACT;
         top_open_loop_jog = m_nullopt;
         bottom_open_loop_jog = m_nullopt;
         top_carriage_squeeze = false;
