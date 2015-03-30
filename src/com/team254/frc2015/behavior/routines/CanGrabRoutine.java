@@ -12,7 +12,7 @@ import java.util.Optional;
 public class CanGrabRoutine extends Routine {
 
     public enum States {
-        START, OPENING_FLAPS, MOVE_CARRIAGES, ROTATE_DOWN, OPEN_GRABBER, CLOSE_GRABBER, CENTER_DOWN, DRIVE_UP, ROTATE_UP, BEFORE_CLOSE_GRABBER, DONE
+        START, OPENING_FLAPS, MOVE_CARRIAGES, ROTATE_DOWN, OPEN_GRABBER, CLOSE_GRABBER, DRIVE_UP, ROTATE_UP, BEFORE_CLOSE_GRABBER, DONE
     }
 
     States m_state = States.START;
@@ -90,18 +90,6 @@ public class CanGrabRoutine extends Routine {
                 }
                 if (commands.can_grabber_request == Commands.CanGrabberRequests.TOGGLE_GRAB) {
                     new_state = States.OPEN_GRABBER;
-                }
-                break;
-            case CENTER_DOWN:
-                setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
-                setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
-                setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
-                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-                if (m_is_new_state) {
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(5.0);
-                }
-                if (m_state_timer.get() > .35) {
-                    new_state = States.DRIVE_UP;
                 }
                 break;
             case DRIVE_UP:
