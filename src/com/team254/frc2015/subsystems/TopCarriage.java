@@ -16,14 +16,15 @@ public class TopCarriage extends ElevatorCarriage {
     AnalogInput m_breakbeam;
 
     public TopCarriage(String name, CheesySpeedController motor,
-            Solenoid brake, Encoder encoder, DigitalInput home, Solenoid pivot,
-            Solenoid grabber_open, Solenoid grabber_close, AnalogInput breakbeam) {
+                       Solenoid brake, Encoder encoder, DigitalInput home, Solenoid pivot,
+                       Solenoid grabber_open, Solenoid grabber_close, AnalogInput breakbeam) {
         super(name, motor, brake, encoder, home);
         m_pivot = pivot;
         m_grabber_open = grabber_open;
         m_grabber_close = grabber_close;
         m_breakbeam = breakbeam;
     }
+
     public enum GrabberPositions {
         OPEN, CLOSED, VENTED, BOTH
     }

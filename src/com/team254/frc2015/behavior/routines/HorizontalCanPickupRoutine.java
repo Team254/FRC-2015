@@ -40,7 +40,7 @@ public class HorizontalCanPickupRoutine extends Routine {
         setpoints.pinball_wizard_action = RobotSetpoints.PinballWizardAction.EXTEND;
 
         // Do state machine
-        switch(m_state) {
+        switch (m_state) {
             case START:
                 new_state = States.OPENING_FLAPS;
                 break;
@@ -61,7 +61,7 @@ public class HorizontalCanPickupRoutine extends Routine {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(Constants.kCanPickupStartBottomHeight);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kCanPickupStartTopHeight);
                 }
-                if (!m_is_new_state  && bottom_carriage.isOnTarget() && top_carriage.isOnTarget() && m_state_timer.get() > .5) {
+                if (!m_is_new_state && bottom_carriage.isOnTarget() && top_carriage.isOnTarget() && m_state_timer.get() > .5) {
                     new_state = States.WAIT_FOR_CAN;
                 } else if (!m_is_new_state && m_state_timer.get() > 2.3) {
                     setpoints.bottom_open_loop_jog = Optional.of(0.0);

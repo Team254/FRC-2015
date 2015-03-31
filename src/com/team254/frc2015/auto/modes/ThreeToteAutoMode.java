@@ -90,7 +90,7 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForDrive(1.0);
 
         // Turn towards auto zone
-        double last_angle = heading_cache + (Math.PI/2.9);
+        double last_angle = heading_cache + (Math.PI / 2.9);
         drive.setTurnSetPoint(last_angle);
         waitForTote(1.0);
         bottom_carriage.setFastPositionSetpoint(1.5);

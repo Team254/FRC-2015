@@ -56,7 +56,7 @@ public class RobotSetpoints {
         m_elevator_setpoints.top_setpoint = m_nullopt;
         claw_action = TopCarriageClawAction.NONE;
         pivot_action = TopCarriagePivotAction.PIVOT_UP;
-        flapper_action =  BottomCarriageFlapperAction.NONE;
+        flapper_action = BottomCarriageFlapperAction.NONE;
         intake_action = IntakeAction.NONE;
         roller_action = RollerAction.NONE;
         coop_pusher_action = CoopPusherAction.RETRACT;

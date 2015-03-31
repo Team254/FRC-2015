@@ -11,12 +11,12 @@ import java.io.IOException;
 
 public class GetCurrentAutoModeServlet extends HttpServlet {
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	  response.setContentType("application/json;charset=utf-8");
-      response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Access-Control-Allow-Origin", "*");
-      response.getWriter().println("\"" + AutoModeSelector.getInstance().getAutoMode().getClass().getSimpleName() + "\"");
-  }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json;charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.getWriter().println("\"" + AutoModeSelector.getInstance().getAutoMode().getClass().getSimpleName() + "\"");
+    }
 
 }

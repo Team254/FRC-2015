@@ -74,7 +74,7 @@ public class BehaviorManager implements Tappable {
             m_setpoints.bottom_open_loop_jog = Optional.of(0.0);
         } else if (commands.preset_request == Commands.PresetRequest.SCORE && !(m_cur_routine instanceof ScoreRoutine)) {
             setNewRoutine(new ScoreRoutine());
-        } else if(commands.preset_request == Commands.PresetRequest.CARRY_SQUEZE) {
+        } else if (commands.preset_request == Commands.PresetRequest.CARRY_SQUEZE) {
             setNewRoutine(new RegraspRoutine());
         } else if (commands.preset_request == Commands.PresetRequest.COOP) {
             setNewRoutine(new CoopRoutine());
@@ -123,7 +123,7 @@ public class BehaviorManager implements Tappable {
         } else if (m_setpoints.m_elevator_setpoints.top_setpoint.isPresent()) {
             top_carriage.setPositionSetpoint(m_setpoints.m_elevator_setpoints.top_setpoint.get(), true);
             m_top_jogging = false;
-        }  else if (m_top_jogging && !m_setpoints.top_open_loop_jog.isPresent()) {
+        } else if (m_top_jogging && !m_setpoints.top_open_loop_jog.isPresent()) {
             top_carriage.setOpenLoop(0, true);
             m_top_jogging = false;
         }

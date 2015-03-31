@@ -14,6 +14,7 @@ public class CoopRoutine extends Routine {
     public enum States {
         START, RAISE_TO_HEIGHT, EXHAUST_ME_MAYBE, PUSH_OUT
     }
+
     public States m_state = States.START;
     private boolean m_is_new_state = false;
     Timer m_state_timer = new Timer();
@@ -31,7 +32,7 @@ public class CoopRoutine extends Routine {
         RobotSetpoints setpoints = existing_setpoints;
         States new_state = m_state;
 
-        switch(m_state) {
+        switch (m_state) {
             case START:
                 new_state = States.RAISE_TO_HEIGHT;
                 break;

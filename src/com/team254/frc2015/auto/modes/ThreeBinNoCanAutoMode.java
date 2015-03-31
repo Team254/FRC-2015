@@ -44,7 +44,7 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
         waitForDrive(2.0);
 
         // Turn with can intake and open
-        drive.setTurnSetPoint(Math.PI/3.0);
+        drive.setTurnSetPoint(Math.PI / 3.0);
         waitTime(.5);
         intake.open();
         waitForDrive(.25);

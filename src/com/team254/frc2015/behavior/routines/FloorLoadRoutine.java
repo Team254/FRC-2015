@@ -52,7 +52,7 @@ public class FloorLoadRoutine extends Routine {
         }
         boolean should_vent = false;
 
-        switch(m_state) {
+        switch (m_state) {
             case START:
                 new_state = States.MOVE_TO_STARTING_POS;
                 do_squeeze = false;
@@ -126,7 +126,6 @@ public class FloorLoadRoutine extends Routine {
             System.out.println("Stalled motor!");
             new_state = States.DONE;
         }
-
 
 
         setpoints.top_carriage_squeeze = do_squeeze;

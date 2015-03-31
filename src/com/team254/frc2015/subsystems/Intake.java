@@ -5,7 +5,6 @@ import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Subsystem;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends Subsystem {
 
@@ -61,6 +60,7 @@ public class Intake extends Subsystem {
         // TODO Auto-generated method stub
 
     }
+
     @Override
     public void getState(StateHolder states) {
         states.put("breakbeam_voltage", m_breakbeam.getAverageVoltage());

@@ -20,8 +20,12 @@ public abstract class Routine {
     protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
     public abstract void reset();
+
     public abstract RobotSetpoints update(Commands commands, RobotSetpoints existing_setpoints);
+
     public abstract void cancel();
+
     public abstract boolean isFinished();
+
     public abstract String getName();
 }

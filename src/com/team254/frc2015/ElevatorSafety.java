@@ -20,17 +20,17 @@ public class ElevatorSafety {
     }
 
     public static boolean isMoveLegal(ElevatorCarriage carriage,
-            TrajectorySetpoint setpoint) {
+                                      TrajectorySetpoint setpoint) {
         // Don't allow upwards moves if the top carriage is already near its
         // limit
         return !(carriage == kBottomCarriage
                 && setpoint.vel > 0
                 && kTopCarriage.getHeight() >= Constants.kTopCarriageMaxPositionInches && kTopCarriage
-                    .getBreakbeamTriggered());
+                .getBreakbeamTriggered());
     }
 
     public static boolean isMoveLegal(ElevatorCarriage carriage,
-            double position_setpoint) {
+                                      double position_setpoint) {
         return !(carriage == kBottomCarriage
                 && kTopCarriage.getHeight() >= Constants.kTopCarriageMaxPositionInches
                 && kTopCarriage.getBreakbeamTriggered() && position_setpoint > carriage
@@ -60,7 +60,7 @@ public class ElevatorSafety {
             }
             if (result.top_setpoint.isPresent()
                     && result.top_setpoint.get() < Constants.kBottomCarriageHeight
-                            + result.bottom_setpoint.get()) {
+                    + result.bottom_setpoint.get()) {
                 result.bottom_setpoint = Optional.of(result.top_setpoint.get()
                         - Constants.kBottomCarriageHeight);
             }

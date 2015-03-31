@@ -10,6 +10,7 @@ import java.util.Optional;
  */
 public class ManualRoutine extends Routine {
     private static Optional<Double> m_nullopt = Optional.empty();
+
     @Override
     public void reset() {
 
@@ -82,7 +83,7 @@ public class ManualRoutine extends Routine {
             if (commands.roller_request == Commands.RollerRequest.INTAKE) {
                 // Run intake inwards.
                 setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
-            } else if  (commands.roller_request == Commands.RollerRequest.EXHAUST) {
+            } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
                 // Run intake inwards.
                 setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
             }

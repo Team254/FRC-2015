@@ -7,8 +7,10 @@ import com.team254.frc2015.subsystems.controllers.ElevatorSqueezeController;
 import com.team254.frc2015.subsystems.controllers.TrajectoryFollowingPositionController;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.*;
-
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.ChezyInterruptHandlerFunction;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class ElevatorCarriage extends Subsystem implements Loopable {
     public CheesySpeedController m_motor;
@@ -194,7 +196,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                                                  boolean brake_on_target) {
         setPositionSetpointUnsafe(setpoint, brake_on_target);
     }
-    
+
     public synchronized void setFastPositionSetpoint(double setpoint) {
         if (!(m_controller instanceof BangBangFinishLineController)) {
             m_controller = new BangBangFinishLineController(0.5);
@@ -237,7 +239,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
             } else {
                 setSpeedSafe(speed);
             }
-        } else if(m_controller instanceof BangBangFinishLineController) {
+        } else if (m_controller instanceof BangBangFinishLineController) {
             BangBangFinishLineController bangbang = (BangBangFinishLineController) m_controller;
             if (!ElevatorSafety.isMoveLegal(this, bangbang.getGoal())) {
                 // Stop immediately.
@@ -254,7 +256,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
 
     @Override
     public synchronized void update() {
-       if (m_controller instanceof TrajectoryFollowingPositionController) {
+        if (m_controller instanceof TrajectoryFollowingPositionController) {
             TrajectoryFollowingPositionController position_controller = (TrajectoryFollowingPositionController) m_controller;
             if (position_controller.isOnTarget()) {
                 // No need to brake at bottom of travel.

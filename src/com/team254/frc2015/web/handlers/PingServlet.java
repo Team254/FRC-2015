@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class PingServlet extends HttpServlet {
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	  response.setContentType("application/json;charset=utf-8");
-      response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Access-Control-Allow-Origin", "*");
-      response.getWriter().println("\"pong\"");
-      
-  }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json;charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.getWriter().println("\"pong\"");
+
+    }
 
 }

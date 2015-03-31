@@ -12,8 +12,8 @@ public class BottomCarriage extends ElevatorCarriage {
     Solenoid m_flapper;
 
     public BottomCarriage(String name, CheesySpeedController motor,
-            Solenoid brake, Encoder encoder, DigitalInput home,
-            Solenoid pusher, Solenoid flapper) {
+                          Solenoid brake, Encoder encoder, DigitalInput home,
+                          Solenoid pusher, Solenoid flapper) {
         super(name, motor, brake, encoder, home);
         m_pusher = pusher;
         m_flapper = flapper;

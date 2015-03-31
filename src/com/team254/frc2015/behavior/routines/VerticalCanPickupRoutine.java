@@ -1,6 +1,5 @@
 package com.team254.frc2015.behavior.routines;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,6 +14,7 @@ public class VerticalCanPickupRoutine extends Routine {
     public enum States {
         MOVE_TO_POSITION, CLOSE, MOVE_UP, DONE
     }
+
     private States m_state = States.MOVE_TO_POSITION;
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();

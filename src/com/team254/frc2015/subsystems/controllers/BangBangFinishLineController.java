@@ -16,7 +16,7 @@ public class BangBangFinishLineController extends Controller {
     public void setGoal(double goal) {
         m_goal = goal;
     }
-    
+
     public double getGoal() {
         return m_goal;
     }

@@ -16,7 +16,7 @@ public class WaitForCarriageHeightAction extends TimeoutAction {
 
     @Override
     public boolean isFinished() {
-        return (m_greater_than ? m_carriage.getHeight() >= m_height : m_carriage.getHeight() >= m_height)  || super.isFinished();
+        return (m_greater_than ? m_carriage.getHeight() >= m_height : m_carriage.getHeight() >= m_height) || super.isFinished();
     }
 
 }
