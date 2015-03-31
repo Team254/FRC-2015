@@ -1,5 +1,6 @@
 package com.team254.frc2015.subsystems;
 
+import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
 import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Subsystem;
@@ -8,13 +9,14 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends Subsystem {
 
-    Solenoid m_solenoid;
-    Solenoid m_coop_solenoid;
+    CheesySolenoid m_solenoid;
+    CheesySolenoid m_coop_solenoid;
+    CheesySolenoid m_pinball_wizard_solenoid;
     AnalogInput m_breakbeam;
     CheesySpeedController m_left_motor;
     CheesySpeedController m_right_motor;
 
-    public Intake(String name, Solenoid solenoid, Solenoid coop_solenoid,
+    public Intake(String name, CheesySolenoid solenoid, CheesySolenoid coop_solenoid, CheesySolenoid pinball_wizard_solenoid,
                   CheesySpeedController left_motor, CheesySpeedController right_motor, AnalogInput breakbeam) {
         super(name);
         m_solenoid = solenoid;
@@ -22,6 +24,7 @@ public class Intake extends Subsystem {
         m_right_motor = right_motor;
         m_breakbeam = breakbeam;
         m_coop_solenoid = coop_solenoid;
+        m_pinball_wizard_solenoid = pinball_wizard_solenoid;
     }
 
     public void open() {
@@ -39,6 +42,10 @@ public class Intake extends Subsystem {
     public void setLeftRight(double left_speed, double right_speed) {
         m_left_motor.set(-left_speed);
         m_right_motor.set(-right_speed);
+    }
+
+    public void setPinballWizardOut(boolean out) {
+        m_pinball_wizard_solenoid.set(out);
     }
 
     public void setCoopPusherOut(boolean out) {

@@ -15,6 +15,8 @@ public class Constants extends ConstantsBase {
 
     public static double kAutoIntakeSpeed = 1.0;
     public static double kCoopIntakeSpeed = .4;
+    public static double kCanIntakeSlowSpeed = .15;
+    public static double kCanIntakeSpeed = .35;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -51,6 +53,12 @@ public class Constants extends ConstantsBase {
     // Height presets
     public static double kCoopTopHeight = 40;
     public static double kCoopBottomHeight = 11.0;
+
+    public static double kCanPickupStartTopHeight = 21.;
+    public static double kCanPickupStartBottomHeight = 6.75;
+    public static double kCanPickupEndTopHeight = 5.25;
+    public static double kCanPickupEndBottomHeight = 1.0;
+
     // Sensor calibration
     public static double kBreambeamVoltage = 1.0;
 
@@ -112,6 +120,8 @@ public class Constants extends ConstantsBase {
     public static int kBottomCarriageFlapperSolenoidPort = 10;
     public static int kIntakeSolenoidPort = 2;
     public static int kCoopSolenoidPort = 8;
+    public static int kPinballWizardSolenoidPort = 5;
+
 
     // Relays
     public static int kCompressorRelayPort = 0;

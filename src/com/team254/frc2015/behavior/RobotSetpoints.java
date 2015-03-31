@@ -14,7 +14,7 @@ public class RobotSetpoints {
     }
 
     public enum RollerAction {
-        NONE, INTAKE, EXHAUST, EXHAUST_COOP, STOP
+        NONE, INTAKE, EXHAUST, EXHAUST_COOP, STOP, INTAKE_CAN, INTAKE_CAN_SLOW
     }
 
     public enum TopCarriagePivotAction {
@@ -33,6 +33,10 @@ public class RobotSetpoints {
         EXTEND, RETRACT
     }
 
+    public enum PinballWizardAction {
+        STOW, EXTEND
+    }
+
     public static final Optional<Double> m_nullopt = Optional.empty();
 
     public ElevatorSafety.Setpoints m_elevator_setpoints = new ElevatorSafety.Setpoints();
@@ -41,6 +45,7 @@ public class RobotSetpoints {
     public TopCarriagePivotAction pivot_action;
     public IntakeAction intake_action;
     public RollerAction roller_action;
+    public PinballWizardAction pinball_wizard_action;
     public CoopPusherAction coop_pusher_action;
     public Optional<Double> top_open_loop_jog;
     public Optional<Double> bottom_open_loop_jog;
@@ -55,6 +60,7 @@ public class RobotSetpoints {
         intake_action = IntakeAction.NONE;
         roller_action = RollerAction.NONE;
         coop_pusher_action = CoopPusherAction.RETRACT;
+        pinball_wizard_action = PinballWizardAction.STOW;
         top_open_loop_jog = m_nullopt;
         bottom_open_loop_jog = m_nullopt;
         top_carriage_squeeze = false;

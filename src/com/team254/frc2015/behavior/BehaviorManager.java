@@ -226,6 +226,12 @@ public class BehaviorManager implements Tappable {
         } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.EXHAUST_COOP) {
             // Run intake outwards.
             intake.setSpeed(-Constants.kCoopIntakeSpeed);
+        } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.INTAKE_CAN) {
+            // Run intake inwards.
+            intake.setSpeed(Constants.kCanIntakeSpeed);
+        } else if (m_setpoints.roller_action == RobotSetpoints.RollerAction.INTAKE_CAN_SLOW) {
+            // Run intake inwards.
+            intake.setSpeed(Constants.kCanIntakeSlowSpeed);
         } else {
             // Stop intake.
             intake.setSpeed(0.0);
@@ -233,6 +239,9 @@ public class BehaviorManager implements Tappable {
 
         // Pusher
         intake.setCoopPusherOut(m_setpoints.coop_pusher_action == RobotSetpoints.CoopPusherAction.EXTEND);
+
+        // Pinball wizard
+        intake.setPinballWizardOut(m_setpoints.pinball_wizard_action == RobotSetpoints.PinballWizardAction.EXTEND);
     }
 
     @Override
