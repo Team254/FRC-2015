@@ -1,6 +1,8 @@
 package com.team254.lib.util.gyro;
 
 import com.team254.lib.util.Util;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.TimerEventHandler;
 
 import java.util.List;
 import java.util.Timer;
@@ -19,6 +21,9 @@ public class GyroThread {
     private final Timer mTimer = new Timer("Gyro");
     // owned by the background thread
     private final GyroInterface mGyroInterface = new GyroInterface();
+
+    private UpdateHandler mUpdateHandler = new UpdateHandler();
+    private Notifier mNotifier = new Notifier(mUpdateHandler, this);
 
     // thread communication variables
     private volatile boolean mVolatileHasData = false;
@@ -78,8 +83,8 @@ public class GyroThread {
                 }
             }
             System.out.println("gyo initialized, part ID: 0x" + Integer.toHexString(mGyroInterface.readPartId()));
-            synchronized (mTimer) {
-                mTimer.schedule(new UpdateTask(), 0, (int) (1000.0 / K_READING_RATE));
+            synchronized (mNotifier) {
+                mNotifier.startPeriodic(1.0 / K_READING_RATE);
             }
         }
     }
@@ -87,7 +92,7 @@ public class GyroThread {
     /**
      * Updates the actual gyro data (zeroing and accumulation)
      */
-    private class UpdateTask extends TimerTask {
+    private class UpdateHandler implements TimerEventHandler {
         private int mRemainingStartupCycles = K_STARTUP_SAMPLES;
         private boolean mIsZerod = false;
         private double[] mZeroRateSamples = new double[K_ZEROING_SAMPLES];
@@ -99,7 +104,7 @@ public class GyroThread {
         private double mLastTime = 0;
 
         @Override
-        public void run() {
+        public void update(Object param) {
             int reading;
             try {
                 reading = mGyroInterface.getReading();
