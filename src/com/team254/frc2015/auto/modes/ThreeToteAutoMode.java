@@ -28,8 +28,9 @@ public class ThreeToteAutoMode extends AutoMode {
         waitTime(.1);
 
         // Move can
-        top_carriage.setFastPositionSetpoint(top_carriage.getHeight() + 16.0);
-        waitForCarriageHeight(top_carriage, 16.5, true, 1.0);
+        double start_height = top_carriage.getHeight();
+        top_carriage.setFastPositionSetpoint(start_height + 16.0);
+        waitForCarriageHeight(top_carriage, start_height + 15.0, true, 1.0);
 
         // Grab first tote
         intake.setSpeed(Constants.kAutoIntakeSpeed);
