@@ -15,8 +15,16 @@ public class MultiLooper implements Loopable {
     private Looper looper;
     private Vector<Loopable> loopables = new Vector<Loopable>();
 
+    public MultiLooper(String name, double period, boolean use_notifier) {
+        if (use_notifier) {
+            looper = new NotifierLooper(name, this, period);
+        } else {
+            looper = new Looper(name, this, period);
+        }
+    }
+
     public MultiLooper(String name, double period) {
-        looper = new Looper(name, this, period);
+        this(name, period, false);
     }
 
     public void update() {
@@ -30,7 +38,12 @@ public class MultiLooper implements Loopable {
     }
 
     public void start() {
-        looper.start();
+        if (looper instanceof NotifierLooper) {
+            NotifierLooper nl = (NotifierLooper) looper;
+            nl.start();
+        } else {
+            looper.start();
+        }
     }
 
     public void stop() {

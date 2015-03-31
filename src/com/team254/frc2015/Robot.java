@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
         s_robot_state = state;
     }
 
-    MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0);
+    MultiLooper looper = new MultiLooper("Controllers", 1 / 200.0, true);
     MultiLooper slowLooper = new MultiLooper("SlowControllers", 1 / 100.0);
     Looper logUpdater = new Looper("Updater", new Updater(), 1 / 50.0);
 
