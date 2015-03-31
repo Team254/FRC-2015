@@ -2,16 +2,13 @@ package com.team254.frc2015.behavior;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 2/25/15.
- */
 public class Commands {
     public enum ElevatorMode {
         BOTTOM_CARRIAGE_MODE, TOP_CARRIAGE_MODE
     }
 
     public enum PresetRequest {
-        NONE, MANUAL, CARRY_SQUEZE, RAMMING, SCORE, COOP
+        NONE, MANUAL, CARRY_SQUEZE, SCORE, COOP
     }
 
     public enum IntakeRequest {
@@ -34,21 +31,12 @@ public class Commands {
         NONE, OPEN, CLOSE
     }
 
-    public enum BottomCarriagePusherRequest {
-        NONE, EXTEND, RETRACT
+    public enum HorizontalCanGrabberRequests {
+        NONE, ACTIVATE
     }
 
-
-    public enum ElevatorAction {
-        NONE, HP_LOAD_ACTION, FLOOR_LOAD_ACTION, LOAD_PREP_ACTION
-    }
-
-    public enum CanGrabberRequests {
-        NONE, DO_STAGE, TOGGLE_GRAB
-    }
-
-    public enum HumanLoadRequests {
-        NONE, LOAD_FIRST_BIN, INDEX_BIN
+    public enum VerticalCanGrabberRequests {
+        NONE, ACTIVATE
     }
 
     public ElevatorMode elevator_mode;
@@ -57,14 +45,11 @@ public class Commands {
     public Optional<Double> bottom_jog = Optional.empty();
     public IntakeRequest intake_request;
     public RollerRequest roller_request;
-    public ElevatorAction elevator_action;
     public TopCarriageClawRequest top_carriage_claw_request;
     public TopCarriagePivotRequest top_carriage_pivot_request;
     public BottomCarriageFlapperRequest bottom_carriage_flapper_request;
-    public BottomCarriagePusherRequest bottom_carriage_pusher_request;
-    public CanGrabberRequests can_grabber_request;
-    public boolean human_player_mode = false;
+    public HorizontalCanGrabberRequests horizontal_can_grabber_request;
+    public VerticalCanGrabberRequests vertical_can_grab_request;
     public boolean floor_load_mode = false;
     public boolean cancel_current_routine = false;
-    public HumanLoadRequests human_load_requests;
 }

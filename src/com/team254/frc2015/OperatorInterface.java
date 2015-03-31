@@ -12,8 +12,9 @@ public class OperatorInterface {
     Joystick leftStick = HardwareAdaptor.kLeftStick;
     Joystick rightStick = HardwareAdaptor.kRightStick;
     Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
-    Latch canToggleLatch = new Latch();
+    Latch horizontalCanLatch = new Latch();
     Latch coopLatch = new Latch();
+    Latch verticalCanLatch = new Latch();
 
     public void reset() {
         m_commands = new Commands();
@@ -31,9 +32,9 @@ public class OperatorInterface {
 
         // Right stick
         if (rightStick.getRawButton(2)) {
-            m_commands.intake_request = Commands.IntakeRequest.CLOSE;
-        } else {
             m_commands.intake_request = Commands.IntakeRequest.OPEN;
+        } else {
+            m_commands.intake_request = Commands.IntakeRequest.CLOSE;
         }
 
         // Button board
@@ -48,12 +49,6 @@ public class OperatorInterface {
         } else {
             m_commands.bottom_carriage_flapper_request = Commands.BottomCarriageFlapperRequest.CLOSE;
         }
-
-        /*if (buttonBoard.getRawButton(7)) {
-            m_commands.bottom_carriage_pusher_request = BehaviorManager.BottomCarriagePusherAction.EXTEND;
-        } else {
-            m_commands.bottom_carriage_pusher_request = BehaviorManager.BottomCarriagePusherAction.RETRACT;
-        }*/
 
         if (buttonBoard.getRawButton(8)) { // Bottom carriage jog up
             if (buttonBoard.getRawButton(11)) { // Slow
@@ -100,8 +95,6 @@ public class OperatorInterface {
         if (coopLatch.update(buttonBoard.getY() < 0)) { // Button 5
             m_commands.preset_request = Commands.PresetRequest.COOP;
         } else if (buttonBoard.getZ() < 0) { // Button 4
-        } else if (buttonBoard.getRawButton(6)) { // Button 3
-            m_commands.preset_request = Commands.PresetRequest.RAMMING;
         } else if (buttonBoard.getRawButton(5)) { // Button 2
             m_commands.preset_request = Commands.PresetRequest.SCORE;
         } else if (buttonBoard.getRawButton(4)) { // Button 1
@@ -110,30 +103,25 @@ public class OperatorInterface {
             m_commands.preset_request = Commands.PresetRequest.NONE;
         }
 
+        if (verticalCanLatch.update(buttonBoard.getRawButton(6))) { // Button 3
+            m_commands.vertical_can_grab_request = Commands.VerticalCanGrabberRequests.ACTIVATE;
+        } else {
+            m_commands.vertical_can_grab_request = Commands.VerticalCanGrabberRequests.NONE;
+        }
+
         m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.CLOSE;
         if (buttonBoard.getRawButton(1)) {
             m_commands.top_carriage_claw_request = Commands.TopCarriageClawRequest.OPEN;
         }
 
-        if (canToggleLatch.update(buttonBoard.getRawButton(1))) {
-            m_commands.can_grabber_request = Commands.CanGrabberRequests.TOGGLE_GRAB;
-        } else if (buttonBoard.getRawButton(2)) {
-            m_commands.can_grabber_request = Commands.CanGrabberRequests.DO_STAGE;
+        if (horizontalCanLatch.update(buttonBoard.getRawButton(2))) {
+            m_commands.horizontal_can_grabber_request = Commands.HorizontalCanGrabberRequests.ACTIVATE;
         } else {
-            m_commands.can_grabber_request = Commands.CanGrabberRequests.NONE;
+            m_commands.horizontal_can_grabber_request = Commands.HorizontalCanGrabberRequests.NONE;
         }
 
         m_commands.floor_load_mode = buttonBoard.getRawAxis(3) > 0.1;
-        /*
-        m_commands.human_player_mode = buttonBoard.getRawAxis(3) > 0.1;
-        if (m_commands.human_player_mode && buttonBoard.getRawButton(11)) {
-            m_commands.human_load_requests = Commands.HumanLoadRequests.LOAD_FIRST_BIN;
-        } else if (m_commands.human_player_mode && buttonBoard.getRawButton(12)) {
-            m_commands.human_load_requests = Commands.HumanLoadRequests.INDEX_BIN;
-        } else {
-            m_commands.human_load_requests = Commands.HumanLoadRequests.NONE;
-        }
-        */
+
         return m_commands;
     }
 }

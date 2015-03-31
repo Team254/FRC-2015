@@ -32,21 +32,6 @@ public class BehaviorManager implements Tappable {
     private RobotSetpoints m_setpoints;
     private ManualRoutine m_manual_routine = new ManualRoutine();
 
-
-    public static SimplePresetRoutine rammingModePresetRoutine = new SimplePresetRoutine() {
-        @Override
-        public String getName() {
-            return "Ramming";
-        }
-
-        @Override
-        public void setPresets() {
-            m_bottom_height_setpoint = Optional.of(0.0);
-            m_top_height_setpoint = Optional.of(4.25);
-            m_preset_setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-        }
-    };
-
     private void setNewRoutine(Routine new_routine) {
         boolean needs_cancel = new_routine != m_cur_routine && m_cur_routine != null;
 
@@ -78,8 +63,10 @@ public class BehaviorManager implements Tappable {
 
         if (commands.cancel_current_routine) {
             setNewRoutine(null);
-        } else if (commands.can_grabber_request == Commands.CanGrabberRequests.DO_STAGE && !(m_cur_routine instanceof CanGrabRoutine)) {
-            setNewRoutine(new CanGrabRoutine());
+        } else if (commands.horizontal_can_grabber_request == Commands.HorizontalCanGrabberRequests.ACTIVATE && !(m_cur_routine instanceof HorizontalCanPickupRoutine)) {
+            setNewRoutine(new HorizontalCanPickupRoutine());
+        } else if (commands.vertical_can_grab_request == Commands.VerticalCanGrabberRequests.ACTIVATE && !(m_cur_routine instanceof VerticalCanPickupRoutine)) {
+            setNewRoutine(new VerticalCanPickupRoutine());
         } else if (commands.floor_load_mode && !(m_cur_routine instanceof FloorLoadRoutine)) {
             setNewRoutine(new FloorLoadRoutine());
         } else if (!commands.floor_load_mode && m_cur_routine instanceof FloorLoadRoutine) {
@@ -87,9 +74,6 @@ public class BehaviorManager implements Tappable {
             m_setpoints.bottom_open_loop_jog = Optional.of(0.0);
         } else if (commands.preset_request == Commands.PresetRequest.SCORE && !(m_cur_routine instanceof ScoreRoutine)) {
             setNewRoutine(new ScoreRoutine());
-        }  else if (commands.preset_request == Commands.PresetRequest.RAMMING && m_cur_routine != rammingModePresetRoutine) {
-            rammingModePresetRoutine.reset();
-            setNewRoutine(rammingModePresetRoutine);
         } else if(commands.preset_request == Commands.PresetRequest.CARRY_SQUEZE) {
             setNewRoutine(new RegraspRoutine());
         } else if (commands.preset_request == Commands.PresetRequest.COOP) {
@@ -161,7 +145,7 @@ public class BehaviorManager implements Tappable {
         }
 
         // Bail from scoring
-        if (m_cur_routine instanceof ScoreRoutine && (m_bottom_jogging || m_top_jogging)) {
+        if (m_cur_routine instanceof ScoreRoutine && m_bottom_jogging) {
             setNewRoutine(null);
         }
 

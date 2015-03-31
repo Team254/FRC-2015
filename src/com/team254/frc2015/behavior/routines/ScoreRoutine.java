@@ -20,6 +20,7 @@ public class ScoreRoutine extends Routine {
 
     @Override
     public RobotSetpoints update(Commands commands, RobotSetpoints setpoints) {
+        setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
         if (m_first_run) {
             // Capping
             setpoints.m_elevator_setpoints.top_setpoint = Optional.of(top_carriage.getHeight() + 1.0);

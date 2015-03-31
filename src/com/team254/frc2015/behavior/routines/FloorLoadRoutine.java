@@ -106,7 +106,6 @@ public class FloorLoadRoutine extends Routine {
                 if (m_is_new_state) {
                     setpoints.bottom_open_loop_jog = Optional.of(0.0);
                 }
-
                 // Just in case
                 if (bottom_carriage.getHeight() >= (TOTE_CLEAR_POS - 5.0) && intake.getBreakbeamTriggered()) {
                     new_state = States.MOVE_DOWN;

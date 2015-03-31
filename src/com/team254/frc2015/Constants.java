@@ -15,8 +15,8 @@ public class Constants extends ConstantsBase {
 
     public static double kAutoIntakeSpeed = 1.0;
     public static double kCoopIntakeSpeed = .4;
-    public static double kCanIntakeSlowSpeed = .15;
-    public static double kCanIntakeSpeed = .35;
+    public static double kCanIntakeSlowSpeed = .25;
+    public static double kCanIntakeSpeed = .3;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -144,7 +144,7 @@ public class Constants extends ConstantsBase {
 
     // Top carriage limits
     public static double kTopCarriageMinPositionInches = 3.5;
-    public static double kTopCarriageMaxPositionInches = 67;
+    public static double kTopCarriageMaxPositionInches = 67.5;
     public static double kTopCarriageHomePositionInches = 10.75;
     public static double kTopCarriageReZeroPositionInches = 28.3;
     public static double kTopCarriageSafePositionInches = 4.75;

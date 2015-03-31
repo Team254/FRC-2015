@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * Created by tombot on 2/26/15.
  */
-public class CanGrabRoutine extends Routine {
+public class HorizontalCanPickupRoutine extends Routine {
 
     public enum States {
         START, OPENING_FLAPS, MOVE_CARRIAGES, WAIT_FOR_CAN, GET_CAN, CLOSE_GRABBER, DRIVE_UP, ROTATE_UP, DONE
@@ -39,10 +39,6 @@ public class CanGrabRoutine extends Routine {
         setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
         setpoints.pinball_wizard_action = RobotSetpoints.PinballWizardAction.EXTEND;
 
-        if (commands.roller_request == Commands.RollerRequest.INTAKE) {
-            setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE_CAN;
-        }
-
         // Do state machine
         switch(m_state) {
             case START:
@@ -51,6 +47,7 @@ public class CanGrabRoutine extends Routine {
             case OPENING_FLAPS:
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_state_timer.get() > .125) {
                     new_state = States.MOVE_CARRIAGES;
                 }
@@ -59,6 +56,7 @@ public class CanGrabRoutine extends Routine {
                 setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE_CAN;
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.NEUTRAL;
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_is_new_state) {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(Constants.kCanPickupStartBottomHeight);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kCanPickupStartTopHeight);
@@ -75,7 +73,8 @@ public class CanGrabRoutine extends Routine {
                 setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE_CAN;
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.NEUTRAL;
-                if (commands.can_grabber_request == Commands.CanGrabberRequests.TOGGLE_GRAB) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+                if (commands.horizontal_can_grabber_request == Commands.HorizontalCanGrabberRequests.ACTIVATE) {
                     new_state = States.GET_CAN;
                 }
                 break;
@@ -98,13 +97,16 @@ public class CanGrabRoutine extends Routine {
             case CLOSE_GRABBER:
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_DOWN;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
-                if (m_state_timer.get() > .25) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+                setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE_CAN_SLOW;
+                if (m_state_timer.get() > .3) {
                     new_state = States.ROTATE_UP;
                 }
                 break;
             case DRIVE_UP:
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_is_new_state) {
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(35.0);
                 }
@@ -115,12 +117,24 @@ public class CanGrabRoutine extends Routine {
             case ROTATE_UP:
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
-                if (m_state_timer.get() > .5) {
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+                if (m_state_timer.get() > .4) {
                     new_state = States.DRIVE_UP;
                 }
             default:
                 break;
         }
+
+        if (commands.roller_request == Commands.RollerRequest.INTAKE && m_state != States.GET_CAN) {
+            setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
+        } else if (commands.roller_request == Commands.RollerRequest.EXHAUST && m_state != States.GET_CAN) {
+            setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
+        }
+
+        if (setpoints.intake_action == RobotSetpoints.IntakeAction.OPEN && commands.intake_request == Commands.IntakeRequest.OPEN) {
+            setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
+        }
+
 
         m_is_new_state = false;
         if (new_state != m_state) {
