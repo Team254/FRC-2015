@@ -88,16 +88,6 @@ public class TrajectoryFollower {
             last_timestamp_ = Timer.getFPGATimestamp();
         }
 
-        // DEBUGGING
-        if (dt >= config_.dt * 1.75) {
-            System.err.println("!! Bad dt (" + dt+ ") at (" + Timer.getFPGATimestamp() +") in " + this.toString());
-            StackTraceElement[] st = Thread.currentThread().getStackTrace();
-            for (int i = 0; i < 5 && i< st.length; i++) {
-                StackTraceElement ste = st[i];
-                System.err.println(ste);
-            }
-        }
-
         if (isFinishedTrajectory()) {
             setpoint_.pos = goal_position_;
             setpoint_.vel = 0;
