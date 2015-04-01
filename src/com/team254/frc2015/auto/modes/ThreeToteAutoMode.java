@@ -1,5 +1,6 @@
 package com.team254.frc2015.auto.modes;
 
+import com.sun.tools.internal.jxc.ap.Const;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
@@ -12,14 +13,14 @@ import edu.wpi.first.wpilibj.Timer;
 public class ThreeToteAutoMode extends AutoMode {
 
     public static double CLEAR_TOTE_HEIGHT = 20.0;
-    public static double CLEAR_GROUND_HEIGHT = 7;
-    public static double ON_GROUND_HEIGHT = 2;
+    public static double CLEAR_TOTE_HEIGHT_LOW = 18.0;
+    public static double SAFE_DRIVE_AWAY_TIME = 13.6;
     public static double CLEAR_WHEELS_HEIGHT = 12.5;
-    Timer t = new Timer();
+    Timer autoModeTimer = new Timer();
 
     protected void routine() throws AutoModeEndedException {
-        t.reset();
-        t.start();
+        autoModeTimer.reset();
+        autoModeTimer.start();
         waitTime(.125); // Weird gyro init bug
         waitForGyroData(.25); // Weird gyro init bug
 
@@ -62,16 +63,16 @@ public class ThreeToteAutoMode extends AutoMode {
         drive.setDistanceSetpoint(30);
         waitForDriveDistance(28.5, true, 1.5);
         intake.close();
-        waitForTote(1.0);
+        waitForTote(15.0); // die if no tote
 
         // Get second tote
         bottom_carriage.setFastPositionSetpoint(2.0);
         waitForCarriage(bottom_carriage, 1.5);
-        bottom_carriage.setPositionSetpoint(CLEAR_TOTE_HEIGHT, true);
+        bottom_carriage.setPositionSetpoint(CLEAR_TOTE_HEIGHT_LOW, true);
         waitForCarriageHeight(bottom_carriage, CLEAR_WHEELS_HEIGHT, true, 1.5);
 
         // Spinny thing (TM)
-        intake.setLeftRight(-.65, .65);
+        intake.setLeftRight(-Constants.kSpinnyThingSpeed, Constants.kSpinnyThingSpeed);
         waitForCarriageHeight(top_carriage, 30, true, 1.5);
 
         // Drive through can
@@ -87,31 +88,34 @@ public class ThreeToteAutoMode extends AutoMode {
 
         // grab last tote
         intake.close();
-        waitForDrive(1.0);
+        waitForTote(10.0); // die if no tote
+        waitForDrive(.5);
 
         // Turn towards auto zone
         double last_angle = heading_cache + (Math.PI / 2.9);
         drive.setTurnSetPoint(last_angle);
-        waitForTote(1.0);
-        bottom_carriage.setFastPositionSetpoint(1.5);
-        waitForCarriage(bottom_carriage, 1.5);
-        bottom_carriage.setPositionSetpoint(CLEAR_GROUND_HEIGHT, true);
-        waitForCarriageHeight(bottom_carriage, CLEAR_GROUND_HEIGHT - 1, true, 1.5);
         waitForTurnAngle(last_angle - .13, true, 1.0);
 
         //  drive forwards to auto zone
         drive.reset();
-        drive.setDistanceSetpoint(112);
+        drive.setDistanceSetpoint(118);
 
-        waitForDriveDistance(107, true, 2.0);
+        waitForDriveDistance(117.5, true, 2.0);
+
+        double time_until_safe_drive_away = SAFE_DRIVE_AWAY_TIME - autoModeTimer.get();
+        if (time_until_safe_drive_away > 0) {
+            waitTime(time_until_safe_drive_away);
+        }
 
         // Drop
         double top_carriage_height_end = top_carriage.getHeight();
-        top_carriage.setFastPositionSetpoint(top_carriage_height_end + 15);
-        intake.open();
-        bottom_carriage.setFastPositionSetpoint(2.0);
+        top_carriage.setFastPositionSetpoint(top_carriage_height_end + 5);
 
-        waitForCarriageHeight(bottom_carriage, 2.5, false, 1.0);
+        bottom_carriage.setFastPositionSetpoint(2.0);
+        waitForCarriageHeight(bottom_carriage, 3, false, 1.0);
+        
+        intake.open();
+        intake.setSpeed(0);
         bottom_carriage.setFlapperOpen(true);
 
         waitForCarriageHeight(top_carriage, top_carriage_height_end + 4, true, 1.0);
@@ -120,7 +124,7 @@ public class ThreeToteAutoMode extends AutoMode {
         drive.setDistanceSetpoint(75);
         waitForDrive(2.0);
 
-        System.out.println("Auto time: " + t.get());
+        System.out.println("Auto time: " + autoModeTimer.get());
 
     }
 }

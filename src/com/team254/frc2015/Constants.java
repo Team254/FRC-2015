@@ -17,6 +17,7 @@ public class Constants extends ConstantsBase {
     public static double kCoopIntakeSpeed = .4;
     public static double kCanIntakeSlowSpeed = .25;
     public static double kCanIntakeSpeed = .3;
+    public static double kSpinnyThingSpeed = .5;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;

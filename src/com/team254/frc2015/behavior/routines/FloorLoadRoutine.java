@@ -21,6 +21,7 @@ public class FloorLoadRoutine extends Routine {
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();
     private static final double TOTE_CLEAR_POS = 17.75;
+    private static final double WHEEL_CUTOFF_HEIGHT = 15;
     private static final double REGRASP_POS = 10;
     private static final double TOTE_GRAB_POS = 1.5;
     private boolean m_moved_down_once = false;
@@ -43,13 +44,9 @@ public class FloorLoadRoutine extends Routine {
         if (m_state != States.START && m_state != States.MOVE_TO_STARTING_POS) {
             setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
         }
-        if (commands.roller_request == Commands.RollerRequest.INTAKE) {
-            setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
-        } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
-            setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
-        } else {
-            setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
-        }
+
+        setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE;
+
         boolean should_vent = false;
 
         switch (m_state) {
@@ -93,6 +90,9 @@ public class FloorLoadRoutine extends Routine {
                 if (m_is_new_state) {
                     bottom_carriage.setFastPositionSetpoint(TOTE_CLEAR_POS);
                 }
+                if (bottom_carriage.getHeight() < WHEEL_CUTOFF_HEIGHT) {
+                    setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
+                }
                 if (bottom_carriage.isOnTarget() || m_state_timer.get() > 2.0) {
                     m_moved_down_once = true;
                     new_state = States.WAIT_FOR_TOTE;
@@ -111,6 +111,12 @@ public class FloorLoadRoutine extends Routine {
                     new_state = States.MOVE_DOWN;
                 }
                 break;
+        }
+
+        if (commands.roller_request == Commands.RollerRequest.INTAKE) {
+            setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
+        } else if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
+            setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST;
         }
 
         if (m_state != States.MOVE_TO_STARTING_POS) {
