@@ -1,6 +1,5 @@
 package com.team254.frc2015.auto.modes;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import com.team254.frc2015.Constants;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;

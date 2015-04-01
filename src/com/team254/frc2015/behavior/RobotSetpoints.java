@@ -50,6 +50,7 @@ public class RobotSetpoints {
     public Optional<Double> top_open_loop_jog;
     public Optional<Double> bottom_open_loop_jog;
     public boolean top_carriage_squeeze;
+    public boolean deploy_peacock;
 
     public void reset() {
         m_elevator_setpoints.bottom_setpoint = m_nullopt;
@@ -64,5 +65,6 @@ public class RobotSetpoints {
         top_open_loop_jog = m_nullopt;
         bottom_open_loop_jog = m_nullopt;
         top_carriage_squeeze = false;
+        deploy_peacock = false;
     }
 }

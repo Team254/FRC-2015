@@ -1,9 +1,6 @@
 package com.team254.frc2015;
 
-import com.team254.frc2015.subsystems.BottomCarriage;
-import com.team254.frc2015.subsystems.Drive;
-import com.team254.frc2015.subsystems.Intake;
-import com.team254.frc2015.subsystems.TopCarriage;
+import com.team254.frc2015.subsystems.*;
 import com.team254.lib.util.CheesyCompressor;
 import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.CheesySpeedController;
@@ -76,6 +73,8 @@ public class HardwareAdaptor {
             Constants.kCoopSolenoidPort);
     static CheesySolenoid kPinballWizardSolenoid = new CheesySolenoid(
             Constants.kPinballWizardSolenoidPort);
+    static CheesySolenoid kPeacockSolenoid = new CheesySolenoid(
+            Constants.kPeacockSolenoidPort);
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
@@ -97,6 +96,7 @@ public class HardwareAdaptor {
             kBottomCarriageFlapperSolenoid);
     public static Intake kIntake = new Intake("intake", kIntakeSolenoid, kCoopSolenoid, kPinballWizardSolenoid,
             kLeftIntakeMotor, kRightIntakeMotor, kBreakbeamIntake);
+    public static Peacock kPeacock = new Peacock(kPeacockSolenoid);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     // Compressor

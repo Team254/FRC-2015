@@ -14,10 +14,13 @@ public class Constants extends ConstantsBase {
     public static double kManualExhaustSpeed = .6;
 
     public static double kAutoIntakeSpeed = 1.0;
-    public static double kCoopIntakeSpeed = .4;
+    public static double kCoopIntakeSpeed = .55;
     public static double kCanIntakeSlowSpeed = .25;
     public static double kCanIntakeSpeed = .3;
     public static double kSpinnyThingSpeed = .5;
+
+    // Auto mode stuff
+    public static double kPeacockDriveDelayTime = .3;
 
     // Elevator carriage TrajectoryFollowingPositionController gains
     public static double kElevatorCarriagePositionKp = 1.0;
@@ -53,7 +56,7 @@ public class Constants extends ConstantsBase {
 
     // Height presets
     public static double kCoopTopHeight = 40;
-    public static double kCoopBottomHeight = 11.0;
+    public static double kCoopBottomHeight = 10.75;
 
     public static double kCanPickupStartTopHeight = 21.;
     public static double kCanPickupStartBottomHeight = 6.75;
@@ -122,6 +125,7 @@ public class Constants extends ConstantsBase {
     public static int kIntakeSolenoidPort = 2;
     public static int kCoopSolenoidPort = 8;
     public static int kPinballWizardSolenoidPort = 5;
+    public static int kPeacockSolenoidPort = 4;
 
 
     // Relays

@@ -94,7 +94,6 @@ public class OperatorInterface {
 
         if (coopLatch.update(buttonBoard.getY() < 0)) { // Button 5
             m_commands.preset_request = Commands.PresetRequest.COOP;
-        } else if (buttonBoard.getZ() < 0) { // Button 4
         } else if (buttonBoard.getRawButton(5)) { // Button 2
             m_commands.preset_request = Commands.PresetRequest.SCORE;
         } else if (buttonBoard.getRawButton(4)) { // Button 1
@@ -121,6 +120,7 @@ public class OperatorInterface {
         }
 
         m_commands.floor_load_mode = buttonBoard.getRawAxis(3) > 0.1;
+        m_commands.deploy_peacock = buttonBoard.getZ() < 0; // button 4;
 
         return m_commands;
     }

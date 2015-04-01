@@ -4,10 +4,7 @@ import com.team254.frc2015.Constants;
 import com.team254.frc2015.ElevatorSafety;
 import com.team254.frc2015.HardwareAdaptor;
 import com.team254.frc2015.behavior.routines.*;
-import com.team254.frc2015.subsystems.BottomCarriage;
-import com.team254.frc2015.subsystems.Drive;
-import com.team254.frc2015.subsystems.Intake;
-import com.team254.frc2015.subsystems.TopCarriage;
+import com.team254.frc2015.subsystems.*;
 import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Tappable;
 
@@ -23,6 +20,7 @@ public class BehaviorManager implements Tappable {
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
     protected Intake intake = HardwareAdaptor.kIntake;
+    protected Peacock peacock = HardwareAdaptor.kPeacock;
 
     private boolean m_top_jogging = false;
     private boolean m_bottom_jogging = false;
@@ -226,6 +224,9 @@ public class BehaviorManager implements Tappable {
 
         // Pinball wizard
         intake.setPinballWizardOut(m_setpoints.pinball_wizard_action == RobotSetpoints.PinballWizardAction.EXTEND);
+
+        // Peacock
+        peacock.setDown(m_setpoints.deploy_peacock);
     }
 
     @Override

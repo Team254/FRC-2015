@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public class CoopRoutine extends Routine {
     public enum States {
-        START, RAISE_TO_HEIGHT, EXHAUST_ME_MAYBE, PUSH_OUT
+        START, RAISE_TO_HEIGHT, EXHAUST_ME_MAYBE, PUSH_OUT, OPEN_AND_WAIT
     }
 
     public States m_state = States.START;
@@ -56,8 +56,16 @@ public class CoopRoutine extends Routine {
                 setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
                 setpoints.coop_pusher_action = RobotSetpoints.CoopPusherAction.EXTEND;
 
-                if (m_state_timer.get() > .8 && commands.roller_request != Commands.RollerRequest.EXHAUST) {
-                    new_state = States.EXHAUST_ME_MAYBE;
+                if (m_state_timer.get() > .75 && commands.roller_request != Commands.RollerRequest.EXHAUST) {
+                    new_state = States.OPEN_AND_WAIT;
+                }
+                break;
+            case OPEN_AND_WAIT:
+                setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
+                setpoints.roller_action = RobotSetpoints.RollerAction.STOP;
+                if (commands.roller_request == Commands.RollerRequest.EXHAUST) {
+                    setpoints.roller_action = RobotSetpoints.RollerAction.EXHAUST_COOP;
+                    setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
                 }
                 break;
             default:

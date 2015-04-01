@@ -12,6 +12,7 @@ public abstract class AutoMode extends AutoModeBase {
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
     protected PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
     protected Intake intake = HardwareAdaptor.kIntake;
+    protected Peacock peacock = HardwareAdaptor.kPeacock;
 
     public void waitTime(double seconds) throws AutoModeEndedException {
         runAction(new TimeoutAction(seconds));

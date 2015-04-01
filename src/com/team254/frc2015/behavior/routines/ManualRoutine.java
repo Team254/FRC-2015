@@ -89,6 +89,8 @@ public class ManualRoutine extends Routine {
             }
         }
 
+        setpoints.deploy_peacock = commands.deploy_peacock;
+
         return setpoints;
     }
 

@@ -52,4 +52,5 @@ public class Commands {
     public VerticalCanGrabberRequests vertical_can_grab_request;
     public boolean floor_load_mode = false;
     public boolean cancel_current_routine = false;
+    public boolean deploy_peacock = false;
 }

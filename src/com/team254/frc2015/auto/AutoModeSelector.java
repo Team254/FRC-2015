@@ -1,9 +1,6 @@
 package com.team254.frc2015.auto;
 
-import com.team254.frc2015.auto.modes.DoNothingAutoMode;
-import com.team254.frc2015.auto.modes.TestDriveAutoMode;
-import com.team254.frc2015.auto.modes.ThreeBinNoCanAutoMode;
-import com.team254.frc2015.auto.modes.ThreeToteAutoMode;
+import com.team254.frc2015.auto.modes.*;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
@@ -25,10 +22,8 @@ public class AutoModeSelector {
     }
 
     public AutoModeSelector() {
-        //registerAutonomous(new TestDriveAutoMode());
         registerAutonomous(new ThreeToteAutoMode());
-        registerAutonomous(new TestDriveAutoMode());
-        registerAutonomous(new ThreeBinNoCanAutoMode());
+        registerAutonomous(new PeacockAutoMode());
         registerAutonomous(new DoNothingAutoMode());
     }
 
