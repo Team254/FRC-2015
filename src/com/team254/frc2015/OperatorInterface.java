@@ -120,7 +120,7 @@ public class OperatorInterface {
         }
 
         m_commands.floor_load_mode = buttonBoard.getRawAxis(3) > 0.1;
-        m_commands.deploy_peacock = buttonBoard.getZ() < 0; // button 4;
+        m_commands.deploy_peacock = buttonBoard.getRawButton(11) && buttonBoard.getZ() < 0; // button 4;
 
         return m_commands;
     }
