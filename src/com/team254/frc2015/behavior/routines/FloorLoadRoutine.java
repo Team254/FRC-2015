@@ -14,7 +14,7 @@ import java.util.Optional;
 public class FloorLoadRoutine extends Routine {
 
     public enum States {
-        START, MOVE_TO_STARTING_POS, WAIT_FOR_TOTE, MOVE_DOWN, MOVE_UP, DONE
+        START, MOVE_TO_STARTING_POS, WAIT_FOR_TOTE, MOVE_DOWN, MOVE_UP, PUSH_TOP_DOWN, DONE
     }
 
     private States m_state = States.START;
@@ -102,6 +102,15 @@ public class FloorLoadRoutine extends Routine {
                 }
                 should_vent = !m_moved_down_once && (bottom_carriage.getHeight() < REGRASP_POS);
                 break;
+            case PUSH_TOP_DOWN:
+                setpoints.bottom_open_loop_jog = Optional.of(0.0);
+                if (m_state_timer.get() > .1) {
+                    setpoints.top_open_loop_jog = Optional.of(-0.5);
+                }
+                if (m_state_timer.get() > .25) {
+                    new_state = States.DONE;
+                }
+                break;
             case DONE:
                 if (m_is_new_state) {
                     setpoints.bottom_open_loop_jog = Optional.of(0.0);
@@ -125,16 +134,15 @@ public class FloorLoadRoutine extends Routine {
 
         if (m_state == States.MOVE_UP && bottom_carriage.fastHitTop()) {
             System.out.println("Hit top - floor load, moving to DONE");
-            new_state = States.DONE;
+            new_state = States.PUSH_TOP_DOWN;
         }
 
-        if (m_stalled_motor.update(m_state == States.MOVE_UP && bottom_carriage.getEncoderVelocity() < 8.0, 1.5)) {
+        if (m_stalled_motor.update(m_state == States.MOVE_UP && bottom_carriage.getEncoderVelocity() < 5.0, 1.25)) {
             System.out.println("Stalled motor!");
             new_state = States.DONE;
         }
 
-
-        setpoints.top_carriage_squeeze = do_squeeze;
+        setpoints.top_carriage_squeeze = do_squeeze && !setpoints.top_open_loop_jog.isPresent();
         setpoints.claw_action = should_vent ? RobotSetpoints.TopCarriageClawAction.NEUTRAL : RobotSetpoints.TopCarriageClawAction.CLOSE;
 
         m_is_new_state = false;

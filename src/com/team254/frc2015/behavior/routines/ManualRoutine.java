@@ -18,13 +18,13 @@ public class ManualRoutine extends Routine {
 
     @Override
     public RobotSetpoints update(Commands commands, RobotSetpoints setpoints) {
-        // Turn off jog
-        setpoints.bottom_open_loop_jog = m_nullopt;
-        setpoints.top_open_loop_jog = m_nullopt;
-
         // Set jogs
-        setpoints.bottom_open_loop_jog = commands.bottom_jog;
-        setpoints.top_open_loop_jog = commands.top_jog;
+        if (!setpoints.bottom_open_loop_jog.isPresent()) {
+            setpoints.bottom_open_loop_jog = commands.bottom_jog;
+        }
+        if (!setpoints.top_open_loop_jog.isPresent()) {
+            setpoints.top_open_loop_jog = commands.top_jog;
+        }
 
         // Top carriage actions.
 
