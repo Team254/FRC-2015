@@ -64,7 +64,6 @@ public class Robot extends IterativeRobot {
         looper.addLoopable(bottom_carriage);
         slowLooper.addLoopable(drive);
         logUpdater.start();
-        HardwareAdaptor.kTopCarriage.findHome();
         SystemManager.getInstance().add(behavior_manager);
     }
 
@@ -72,6 +71,10 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         setState(RobotState.AUTONOMOUS);
         System.out.println("Start autonomousInit()");
+
+        if (!top_carriage.isInitialized()) {
+            top_carriage.findHome();
+        }
 
         HardwareAdaptor.kGyroThread.rezero();
         HardwareAdaptor.kGyroThread.reset();
@@ -94,6 +97,11 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
         setState(RobotState.TELEOP);
+
+        if (!top_carriage.isInitialized()) {
+            top_carriage.findHome();
+        }
+
         System.out.println("Start teleopInit()");
 
         looper.start();

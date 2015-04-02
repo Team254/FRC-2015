@@ -14,10 +14,10 @@ public class Constants extends ConstantsBase {
     public static double kManualExhaustSpeed = .6;
 
     public static double kAutoIntakeSpeed = 1.0;
-    public static double kCoopIntakeSpeed = .55;
+    public static double kCoopIntakeSpeed = .5;
     public static double kCanIntakeSlowSpeed = .25;
     public static double kCanIntakeSpeed = .3;
-    public static double kSpinnyThingSpeed = .5;
+    public static double kSpinnyThingSpeed = .65;
 
     // Auto mode stuff
     public static double kPeacockDriveDelayTime = .3;
@@ -125,7 +125,7 @@ public class Constants extends ConstantsBase {
     public static int kIntakeSolenoidPort = 2;
     public static int kCoopSolenoidPort = 8;
     public static int kPinballWizardSolenoidPort = 5;
-    public static int kPeacockSolenoidPort = 4;
+    public static int kPeacockSolenoidPort = 11;
 
 
     // Relays

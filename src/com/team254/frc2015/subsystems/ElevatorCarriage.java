@@ -31,6 +31,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
                 m_zero_offset = getRelativeHeight();
                 m_initialized = true;
                 disableInterrupts();
+                System.out.println("Interrupt hit! " + m_zero_offset);
             }
         }
 
@@ -62,12 +63,13 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     }
 
     public ElevatorCarriage(String name, CheesySpeedController motor,
-                            Solenoid brake, Encoder encoder, DigitalInput home) {
+                            Solenoid brake, Encoder encoder, DigitalInput home, boolean needs_init) {
         super(name);
         m_motor = motor;
         m_brake = brake;
         m_encoder = encoder;
         m_home = home;
+        m_initialized = !needs_init;
         reloadConstants();
     }
 
@@ -303,6 +305,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         states.put("home_dio", getHomeSensorHovered());
         states.put("current", m_motor.getSignedCurrent());
         states.put("pwm", m_motor.get());
+        states.put("intialized", m_initialized);
     }
 
     public boolean getHomeSensorHovered() {
