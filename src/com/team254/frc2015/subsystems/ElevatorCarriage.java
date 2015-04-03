@@ -22,6 +22,7 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
     protected boolean m_initialized = true;
     protected double m_zero_offset = 0;
     private boolean m_fast_hit_top = false;
+    private boolean m_interrupts_on = false;
 
     protected ChezyInterruptHandlerFunction<ElevatorCarriage> isr = new ChezyInterruptHandlerFunction<ElevatorCarriage>() {
         @Override
@@ -41,15 +42,25 @@ public class ElevatorCarriage extends Subsystem implements Loopable {
         }
     };
 
-    public void findHome() {
-        m_initialized = false;
-        m_home.requestInterrupts(isr);
-        m_home.setUpSourceEdge(false, true); // Pulled high be default, need falling edge
-        m_home.enableInterrupts();
+    private void enableInterrupts() {
+        if (!m_interrupts_on) {
+            m_home.requestInterrupts(isr);
+            m_home.setUpSourceEdge(false, true); // Pulled high be default, need falling edge
+            m_interrupts_on = true;
+            m_home.enableInterrupts();
+        } else {
+            System.err.println("You done goofed. Don't request interrupts twice!");
+        }
     }
 
     public void disableInterrupts() {
         m_home.disableInterrupts();
+        m_interrupts_on = false;
+    }
+
+    public void findHome() {
+        m_initialized = false;
+        enableInterrupts();
     }
 
     protected Limits m_limits = new Limits();
