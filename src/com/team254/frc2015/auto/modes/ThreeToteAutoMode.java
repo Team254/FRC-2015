@@ -97,9 +97,9 @@ public class ThreeToteAutoMode extends AutoMode {
 
         //  drive forwards to auto zone
         drive.reset();
-        drive.setDistanceSetpoint(118);
+        drive.setDistanceSetpoint(130);
 
-        waitForDriveDistance(117.5, true, 2.0);
+        waitForDriveDistance(129.5, true, 2.0);
 
         double time_until_safe_drive_away = SAFE_DRIVE_AWAY_TIME - autoModeTimer.get();
         if (time_until_safe_drive_away > 0) {
@@ -120,7 +120,7 @@ public class ThreeToteAutoMode extends AutoMode {
         waitForCarriageHeight(top_carriage, top_carriage_height_end + 4, true, 1.0);
 
         // Drive backwards
-        drive.setDistanceSetpoint(75);
+        drive.setDistanceSetpoint(90);
         waitForDrive(2.0);
 
         System.out.println("Auto time: " + autoModeTimer.get());
