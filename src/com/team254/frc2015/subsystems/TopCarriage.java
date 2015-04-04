@@ -18,7 +18,7 @@ public class TopCarriage extends ElevatorCarriage {
     public TopCarriage(String name, CheesySpeedController motor,
                        Solenoid brake, Encoder encoder, DigitalInput home, Solenoid pivot,
                        Solenoid grabber_open, Solenoid grabber_close, AnalogInput breakbeam) {
-        super(name, motor, brake, encoder, home, true);
+        super(name, motor, brake, encoder, home, false);
         m_pivot = pivot;
         m_grabber_open = grabber_open;
         m_grabber_close = grabber_close;
