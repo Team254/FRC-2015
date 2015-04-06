@@ -65,8 +65,6 @@ public class VerticalCanPickupRoutine extends Routine {
             setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
         }
 
-        System.out.println(m_state + " " + m_is_new_state + " " + m_state_timer.get());
-
         m_is_new_state = false;
         if (new_state != m_state) {
             m_state = new_state;
