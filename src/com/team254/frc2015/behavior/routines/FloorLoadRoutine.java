@@ -14,13 +14,13 @@ import java.util.Optional;
 public class FloorLoadRoutine extends Routine {
 
     public enum States {
-        START, MOVE_TO_STARTING_POS, WAIT_FOR_TOTE, MOVE_DOWN, MOVE_UP, PUSH_TOP_DOWN, DONE
+        START, MOVE_TO_STARTING_POS, WAIT_FOR_TOTE, CLAMP, MOVE_DOWN, MOVE_UP, PUSH_TOP_DOWN, DONE
     }
 
     private States m_state = States.START;
     private boolean m_is_new_state = true;
     Timer m_state_timer = new Timer();
-    private static final double TOTE_CLEAR_POS = 17.75;
+    private static final double TOTE_CLEAR_POS = 18.5;
     private static final double WHEEL_CUTOFF_HEIGHT = 15;
     private static final double REGRASP_POS = 10;
     private static final double TOTE_GRAB_POS = 1.5;
@@ -74,6 +74,16 @@ public class FloorLoadRoutine extends Routine {
                     new_state = States.MOVE_DOWN;
                 }
                 break;
+            case CLAMP:
+                do_squeeze = false;
+                setpoints.bottom_open_loop_jog = Optional.of(0.0);
+                if (m_state_timer.get() > .15) {
+                    new_state = States.WAIT_FOR_TOTE;
+                    setpoints.top_open_loop_jog = Optional.of(0.0);
+                } else {
+                    setpoints.top_open_loop_jog = Optional.of(-.55);
+                }
+                break;
             case MOVE_DOWN:
                 if (m_is_new_state) {
                     bottom_carriage.setFastPositionSetpoint(TOTE_GRAB_POS);
@@ -95,7 +105,7 @@ public class FloorLoadRoutine extends Routine {
                 }
                 if (bottom_carriage.isOnTarget() || m_state_timer.get() > 2.0) {
                     m_moved_down_once = true;
-                    new_state = States.WAIT_FOR_TOTE;
+                    new_state = States.CLAMP;
                 }
                 if (top_carriage.getHeight() - bottom_carriage.getHeight() < 1.9 && !top_carriage.getBreakbeamTriggered()) {
                     new_state = States.MOVE_TO_STARTING_POS;
