@@ -68,8 +68,13 @@ public class BehaviorManager implements Tappable {
         } else if (commands.floor_load_mode && !(m_cur_routine instanceof FloorLoadRoutine)) {
             setNewRoutine(new FloorLoadRoutine());
         } else if (!commands.floor_load_mode && m_cur_routine instanceof FloorLoadRoutine) {
-            setNewRoutine(null); // new AfterFloorClampRoutine() if clamping isnt working well!
-            m_setpoints.bottom_open_loop_jog = Optional.of(0.0);
+            FloorLoadRoutine flr = (FloorLoadRoutine) m_cur_routine;
+            if (!flr.isDoneWithSixStack()) {
+                setNewRoutine(new AfterFloorClampRoutine());
+            } else {
+                setNewRoutine(null);
+                m_setpoints.bottom_open_loop_jog = Optional.of(0.0);
+            }
         } else if (commands.preset_request == Commands.PresetRequest.SCORE && !(m_cur_routine instanceof ScoreRoutine)) {
             setNewRoutine(new ScoreRoutine());
         } else if (commands.preset_request == Commands.PresetRequest.CARRY_SQUEZE) {

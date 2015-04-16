@@ -113,12 +113,13 @@ public class FloorLoadRoutine extends Routine {
                 should_vent = !m_moved_down_once && (bottom_carriage.getHeight() < REGRASP_POS);
                 break;
             case PUSH_TOP_DOWN:
+                do_squeeze = false;
                 setpoints.bottom_open_loop_jog = Optional.of(0.0);
-                if (m_state_timer.get() > .1) {
-                    setpoints.top_open_loop_jog = Optional.of(-0.5);
-                }
-                if (m_state_timer.get() > .25) {
+                if (m_state_timer.get() > .15) {
                     new_state = States.DONE;
+                    setpoints.top_open_loop_jog = Optional.of(0.0);
+                } else {
+                    setpoints.top_open_loop_jog = Optional.of(-.55);
                 }
                 break;
             case DONE:
@@ -162,6 +163,10 @@ public class FloorLoadRoutine extends Routine {
             m_is_new_state = true;
         }
         return setpoints;
+    }
+
+    public boolean isDoneWithSixStack() {
+        return m_state == States.DONE;
     }
 
     @Override
