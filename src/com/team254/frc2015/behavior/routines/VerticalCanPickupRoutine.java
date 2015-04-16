@@ -56,7 +56,7 @@ public class VerticalCanPickupRoutine extends Routine {
             case CLOSE:
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-                if (m_state_timer.get() > .35) {
+                if (m_state_timer.get() > .1) {
                     new_state = States.MOVE_UP;
                 }
                 setpoints.pinball_wizard_action = RobotSetpoints.PinballWizardAction.EXTEND;
