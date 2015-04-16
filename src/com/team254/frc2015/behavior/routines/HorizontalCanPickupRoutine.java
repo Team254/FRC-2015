@@ -28,6 +28,10 @@ public class HorizontalCanPickupRoutine extends Routine {
         m_state = States.START;
     }
 
+    public boolean inRange(double current, double target, double error) {
+        return Math.abs(current - target) < error;
+    }
+
     @Override
     public RobotSetpoints update(Commands commands, RobotSetpoints existing_setpoints) {
         setpoints = existing_setpoints;
@@ -87,7 +91,8 @@ public class HorizontalCanPickupRoutine extends Routine {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(Constants.kCanPickupEndBottomHeight);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(Constants.kCanPickupEndTopHeight);
                 }
-                if (!m_is_new_state && top_carriage.isOnTarget() && bottom_carriage.isOnTarget()) {
+                if (!m_is_new_state && inRange(top_carriage.getHeight(), Constants.kCanPickupEndTopHeight, .5) &&
+                        inRange(bottom_carriage.getHeight(), Constants.kCanPickupEndBottomHeight, .5)) {
                     new_state = States.CLOSE_GRABBER;
                 }
                 if (m_state_timer.get() > 2.5) {
@@ -99,7 +104,7 @@ public class HorizontalCanPickupRoutine extends Routine {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.CLOSE;
                 setpoints.roller_action = RobotSetpoints.RollerAction.INTAKE_CAN_SLOW;
-                if (m_state_timer.get() > .3) {
+                if (m_state_timer.get() > .05) {
                     new_state = States.ROTATE_UP;
                 }
                 break;
@@ -108,7 +113,8 @@ public class HorizontalCanPickupRoutine extends Routine {
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
                 if (m_is_new_state) {
-                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(35.0);
+                    setpoints.m_elevator_setpoints.top_setpoint = Optional.of(30.0);
+                    setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.0);
                 }
                 if (!m_is_new_state && top_carriage.getHeight() > 25.0) {
                     new_state = States.DONE;
@@ -118,7 +124,7 @@ public class HorizontalCanPickupRoutine extends Routine {
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
                 setpoints.claw_action = RobotSetpoints.TopCarriageClawAction.CLOSE;
                 setpoints.intake_action = RobotSetpoints.IntakeAction.OPEN;
-                if (m_state_timer.get() > .4) {
+                if (m_state_timer.get() > .05) {
                     new_state = States.DRIVE_UP;
                 }
             default:

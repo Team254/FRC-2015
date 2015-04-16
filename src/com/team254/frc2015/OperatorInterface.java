@@ -56,7 +56,7 @@ public class OperatorInterface {
             } else if (buttonBoard.getRawButton(12)) { // Fast
                 m_commands.bottom_jog = Optional.of(Constants.kElevatorJogFastPwm);
             } else { // Medium
-                m_commands.bottom_jog = Optional.of(Constants.kElevatorJogMediumPwm);
+                m_commands.bottom_jog = Optional.of(Constants.kElevatorJogFastPwm); // disable old man mode
             }
         } else if (buttonBoard.getRawButton(10)) { // Bottom carriage jog down
             if (buttonBoard.getRawButton(11)) { // Slow
@@ -70,15 +70,15 @@ public class OperatorInterface {
             m_commands.bottom_jog = Optional.empty();
         }
 
-        if (buttonBoard.getRawButton(7)) {
+        if (buttonBoard.getRawButton(7)) { // top up
             if (buttonBoard.getRawButton(11)) { // Slow
                 m_commands.top_jog = Optional.of(Constants.kElevatorJogSlowPwm);
             } else if (buttonBoard.getRawButton(12)) { // Fast
                 m_commands.top_jog = Optional.of(Constants.kElevatorJogFastPwm);
             } else { // Medium
-                m_commands.top_jog = Optional.of(Constants.kElevatorJogMediumPwm);
+                m_commands.top_jog = Optional.of(Constants.kElevatorJogFastPwm); // disable old man mode
             }
-        } else if (buttonBoard.getRawButton(9)) {
+        } else if (buttonBoard.getRawButton(9)) { // top down
             if (buttonBoard.getRawButton(11)) { // Slow
                 m_commands.top_jog = Optional.of(-Constants.kElevatorJogSlowPwm);
             } else if (buttonBoard.getRawButton(12)) { // Fast

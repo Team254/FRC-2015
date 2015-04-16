@@ -67,8 +67,8 @@ public class Constants extends ConstantsBase {
     public static double kBreambeamVoltage = 1.0;
 
     // Common carriage parameters
-    public static double kElevatorMaxSpeedInchesPerSec = 70.0;
-    public static double kElevatorMaxAccelInchesPerSec2 = 100.0;
+    public static double kElevatorMaxSpeedInchesPerSec = 72.0;
+    public static double kElevatorMaxAccelInchesPerSec2 = 120.0;
 
     // !!! End of editable Constants! !!!
     public static int kEndEditableArea = 0;
@@ -134,11 +134,8 @@ public class Constants extends ConstantsBase {
     // !!! Physical constants
     public static double kElevatorPulleyRadiusInches = 0.564;
     public static double kElevatorEncoderCountsPerRev = 250.0;
-    public static double kTopCarriageHeight = 6.0;
     public static double kBottomCarriageHeight = 1.5;
-    public static double kDriveWheelRadius = 2.0;
-    public static double kWheelbaseWidth = 26.5;
-    public static double kTurnSlipFactor = 1.2;
+
 
     // !!! Program constants
     public static double kControlLoopsDt = 0.005;
