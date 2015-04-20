@@ -8,18 +8,19 @@ import com.team254.frc2015.auto.AutoModeEndedException;
  * Created by tombot on 4/1/15.
  */
 public class PeacockAutoMode extends AutoMode {
+
+    public PeacockAutoMode() {
+        m_update_rate = 1.0 / 200.0;
+    }
+
     @Override
     protected void routine() throws AutoModeEndedException {
         intake.open();
-        peacock.setDown(true);
-        waitTime(Constants.kPeacockDriveDelayTime);
-        drive.setDistanceSetpoint(105);
-        waitForDriveDistance(85, true, 5.0);
-        peacock.setDown(false);
-        waitForDrive(6);
-        if (!top_carriage.isInitialized()) {
-            top_carriage.setPositionSetpoint(top_carriage.getHeight() + 15, true);
-        }
-        peacock.setDown(false);
+        motorPeacock.setPowerTimeSetpoint(1.0, .1, .1, .7); // 100% for 100ms, ramp down to .1 over 70ms
+        waitTime(.1);
+        drive.reset();
+        drive.setDistanceSetpoint(98);
+        waitTime(10);
+        motorPeacock.disableControlLoop();
     }
 }

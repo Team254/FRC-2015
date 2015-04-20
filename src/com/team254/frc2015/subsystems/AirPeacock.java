@@ -7,12 +7,12 @@ import com.team254.lib.util.Subsystem;
 /**
  * Created by tombot on 4/1/15.
  */
-public class Peacock extends Subsystem {
+public class AirPeacock extends Subsystem {
 
     CheesySolenoid m_solenoid;
 
-    public Peacock(CheesySolenoid solenoid) {
-        super("Peacock");
+    public AirPeacock(CheesySolenoid solenoid) {
+        super("AirPeacock");
         m_solenoid = solenoid;
     }
 

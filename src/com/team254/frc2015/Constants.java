@@ -19,6 +19,8 @@ public class Constants extends ConstantsBase {
     public static double kCanIntakeSpeed = .3;
     public static double kSpinnyThingSpeed = .65;
 
+    public static double kPeacockUpManualPWM = .45;
+    public static double kPeacockDownManualPWM = .1;
     // Auto mode stuff
     public static double kPeacockDriveDelayTime = .3;
 
@@ -82,6 +84,11 @@ public class Constants extends ConstantsBase {
     public static int kRightDriveMotorPWM = 5;
     public static int kRightDriveMotor1PDP = 0;
     public static int kRightDriveMotor2PDP = 1;
+
+    public static int kLeftPeacockMotorPWM = 0;
+    public static int kLeftPeacockMotorPDP = 0;
+    public static int kRightPeacockMotorPWM = 9;
+    public static int kRightPeacockMotorPDP = 0;
 
     public static int kTopCarriageMotor1PWM = 2;
     public static int kTopCarriageMotor2PWM = 3;

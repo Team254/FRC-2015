@@ -20,7 +20,8 @@ public class BehaviorManager implements Tappable {
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     protected BottomCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
     protected Intake intake = HardwareAdaptor.kIntake;
-    protected Peacock peacock = HardwareAdaptor.kPeacock;
+    protected AirPeacock airPeacock = HardwareAdaptor.kAirPeacock;
+    protected MotorPeacock motorPeacock = HardwareAdaptor.kMotorPeacock;
 
     private boolean m_top_jogging = false;
     private boolean m_bottom_jogging = false;
@@ -224,6 +225,24 @@ public class BehaviorManager implements Tappable {
             intake.setSpeed(0.0);
         }
 
+        // Motor peacock - use commands because this is only open loop
+        // Down is positive pwm
+        double leftPeacockSpeed = 0;
+        if (commands.left_motor_peacock_requests == Commands.MotorPeacockRequests.MOVE_UP) {
+            leftPeacockSpeed = -Constants.kPeacockUpManualPWM;
+        } else if (commands.left_motor_peacock_requests == Commands.MotorPeacockRequests.MOVE_DOWN) {
+            leftPeacockSpeed = Constants.kPeacockDownManualPWM;
+        }
+
+        double rightPeacockSpeed = 0;
+        if (commands.right_motor_peacock_requests == Commands.MotorPeacockRequests.MOVE_UP) {
+            rightPeacockSpeed = -Constants.kPeacockUpManualPWM;
+        } else if (commands.right_motor_peacock_requests == Commands.MotorPeacockRequests.MOVE_DOWN) {
+            rightPeacockSpeed = Constants.kPeacockDownManualPWM;
+        }
+
+        motorPeacock.setOpenLoop(leftPeacockSpeed, rightPeacockSpeed);
+
         // Pusher
         intake.setCoopPusherOut(m_setpoints.coop_pusher_action == RobotSetpoints.CoopPusherAction.EXTEND);
 
@@ -231,7 +250,7 @@ public class BehaviorManager implements Tappable {
         intake.setPinballWizardOut(m_setpoints.pinball_wizard_action == RobotSetpoints.PinballWizardAction.EXTEND);
 
         // Peacock
-        peacock.setDown(m_setpoints.deploy_peacock);
+        airPeacock.setDown(m_setpoints.deploy_peacock);
     }
 
     @Override

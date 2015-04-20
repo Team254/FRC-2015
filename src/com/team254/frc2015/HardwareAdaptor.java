@@ -35,6 +35,12 @@ public class HardwareAdaptor {
     static CheesySpeedController kRightIntakeMotor = new CheesySpeedController(
             new VictorSP(Constants.kRightIntakeMotorPWM),
             Constants.kRightIntakeMotorPDP);
+    static CheesySpeedController kLeftPeacockMotor = new CheesySpeedController(
+            new VictorSP(Constants.kLeftPeacockMotorPWM),
+            Constants.kLeftPeacockMotorPDP);
+    static CheesySpeedController kRightPeacockMotor = new CheesySpeedController(
+            new VictorSP(Constants.kRightPeacockMotorPWM),
+            Constants.kRightPeacockMotorPDP);
 
     // DIO
     static Encoder kLeftDriveEncoder = new Encoder(
@@ -96,7 +102,8 @@ public class HardwareAdaptor {
             kBottomCarriageFlapperSolenoid);
     public static Intake kIntake = new Intake("intake", kIntakeSolenoid, kCoopSolenoid, kPinballWizardSolenoid,
             kLeftIntakeMotor, kRightIntakeMotor, kBreakbeamIntake);
-    public static Peacock kPeacock = new Peacock(kPeacockSolenoid);
+    public static AirPeacock kAirPeacock = new AirPeacock(kPeacockSolenoid);
+    public static MotorPeacock kMotorPeacock = new MotorPeacock(kLeftPeacockMotor, kRightPeacockMotor);
     public static PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
     // Compressor

@@ -5,6 +5,7 @@ import com.team254.frc2015.auto.AutoModeSelector;
 import com.team254.frc2015.behavior.BehaviorManager;
 import com.team254.frc2015.subsystems.Drive;
 import com.team254.frc2015.subsystems.ElevatorCarriage;
+import com.team254.frc2015.subsystems.MotorPeacock;
 import com.team254.frc2015.web.WebServer;
 import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Looper;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
     Drive drive = HardwareAdaptor.kDrive;
     ElevatorCarriage top_carriage = HardwareAdaptor.kTopCarriage;
     ElevatorCarriage bottom_carriage = HardwareAdaptor.kBottomCarriage;
+    MotorPeacock motor_peacock = HardwareAdaptor.kMotorPeacock;
     PowerDistributionPanel pdp = HardwareAdaptor.kPDP;
 
     BehaviorManager behavior_manager = new BehaviorManager();
@@ -62,6 +64,7 @@ public class Robot extends IterativeRobot {
         WebServer.startServer();
         looper.addLoopable(top_carriage);
         looper.addLoopable(bottom_carriage);
+        looper.addLoopable(motor_peacock);
         slowLooper.addLoopable(drive);
         logUpdater.start();
         SystemManager.getInstance().add(behavior_manager);

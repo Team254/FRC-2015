@@ -9,6 +9,7 @@ public class AutoModeSelector {
     private static AutoModeSelector instance = null;
     private ArrayList<AutoMode> autoModes = new ArrayList<AutoMode>();
     int selectedIndex = 0;
+    private boolean m_locked = false;
 
     public static AutoModeSelector getInstance() {
         if (instance == null) {
@@ -45,7 +46,21 @@ public class AutoModeSelector {
         return list;
     }
 
-    public void setAutoModeByIndex(int which) {
+    public void setFromSwitch(int index) {
+        if (!m_locked) {
+            setAutoModeByIndex(index);
+        }
+    }
+
+    public void setFromWebUI(int index) {
+        setAutoModeByIndex(index);
+        m_locked = true;
+    }
+
+    private void setAutoModeByIndex(int which) {
+        if (which < 0 || which >= autoModes.size()) {
+            which = 0;
+        }
         selectedIndex = which;
     }
 

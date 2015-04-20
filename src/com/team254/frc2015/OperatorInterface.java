@@ -97,7 +97,7 @@ public class OperatorInterface {
         } else if (buttonBoard.getRawButton(5)) { // Button 2
             m_commands.preset_request = Commands.PresetRequest.SCORE;
         } else if (buttonBoard.getRawButton(4)) { // Button 1
-            m_commands.preset_request = Commands.PresetRequest.CARRY_SQUEZE;
+            //m_commands.preset_request = Commands.PresetRequest.CARRY_SQUEZE;
         } else {
             m_commands.preset_request = Commands.PresetRequest.NONE;
         }
@@ -121,6 +121,26 @@ public class OperatorInterface {
 
         m_commands.floor_load_mode = buttonBoard.getRawAxis(3) > 0.1;
         m_commands.deploy_peacock = buttonBoard.getRawButton(11) && buttonBoard.getZ() < 0; // button 4;
+
+        if (buttonBoard.getZ() < 0) { // left motor peacock
+            if (buttonBoard.getRawButton(11)) {
+                m_commands.left_motor_peacock_requests = Commands.MotorPeacockRequests.MOVE_DOWN;
+            } else {
+                m_commands.left_motor_peacock_requests = Commands.MotorPeacockRequests.MOVE_UP;
+            }
+        } else {
+            m_commands.left_motor_peacock_requests = Commands.MotorPeacockRequests.NONE;
+        }
+
+        if (buttonBoard.getRawButton(4)) { // right motor peacock
+            if (buttonBoard.getRawButton(11)) {
+                m_commands.right_motor_peacock_requests = Commands.MotorPeacockRequests.MOVE_DOWN;
+            } else {
+                m_commands.right_motor_peacock_requests = Commands.MotorPeacockRequests.MOVE_UP;
+            }
+        } else {
+            m_commands.right_motor_peacock_requests = Commands.MotorPeacockRequests.NONE;
+        }
 
         return m_commands;
     }

@@ -39,6 +39,10 @@ public class Commands {
         NONE, ACTIVATE
     }
 
+    public enum MotorPeacockRequests {
+        NONE, MOVE_UP, MOVE_DOWN
+    }
+
     public ElevatorMode elevator_mode;
     public PresetRequest preset_request;
     public Optional<Double> top_jog = Optional.empty();
@@ -50,6 +54,8 @@ public class Commands {
     public BottomCarriageFlapperRequest bottom_carriage_flapper_request;
     public HorizontalCanGrabberRequests horizontal_can_grabber_request;
     public VerticalCanGrabberRequests vertical_can_grab_request;
+    public MotorPeacockRequests left_motor_peacock_requests;
+    public MotorPeacockRequests right_motor_peacock_requests;
     public boolean floor_load_mode = false;
     public boolean cancel_current_routine = false;
     public boolean deploy_peacock = false;

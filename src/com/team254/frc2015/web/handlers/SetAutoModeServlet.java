@@ -18,7 +18,7 @@ public class SetAutoModeServlet extends HttpServlet {
         if (request.getParameterMap().containsKey("mode")) {
             String[] mode = request.getParameterMap().get("mode");
             if (Integer.parseInt(mode[0]) < AutoModeSelector.getInstance().getAutoModeList().size() && Integer.parseInt(mode[0]) >= 0) {
-                AutoModeSelector.getInstance().setAutoModeByIndex(Integer.parseInt(mode[0]));
+                AutoModeSelector.getInstance().setFromWebUI(Integer.parseInt(mode[0]));
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println("\"Set auto mode to mode index " + mode[0] + "\"");
             } else {
