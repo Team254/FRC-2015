@@ -14,4 +14,9 @@ public class TestDriveAutoMode extends AutoMode {
         drive.setPathSetpoint(new ThreeBinPath());
 
     }
+
+    @Override
+    public void prestart() {
+
+    }
 }

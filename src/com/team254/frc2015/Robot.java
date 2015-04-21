@@ -1,5 +1,6 @@
 package com.team254.frc2015;
 
+import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeExecuter;
 import com.team254.frc2015.auto.AutoModeSelector;
 import com.team254.frc2015.behavior.BehaviorManager;
@@ -73,8 +74,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         setState(RobotState.AUTONOMOUS);
-        System.out.println("Start autonomousInit()");
-
         if (!top_carriage.isInitialized()) {
             top_carriage.findHome();
         }
@@ -84,8 +83,10 @@ public class Robot extends IterativeRobot {
 
         HardwareAdaptor.kLeftDriveEncoder.reset();
         HardwareAdaptor.kRightDriveEncoder.reset();
-        autoModeRunner.setAutoMode(AutoModeSelector.getInstance().getAutoMode());
-        System.out.println("Starting auto mode of name" + AutoModeSelector.getInstance().getAutoMode().getClass().getName());
+        AutoMode mode = AutoModeSelector.getInstance().getAutoMode();
+        autoModeRunner.setAutoMode(mode);
+        // Prestart auto mode
+        mode.prestart();
 
         // Start control loops
         autoModeRunner.start();

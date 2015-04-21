@@ -15,12 +15,16 @@ public class PeacockAutoMode extends AutoMode {
 
     @Override
     protected void routine() throws AutoModeEndedException {
-        intake.open();
-        motorPeacock.setPowerTimeSetpoint(1.0, .1, .1, .7); // 100% for 100ms, ramp down to .1 over 70ms
         waitTime(.1);
         drive.reset();
         drive.setDistanceSetpoint(98);
         waitTime(10);
         motorPeacock.disableControlLoop();
+    }
+
+    @Override
+    public void prestart() {
+        motorPeacock.setPowerTimeSetpoint(1.0, .1, .1, .7); // 100% for 100ms, ramp down to .1 over 70ms
+        intake.open();
     }
 }

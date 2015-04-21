@@ -11,4 +11,9 @@ public class DoNothingAutoMode extends AutoMode {
     protected void routine() throws AutoModeEndedException {
 
     }
+
+    @Override
+    public void prestart() {
+
+    }
 }

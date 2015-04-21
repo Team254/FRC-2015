@@ -126,4 +126,9 @@ public class ThreeToteAutoMode extends AutoMode {
         System.out.println("Auto time: " + autoModeTimer.get());
 
     }
+
+    @Override
+    public void prestart() {
+
+    }
 }

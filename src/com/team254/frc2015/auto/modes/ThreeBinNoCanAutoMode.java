@@ -94,4 +94,9 @@ public class ThreeBinNoCanAutoMode extends AutoMode {
 
 
     }
+
+    @Override
+    public void prestart() {
+
+    }
 }
