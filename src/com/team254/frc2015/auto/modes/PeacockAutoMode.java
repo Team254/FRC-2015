@@ -4,9 +4,6 @@ import com.team254.frc2015.Constants;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
 
-/**
- * Created by tombot on 4/1/15.
- */
 public class PeacockAutoMode extends AutoMode {
 
     public PeacockAutoMode() {
@@ -15,16 +12,18 @@ public class PeacockAutoMode extends AutoMode {
 
     @Override
     protected void routine() throws AutoModeEndedException {
-        waitTime(.1);
+        waitTime(.07); // 6ms before drive
         drive.reset();
-        drive.setDistanceSetpoint(98);
+        drive.setFinishLineSetpoint(50, 0);
+        waitForDrive(5);
+        drive.setDistanceSetpoint(95);
         waitTime(10);
         motorPeacock.disableControlLoop();
     }
 
     @Override
     public void prestart() {
-        motorPeacock.setPowerTimeSetpoint(1.0, .1, .1, .7); // 100% for 100ms, ramp down to .1 over 70ms
+        motorPeacock.setPowerTimeSetpoint(1.0, .15, .1, .1); // 100% for 150ms, ramp down to .1 over 10ms
         intake.open();
     }
 }

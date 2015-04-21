@@ -1,6 +1,7 @@
 package com.team254.frc2015.subsystems;
 
 import com.team254.frc2015.Constants;
+import com.team254.frc2015.subsystems.controllers.DriveFinishLineController;
 import com.team254.frc2015.subsystems.controllers.DrivePathController;
 import com.team254.frc2015.subsystems.controllers.DriveStraightController;
 import com.team254.frc2015.subsystems.controllers.TurnInPlaceController;
@@ -83,6 +84,11 @@ public class Drive extends Subsystem implements Loopable {
         m_controller = new DrivePathController(path);
     }
 
+    public void setFinishLineSetpoint(double distance, double heading) {
+        reset();
+        m_controller = new DriveFinishLineController(distance, heading, 1.0);
+    }
+
     @Override
     public void getState(StateHolder states) {
         states.put("gyro_angle", m_gyro.getAngle());
@@ -123,6 +129,8 @@ public class Drive extends Subsystem implements Loopable {
             pose_to_use.m_heading_velocity = 0;
             return pose_to_use;
         } else if (m_controller == null || (m_controller instanceof DriveStraightController && for_turn_controller)) {
+            return getPhysicalPose();
+        } else if (m_controller instanceof DriveFinishLineController) {
             return getPhysicalPose();
         } else if (m_controller.onTarget()) {
             return m_controller.getCurrentSetpoint();
