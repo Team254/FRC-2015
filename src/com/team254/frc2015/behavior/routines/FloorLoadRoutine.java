@@ -23,7 +23,7 @@ public class FloorLoadRoutine extends Routine {
     private static final double TOTE_CLEAR_POS = 18.5;
     private static final double WHEEL_CUTOFF_HEIGHT = 15;
     private static final double REGRASP_POS = 10;
-    private static final double TOTE_GRAB_POS = 1.5;
+    private static final double TOTE_GRAB_POS = 1.0;
     private boolean m_moved_down_once = false;
     private Latch m_top_carriage_init_latch = new Latch();
     private TimeDelayedBoolean m_stalled_motor = new TimeDelayedBoolean();

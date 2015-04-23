@@ -20,7 +20,7 @@ public class ThreeToteAutoMode extends AutoMode {
     protected void routine() throws AutoModeEndedException {
         autoModeTimer.reset();
         autoModeTimer.start();
-        waitTime(.125); // Weird gyro init bug
+        waitTime(.225); // Weird gyro init bug
         waitForGyroData(.25); // Weird gyro init bug
 
         bottom_carriage.setFlapperOpen(true);
