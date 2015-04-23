@@ -14,7 +14,7 @@ public class Constants extends ConstantsBase {
     public static double kManualExhaustSpeed = .6;
 
     public static double kAutoIntakeSpeed = 1.0;
-    public static double kCoopIntakeSpeed = .5;
+    public static double kCoopIntakeSpeed = .4;
     public static double kCanIntakeSlowSpeed = .25;
     public static double kCanIntakeSpeed = .3;
     public static double kSpinnyThingSpeed = .65;
