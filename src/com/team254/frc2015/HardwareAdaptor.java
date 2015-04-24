@@ -84,7 +84,7 @@ public class HardwareAdaptor {
 
     // Sensors
     public static GyroThread kGyroThread = new GyroThread();
-    public static AnalogInput kBreakbeamTopCarriage = new AnalogInput(0);
+    public static AnalogInput kBreakbeamTopCarriage = new AnalogInput(5);
     public static AnalogInput kBreakbeamIntake = new AnalogInput(4);
 
     // Subsystems
