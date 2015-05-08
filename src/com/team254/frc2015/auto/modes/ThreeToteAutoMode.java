@@ -6,9 +6,6 @@ import com.team254.frc2015.auto.AutoModeEndedException;
 import com.team254.frc2015.subsystems.TopCarriage;
 import edu.wpi.first.wpilibj.Timer;
 
-/**
- * Created by tombot on 3/23/15.
- */
 public class ThreeToteAutoMode extends AutoMode {
 
     public static double CLEAR_TOTE_HEIGHT = 20.0;
@@ -112,7 +109,7 @@ public class ThreeToteAutoMode extends AutoMode {
 
         bottom_carriage.setFastPositionSetpoint(2.0);
         waitForCarriageHeight(bottom_carriage, 3, false, 1.0);
-        
+
         intake.open();
         intake.setSpeed(0);
         bottom_carriage.setFlapperOpen(true);

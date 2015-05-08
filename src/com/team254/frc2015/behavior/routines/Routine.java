@@ -9,9 +9,6 @@ import com.team254.frc2015.subsystems.Intake;
 import com.team254.frc2015.subsystems.TopCarriage;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
-/**
- * Created by tombot on 2/26/15.
- */
 public abstract class Routine {
     protected Drive drive = HardwareAdaptor.kDrive;
     protected TopCarriage top_carriage = HardwareAdaptor.kTopCarriage;

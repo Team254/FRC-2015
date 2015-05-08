@@ -5,9 +5,6 @@ import com.team254.frc2015.behavior.RobotSetpoints;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 3/27/15.
- */
 public class RegraspRoutine extends Routine {
     private boolean m_saw_sensor = false;
 

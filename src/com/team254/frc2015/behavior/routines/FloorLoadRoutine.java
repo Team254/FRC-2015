@@ -8,9 +8,6 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 3/21/15.
- */
 public class FloorLoadRoutine extends Routine {
 
     public enum States {

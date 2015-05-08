@@ -1,6 +1,8 @@
 package com.team254.frc2015.auto;
 
-import com.team254.frc2015.auto.modes.*;
+import com.team254.frc2015.auto.modes.DoNothingAutoMode;
+import com.team254.frc2015.auto.modes.PeacockAutoMode;
+import com.team254.frc2015.auto.modes.ThreeToteAutoMode;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
@@ -44,12 +46,6 @@ public class AutoModeSelector {
         JSONArray list = new JSONArray();
         list.addAll(getAutoModeList());
         return list;
-    }
-
-    public void setFromSwitch(int index) {
-        if (!m_locked) {
-            setAutoModeByIndex(index);
-        }
     }
 
     public void setFromWebUI(int index) {

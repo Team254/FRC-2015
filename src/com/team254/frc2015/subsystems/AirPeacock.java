@@ -4,9 +4,6 @@ import com.team254.lib.util.CheesySolenoid;
 import com.team254.lib.util.StateHolder;
 import com.team254.lib.util.Subsystem;
 
-/**
- * Created by tombot on 4/1/15.
- */
 public class AirPeacock extends Subsystem {
 
     CheesySolenoid m_solenoid;

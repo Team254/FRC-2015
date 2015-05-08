@@ -6,9 +6,6 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 3/30/15.
- */
 public class VerticalCanPickupRoutine extends Routine {
 
     public enum States {
@@ -48,6 +45,7 @@ public class VerticalCanPickupRoutine extends Routine {
                     setpoints.m_elevator_setpoints.bottom_setpoint = Optional.of(0.);
                     setpoints.m_elevator_setpoints.top_setpoint = Optional.of(4.25);
                 }
+
                 if (m_state_timer.get() > .25 && commands.vertical_can_grab_request == Commands.VerticalCanGrabberRequests.ACTIVATE) {
                     new_state = States.CLOSE;
                 }

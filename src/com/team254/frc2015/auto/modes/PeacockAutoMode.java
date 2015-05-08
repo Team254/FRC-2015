@@ -1,6 +1,5 @@
 package com.team254.frc2015.auto.modes;
 
-import com.team254.frc2015.Constants;
 import com.team254.frc2015.auto.AutoMode;
 import com.team254.frc2015.auto.AutoModeEndedException;
 
@@ -12,7 +11,7 @@ public class PeacockAutoMode extends AutoMode {
 
     @Override
     protected void routine() throws AutoModeEndedException {
-        waitTime(.07); // 6ms before drive
+        waitTime(.07); // 7ms before drive
         drive.reset();
         drive.setFinishLineSetpoint(50, 0);
         waitForDrive(5);
@@ -23,7 +22,7 @@ public class PeacockAutoMode extends AutoMode {
 
     @Override
     public void prestart() {
-        motorPeacock.setPowerTimeSetpoint(1.0, .15, .1, .1); // 100% for 150ms, ramp down to .1 over 10ms
+        motorPeacock.setPowerTimeSetpoint(1.0, .15, .1, .1); // 100% for 150ms, ramp down to .1 over 100ms
         intake.open();
     }
 }

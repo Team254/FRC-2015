@@ -6,10 +6,10 @@ import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Pose;
 import com.team254.lib.util.SynchronousPID;
 
-public class DriveFinishLineController implements  Drive.DriveController {
+public class DriveFinishLineController implements Drive.DriveController {
     BangBangFinishLineController m_controller;
 
-    Pose m_setpoint = new Pose(0,0,0,0,0,0);
+    Pose m_setpoint = new Pose(0, 0, 0, 0, 0, 0);
     double m_heading = 0;
     private SynchronousPID mTurnPid;
     public DriveSignal m_cached_drive = new DriveSignal(0, 0);

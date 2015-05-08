@@ -29,7 +29,7 @@ public class AfterFloorClampRoutine extends Routine {
         if (m_timer.get() > .125) {
             setpoints.top_open_loop_jog = Optional.of(0.0);
             m_done = true;
-        } else  {
+        } else {
             setpoints.top_open_loop_jog = Optional.of(-.65);
         }
         setpoints.bottom_open_loop_jog = Optional.of(0.0);

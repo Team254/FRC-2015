@@ -5,9 +5,6 @@ import com.team254.frc2015.behavior.RobotSetpoints;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 2/26/15.
- */
 public class ManualRoutine extends Routine {
     private static Optional<Double> m_nullopt = Optional.empty();
 
@@ -18,16 +15,12 @@ public class ManualRoutine extends Routine {
 
     @Override
     public RobotSetpoints update(Commands commands, RobotSetpoints setpoints) {
-        // Set jogs
         if (!setpoints.bottom_open_loop_jog.isPresent()) {
             setpoints.bottom_open_loop_jog = commands.bottom_jog;
         }
         if (!setpoints.top_open_loop_jog.isPresent()) {
             setpoints.top_open_loop_jog = commands.top_jog;
         }
-
-        // Top carriage actions.
-
 
         if (setpoints.claw_action == RobotSetpoints.TopCarriageClawAction.NONE) {
             if (commands.top_carriage_claw_request == Commands.TopCarriageClawRequest.OPEN) {
@@ -41,7 +34,6 @@ public class ManualRoutine extends Routine {
             }
         }
 
-        // Top carriage actions.
         if (setpoints.pivot_action == RobotSetpoints.TopCarriagePivotAction.NONE) {
             if (commands.top_carriage_pivot_request == Commands.TopCarriagePivotRequest.PIVOT_UP) {
                 setpoints.pivot_action = RobotSetpoints.TopCarriagePivotAction.PIVOT_UP;
@@ -52,7 +44,6 @@ public class ManualRoutine extends Routine {
 
 
         if (setpoints.flapper_action == RobotSetpoints.BottomCarriageFlapperAction.NONE) {
-            // Bottom carriage actions.
             if (commands.bottom_carriage_flapper_request == Commands.BottomCarriageFlapperRequest.OPEN) {
                 setpoints.flapper_action = RobotSetpoints.BottomCarriageFlapperAction.OPEN;
             } else if (commands.bottom_carriage_flapper_request == Commands.BottomCarriageFlapperRequest.CLOSE) {
@@ -78,7 +69,6 @@ public class ManualRoutine extends Routine {
             }
         }
 
-        // Roller actions.
         if (setpoints.roller_action == RobotSetpoints.RollerAction.NONE) {
             if (commands.roller_request == Commands.RollerRequest.INTAKE) {
                 // Run intake inwards.

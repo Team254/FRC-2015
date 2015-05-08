@@ -1,8 +1,5 @@
 package com.team254.frc2015.auto.actions;
 
-/**
- * Created by tombot on 3/24/15.
- */
 public class WaitForTurnPastAngleAction extends TimeoutAction {
 
     private double m_angle = 0;

@@ -7,9 +7,6 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 2/26/15.
- */
 public class HorizontalCanPickupRoutine extends Routine {
 
     public enum States {

@@ -7,9 +7,6 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 3/3/15.
- */
 public class CoopRoutine extends Routine {
     public enum States {
         START, RAISE_TO_HEIGHT, EXHAUST_ME_MAYBE, PUSH_OUT, OPEN_AND_WAIT

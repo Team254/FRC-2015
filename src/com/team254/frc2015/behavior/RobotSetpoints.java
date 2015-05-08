@@ -4,9 +4,6 @@ import com.team254.frc2015.ElevatorSafety;
 
 import java.util.Optional;
 
-/**
- * Created by tombot on 2/26/15.
- */
 public class RobotSetpoints {
 
     public enum IntakeAction {
