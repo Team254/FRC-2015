@@ -60,7 +60,6 @@ public class FloorLoadRoutine extends Routine {
                     new_state = States.WAIT_FOR_TOTE;
                 }
                 if (m_top_carriage_init_latch.update(top_carriage.getBreakbeamTriggered())) {
-                    //setpoints.m_elevator_setpoints.top_setpoint = Optional.empty();
                     m_moved_down_once = true;
                 }
                 do_squeeze = m_moved_down_once;

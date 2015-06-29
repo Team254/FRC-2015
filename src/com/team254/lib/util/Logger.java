@@ -41,7 +41,6 @@ public class Logger {
                         lastWriteTime = Timer.getFPGATimestamp();
                     }
                 } catch (InterruptedException | IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -68,7 +67,6 @@ public class Logger {
                 writer = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(logFile), "utf-8"));
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             consumer = new Thread(consumerTask);

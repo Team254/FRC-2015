@@ -61,11 +61,6 @@ public class SynchronousPID {
             }
         }
 
-        /*if (((m_totalError + m_error) * m_I < m_maximumOutput) &&
-                ((m_totalError + m_error) * m_I > m_minimumOutput))
-        {
-            m_totalError += m_error;
-        }*/
         if ((m_error * m_P < m_maximumOutput) &&
                 (m_error * m_P > m_minimumOutput)) {
             m_totalError += m_error;

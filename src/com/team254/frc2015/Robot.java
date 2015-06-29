@@ -52,8 +52,6 @@ public class Robot extends IterativeRobot {
     Joystick rightStick = HardwareAdaptor.kRightStick;
     Joystick buttonBoard = HardwareAdaptor.kButtonBoard;
 
-    private int disabledIterations = 0;
-
     static {
         SystemManager.getInstance().add(new RobotData());
     }

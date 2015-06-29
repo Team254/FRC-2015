@@ -100,7 +100,6 @@ public class GyroThread {
         private boolean mHasEnoughZeroingSamples;
         private double mZeroBias;
         private double mAngle = 0;
-        private double mLastAngle = 0;
         private double mLastTime = 0;
 
         @Override

@@ -3,10 +3,7 @@ package com.team254.frc2015.behavior.routines;
 import com.team254.frc2015.behavior.Commands;
 import com.team254.frc2015.behavior.RobotSetpoints;
 
-import java.util.Optional;
-
 public class ManualRoutine extends Routine {
-    private static Optional<Double> m_nullopt = Optional.empty();
 
     @Override
     public void reset() {
