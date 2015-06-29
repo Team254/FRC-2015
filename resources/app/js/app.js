@@ -12,7 +12,6 @@ _.mixin({
 
 var data = new dataAPI(window.location.host, function(){
     generateButtons()
-    createValueAxis(Object.keys(data.getSubsystems()))
 });
 
 /*Protos!*/
@@ -28,46 +27,10 @@ Date.prototype.addTime= function(h,m){
 }
 
 
-/*$(document).ready(function(){
-    $("#slide").change(function(){
-        console.log($("#slide").val())
-        $("#hz").html("&nbsp; " + 1000/$("#slide").val() + " hz")
-    })
-})*/
+
 
 var colors = ["#93E814", "#FFAD22", "#E8204A", "#3F27FF", "#FF553B", "#62FF3B", "#36CAE8", "#8D35FF", "#000", "#DDD"]
 var usedColors = []
-/*
-setInterval(function(){
-    if (state) {
-        var newDate = new Date();
-
-        var visits = Math.round(Math.random() * 40) + 100;
-        var hits = Math.round(Math.random() * 80) + 500;
-        var views = Math.round(Math.random() * 6000);
-
-        chart.dataProvider.push({
-            date: newDate,
-            visits: visits,
-            hits: hits,
-            views: views
-        });
-        chart.validateData();
-    }
-}, 200);
-*/
-function createValueAxis(keys) {
-    /*for(var i = 0; i<keys.length;i++) {
-        var yAxis = new AmCharts.ValueAxis();
-        yAxis.position = "left";
-        yAxis.id = keys[i];
-        yAxis.title = keys[i];
-        yAxis.axisColor = colors[i]
-        yAxis.axisThickness = 2
-        yAxis.gridAlpha = 0;
-        chart.addValueAxis(yAxis);
-    }*/
-}
 
 function axesSet(){
     var max = $("#max").val()
@@ -111,19 +74,13 @@ function addChart(stream){
     } else {
     	graph.lineColor = "#0070FF";
     }
+    //Uncomment to smooth data
     /*graph.type = "smoothedLine";*/
     chart.addGraph(graph);
 }
 
 function removeChart(stream) {
-    /*for (var i = chart.graphs.length-1; i >= 0; i--) {
-        if (chart.graphs[i].valueField != stream) {
-    	    chart.graphs[i].valueAxis.offset -= 80;
-        } else {
-            max -= 80;
-            break;
-        }
-    }*/
+
     for(var i=0; i<chart.graphs.length;i++) {
         if(chart.graphs[i].valueField == stream) {
             var graph = chart.graphs[i];
@@ -142,10 +99,6 @@ function removeChart(stream) {
     }
 }
 
-/*setInterval(function(){
-    
-    console.log("Update")
-}, 1000)*/
 
 var chartCallBack = function(dataset){
     
@@ -189,30 +142,14 @@ var chart = AmCharts.makeChart("chartdiv", {
         "axisAlpha": 1,
         "position": "left"
     }],
-    "graphs": [/*{
-        "valueAxis": "drive.leftMotorB",
-        "lineColor": "#FF6600",
-        "bullet": "round",
-        "bulletBorderThickness": 1,
-        "hideBulletsCount": 30,
-        "title": "red line",
-        "valueField": "drive.leftMotorB",
-        "fillAlphas": 0,
-        "balloonText": "[[title]]: [[value]]",
-        "lineThickness": 2,
-    }*/],
+    "graphs": [],
     "chartScrollbar": {},
     "chartCursor": {
         "cursorPosition": "mouse",
         "categoryBalloonDateFormat": "JJ:NN:SS:fff, DD MMMM",
     },
     "categoryField": "robot.robotTime",
-    /*"categoryAxis": {
-        "parseDates": true,
-        "axisColor": "#DADADA",
-        "minorGridEnabled": true,
-        "minPeriod": "fff"
-    }*/
+    
 });
 
 function pause(){
@@ -246,11 +183,9 @@ function contains(array, stream) {
 function generateButtons() {
     var systems = Object.keys(data.getSubsystems());
     var grouped_systems = {};
-    //systems = Object.keys(systems);
-  //  for(var i = 0; i < systems.length; i++) {
+
     var html = "";
     _.each(systems, function(currSystem){
-        //var currSystem = systems[i];
         var subsytem_name = currSystem.split(".")[0];
         var signal_name = currSystem.split(".")[1];
         var signals = grouped_systems[subsytem_name] || [];
@@ -278,7 +213,8 @@ function generateButtons() {
     $("#button_area").html(html);
 }
 
-//A model API
+
+//An API to connect to the robot
 function dataAPI(socket, subsystemCallback){
     var robotTime = -1
     var ws = new WebSocket("ws://" + socket + "/state");
@@ -326,8 +262,6 @@ function dataAPI(socket, subsystemCallback){
         if (Object.keys(subscribed).length > 0){
             dat["date"] = robotTime
             callback(dat)
-        } else {
-            //console.log("err")
         }
     }
     
@@ -384,8 +318,5 @@ function dataAPI(socket, subsystemCallback){
     var genRand = function(){
         return (Math.random()-0.5)*100;
     }
-
-    //
-
 
 }
